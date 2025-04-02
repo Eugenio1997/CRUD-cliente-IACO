@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRUD_clientes_IACO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,7 +16,7 @@ namespace CRUD_cliente_IACO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new CadastrarCliente());
         }
     }
 }
