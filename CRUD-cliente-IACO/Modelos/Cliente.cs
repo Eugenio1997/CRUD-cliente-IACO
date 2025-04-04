@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using CRUD_cliente_IACO.Enums;
 

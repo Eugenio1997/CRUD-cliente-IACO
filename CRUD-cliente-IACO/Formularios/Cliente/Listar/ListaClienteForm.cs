@@ -15,6 +15,7 @@ namespace CadastroDeCliente
            
         }
 
+
         private void showClientsOnDatagrid()
         {
             try
@@ -26,12 +27,12 @@ namespace CadastroDeCliente
                 }
                 else
                 {
-                    MessageBox.Show("No data found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Nenhum dado encontrado.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro ao carregar dados: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -41,9 +42,5 @@ namespace CadastroDeCliente
             showClientsOnDatagrid();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }

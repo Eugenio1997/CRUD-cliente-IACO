@@ -94,28 +94,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\GenerosEnum.cs" />
-    <Compile Include="Formularios\Cliente\Cadastrar\CadastrarCliente.cs">
+    <Compile Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\Cliente\Cadastrar\CadastrarCliente.designer.cs">
-      <DependentUpon>CadastrarCliente.cs</DependentUpon>
+    <Compile Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.designer.cs">
+      <DependentUpon>CadastroClienteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\Cliente\Listar\FormListagemDeClientes.cs">
+    <Compile Include="Formularios\Cliente\Cadastrar\CadastroEnderecoClienteForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\Cliente\Listar\FormListagemDeClientes.designer.cs">
-      <DependentUpon>FormListagemDeClientes.cs</DependentUpon>
+    <Compile Include="Formularios\Cliente\Cadastrar\CadastroEnderecoClienteForm.Designer.cs">
+      <DependentUpon>CadastroEnderecoClienteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Cliente\Listar\ListaClienteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\Cliente\Listar\ListaClienteForm.designer.cs">
+      <DependentUpon>ListaClienteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Infraestrutura\DalHelper.cs" />
     <Compile Include="Modelos\Cliente.cs" />
     <Compile Include="Modelos\Endereco.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastrarCliente.resx">
-      <DependentUpon>CadastrarCliente.cs</DependentUpon>
+    <Compile Include="Validadores\UsuarioValidador.cs" />
+    <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.resx">
+      <DependentUpon>CadastroClienteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\Cliente\Listar\FormListagemDeClientes.resx">
-      <DependentUpon>FormListagemDeClientes.cs</DependentUpon>
+    <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroEnderecoClienteForm.resx">
+      <DependentUpon>CadastroEnderecoClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\Cliente\Listar\ListaClienteForm.resx">
+      <DependentUpon>ListaClienteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
