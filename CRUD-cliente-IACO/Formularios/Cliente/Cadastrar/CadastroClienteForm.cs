@@ -95,6 +95,10 @@ namespace CRUD_clientes_IACO
                 {
                     ((TextBox)ctrl).TextChanged += (sender, e) => VerificarCamposPreenchidos();
                 }
+                else if (ctrl is MaskedTextBox)
+                {
+                    ((MaskedTextBox)ctrl).TextChanged += (sender, e) => VerificarCamposPreenchidos();
+                }
                 else if (ctrl is ComboBox)
                 {
                     ((ComboBox)ctrl).SelectedIndexChanged += (sender, e) => VerificarCamposPreenchidos();
@@ -106,13 +110,17 @@ namespace CRUD_clientes_IACO
 
         private void VerificarCamposPreenchidos()
         {
-            bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text) &&
-                                    !string.IsNullOrEmpty(Sobrenome.Text) &&
+            CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            DataDeNascimento.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+
+            bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Sobrenome.Text.Trim()) &&
                                     Genero.SelectedIndex != -1 &&
-                                    !string.IsNullOrEmpty(CPF.Text) &&
-                                    !string.IsNullOrEmpty(DataDeNascimento.Text) &&
-                                    !string.IsNullOrEmpty(Telefone.Text) &&
-                                    !string.IsNullOrEmpty(Email.Text);
+                                    !string.IsNullOrEmpty(CPF.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(DataDeNascimento.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Telefone.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Email.Text.Trim());
 
             Btn_Proximo.Enabled = todosPreenchidos;
         }
@@ -120,6 +128,8 @@ namespace CRUD_clientes_IACO
         private void PreencherComboBoxGeneros()
         {
             Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
+            Genero.SelectedItem = GenerosEnum.Homem;
+
         }
 
         private void Genero_SelectedIndexChanged(object sender, EventArgs e)

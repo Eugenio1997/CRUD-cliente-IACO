@@ -197,7 +197,7 @@ namespace CRUD_clientes_IACO
             // Telefone
             // 
             this.Telefone.Location = new System.Drawing.Point(223, 219);
-            this.Telefone.Mask = "( ) 00000-0000";
+            this.Telefone.Mask = "00 00000-0000";
             this.Telefone.Name = "Telefone";
             this.Telefone.Size = new System.Drawing.Size(100, 20);
             this.Telefone.TabIndex = 20;
