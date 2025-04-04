@@ -13,10 +13,12 @@ namespace CRUD_clientes_IACO.Modelos
 
         [NotNullValidator(MessageTemplate = "O campo Nome é obrigatório.")]
         [StringLengthValidator(3, 50, MessageTemplate = "O Nome deve ter entre 3 e 50 caracteres.")]
+        [RegexValidator(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$", MessageTemplate = "O Nome contém caracteres inválidos.")]
         public string PrimeiroNome { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Sobrenome é obrigatório.")]
         [StringLengthValidator(3, 50, MessageTemplate = "O Sobrenome deve ter entre 3 e 50 caracteres.")]
+        [RegexValidator(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$", MessageTemplate = "O Sobrenome contém caracteres inválidos.")]
         public string Sobrenome { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Gênero é obrigatório.")]
@@ -27,12 +29,14 @@ namespace CRUD_clientes_IACO.Modelos
 
         [NotNullValidator(MessageTemplate = "O campo CPF é obrigatório.")]
         [StringLengthValidator(3, 50, MessageTemplate = "O CPF deve ter entre 3 e 50 caracteres.")]
+        [RegexValidator(@"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$", MessageTemplate = "Formato de CPF inválido.")]
         public string CPF { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Data de Nascimento é obrigatório.")]
         public DateTime DataNascimento { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Telefone é obrigatório.")]
+        [RegexValidator(@"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$", MessageTemplate = "Formato de Telefone inválido.")]
         public string Telefone { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Email é obrigatório.")]

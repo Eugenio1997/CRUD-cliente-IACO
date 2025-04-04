@@ -1,20 +1,29 @@
 using CRUD_cliente_IACO.Enums;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+using CRUD_cliente_IACO.Validadores;
+using CRUD_clientes_IACO.Modelos;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CRUD_clientes_IACO
 {
     public partial class CadastrarCliente : Form
     {
+        private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
+        private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
+        private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
 
         private static CadastrarCliente _instance;
+        private int passoAtual = 0;
 
         public CadastrarCliente()
         {
             InitializeComponent();
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
+            PrimeiroNome.Validating += PrimeiroNome_Validating; ;
         }
 
         /// Seguindo o padrao Singleton
@@ -30,10 +39,6 @@ namespace CRUD_clientes_IACO
                 return _instance;
             }
         }
-
-        private int passoAtual = 0;
-
-        
 
 
         private void MostrarPasso()
@@ -59,10 +64,26 @@ namespace CRUD_clientes_IACO
             MostrarPasso();
         }
 
-        
+        private void PrimeiroNome_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string valor = PrimeiroNome.Text;
+
+            if (string.IsNullOrEmpty(valor) || !Regex.IsMatch(valor, primeiroNomeRegex))
+            {
+                MessageBox.Show("O Primeiro Nome é obrigatório e deve ter entre 3 e 50 caracteres válidos.", "Erro de Validação");
+                PrimeiroNome.Focus(); // opcional, o foco já será mantido por causa do e.Cancel
+                e.Cancel = true; // impede o usuário de sair do campo até corrigir
+            }
+        }
 
         private void Btn_Proximo_Click(object sender, EventArgs e)
         {
+            Cliente clienteNovo = new Cliente {
+                
+            };
+            //fazer validação
+            //UsuarioValidador.instance.Validar()
+
             if (passoAtual == 0)
             {
                 passoAtual = 1;
@@ -110,6 +131,7 @@ namespace CRUD_clientes_IACO
 
         private void VerificarCamposPreenchidos()
         {
+            /// excluindo os caracteres da máscara
             CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             DataDeNascimento.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
@@ -132,9 +154,6 @@ namespace CRUD_clientes_IACO
 
         }
 
-        private void Genero_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

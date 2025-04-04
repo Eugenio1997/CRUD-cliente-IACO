@@ -164,7 +164,6 @@ namespace CRUD_clientes_IACO
             this.Genero.Name = "Genero";
             this.Genero.Size = new System.Drawing.Size(95, 21);
             this.Genero.TabIndex = 6;
-            this.Genero.SelectedIndexChanged += new System.EventHandler(this.Genero_SelectedIndexChanged);
             // 
             // Btn_Proximo
             // 
