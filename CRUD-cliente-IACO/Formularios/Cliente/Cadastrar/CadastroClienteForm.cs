@@ -23,7 +23,7 @@ namespace CRUD_clientes_IACO
             InitializeComponent();
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
-            PrimeiroNome.Validating += PrimeiroNome_Validating; ;
+            //PrimeiroNome.Validating += PrimeiroNome_Validating; ;
         }
 
         /// Seguindo o padrao Singleton

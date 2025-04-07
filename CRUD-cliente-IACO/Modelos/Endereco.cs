@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
-namespace CRUD_clientes_IACO.Modelos
+namespace CRUD_cliente_IACO.Modelos
 {
     public sealed class Endereco
     {

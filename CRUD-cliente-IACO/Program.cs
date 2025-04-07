@@ -1,13 +1,15 @@
-﻿using CRUD_clientes_IACO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Windows.Forms;
+using Ninject;
+using CRUD_cliente_IACO.IoC;
+using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 
 namespace CRUD_cliente_IACO
 {
     static class Program
     {
+        private static IKernel _kernel;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,14 @@ namespace CRUD_cliente_IACO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CadastrarCliente());
+
+            // Configurar Ninject
+            _kernel = new StandardKernel(new NinjectConfig());
+
+            // Criar o formulário principal usando Ninject
+            var mainForm = _kernel.Get<CadastroEnderecoClienteForm>();
+            
+            Application.Run(mainForm);
         }
     }
 }

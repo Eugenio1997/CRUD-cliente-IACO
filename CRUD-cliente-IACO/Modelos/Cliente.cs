@@ -1,11 +1,10 @@
 ﻿using System;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using CRUD_cliente_IACO.Enums;
 
-namespace CRUD_clientes_IACO.Modelos
+namespace CRUD_cliente_IACO.Modelos
 {
-    class Cliente
+    public class Cliente
     {
         [NotNullValidator(MessageTemplate = "O campo ID é obrigatório.")]
         [RangeValidator(1, RangeBoundaryType.Inclusive, int.MaxValue, RangeBoundaryType.Inclusive, MessageTemplate = "O ID deve ser um número inteiro positivo.")]
