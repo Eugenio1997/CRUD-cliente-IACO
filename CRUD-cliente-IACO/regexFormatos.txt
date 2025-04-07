@@ -1,0 +1,45 @@
+﻿----------------- Formatos de telefone aceitos: -----------------
+
+1199999-9999
+
+(11) 99999-9999
+
+11 99999-9999
+
+(11)99999-9999
+
+
+----------------- Data de Nascimento (formato DD/MM/AAAA) -----------------
+
+Valida datas no formato dd/mm/aaaa, como 25/12/1995.
+
+CPF:
+
+----------------- Formatos de CPF aceitos: -----------------
+
+123.456.789-09
+
+12345678909
+
+----------------- Formatos de Email aceitos: -----------------
+
+nome@dominio.com
+
+nome.sobrenome@empresa.com.br
+
+
+----------------- Primeiro Nome	aceitos-----------------
+João	
+Ana Beatriz	
+Maria-Clara	
+D’Ávila	
+
+----------------- Sobrenome aceitos -----------------
+
+da Silva	
+Souza	
+Costa-Lima	
+D’Angelo	
+Gonçalves	
+Moreira	
+de Oliveira	
