@@ -9,11 +9,14 @@ namespace CRUD_cliente_IACO.Repositorios
 {
     public class ClienteRepository : IClienteRepository
     {
-        private readonly IDbConnection _connection;
+        private readonly OracleConnection _connection;
 
-        public ClienteRepository(IDbConnection connection)
+        public ClienteRepository(OracleConnection connection)
         {
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            
+            _connection = connection;
         }
 
         // CREATE - Inserir novo cliente
@@ -26,17 +29,18 @@ namespace CRUD_cliente_IACO.Repositorios
             {
                 command.CommandText = @"
                     INSERT INTO CLIENTES 
-                        (ID, NOME, EMAIL, TELEFONE, DATA_CADASTRO)
+                        (ID, PRIMEIRO_NOME, SOBRENOME, EMAIL, TELEFONE, DATA_NASCIMENTO)
                     VALUES 
-                        (SEQ_CLIENTES.NEXTVAL, :nome, :email, :telefone, :dataCadastro)
+                        (SEQ_CLIENTES.NEXTVAL, :primeiroNome, :sobrenome, :email, :telefone, :dataNascimento)
                     RETURNING ID INTO :id";
 
                 var oracleCommand = (OracleCommand)command;
 
-                oracleCommand.Parameters.Add(":nome", OracleDbType.Varchar2).Value = cliente.Nome;
+                oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
+                oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
                 oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
-                oracleCommand.Parameters.Add(":dataCadastro", OracleDbType.Date).Value = cliente.DataCadastro;
+                oracleCommand.Parameters.Add(":dataNascimento", OracleDbType.Date).Value = cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
                 
                 var idParam = oracleCommand.Parameters.Add(":id", OracleDbType.Int32);
                 idParam.Direction = ParameterDirection.Output;
@@ -59,12 +63,13 @@ namespace CRUD_cliente_IACO.Repositorios
                 command.CommandText = @"
                     SELECT 
                         ID,
-                        NOME,
+                        PRIMEIRO_NOME,
+                        SOBRENOME,
                         EMAIL,
                         TELEFONE,
-                        DATA_CADASTRO
+                        DATA_NASCIMENTO
                     FROM CLIENTES
-                    ORDER BY NOME";
+                    ORDER BY PRIMEIRO_NOME, SOBRENOME";
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -73,10 +78,11 @@ namespace CRUD_cliente_IACO.Repositorios
                         var cliente = new Cliente
                         {
                             Id = Convert.ToInt32(reader["ID"]),
-                            Nome = reader["NOME"].ToString(),
+                            PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                            Sobrenome = reader["SOBRENOME"].ToString(),
                             Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                             Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                            DataCadastro = Convert.ToDateTime(reader["DATA_CADASTRO"])
+                            DataNascimento = Convert.ToDateTime(reader["DATA_NASCIMENTO"])
                         };
 
                         clientes.Add(cliente);
@@ -98,10 +104,11 @@ namespace CRUD_cliente_IACO.Repositorios
                 command.CommandText = @"
                     SELECT 
                         ID,
-                        NOME,
+                        PRIMEIRO_NOME,
+                        SOBRENOME,
                         EMAIL,
                         TELEFONE,
-                        DATA_CADASTRO
+                        DATA_NASCIMENTO
                     FROM CLIENTES
                     WHERE ID = :id";
 
@@ -115,10 +122,11 @@ namespace CRUD_cliente_IACO.Repositorios
                         return new Cliente
                         {
                             Id = Convert.ToInt32(reader["ID"]),
-                            Nome = reader["NOME"].ToString(),
+                            PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                            Sobrenome = reader["SOBRENOME"].ToString(),
                             Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                             Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                            DataCadastro = Convert.ToDateTime(reader["DATA_CADASTRO"])
+                            DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue
                         };
                     }
                     return null;
@@ -137,13 +145,15 @@ namespace CRUD_cliente_IACO.Repositorios
                 command.CommandText = @"
                     UPDATE CLIENTES 
                     SET 
-                        NOME = :nome,
+                        PRIMEIRO_NOME = :primeiroNome,
+                        SOBRENOME = :sobrenome,
                         EMAIL = :email,
                         TELEFONE = :telefone
                     WHERE ID = :id";
 
                 var oracleCommand = (OracleCommand)command;
-                oracleCommand.Parameters.Add(":nome", OracleDbType.Varchar2).Value = cliente.Nome;
+                oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
+                oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
                 oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = cliente.Id;

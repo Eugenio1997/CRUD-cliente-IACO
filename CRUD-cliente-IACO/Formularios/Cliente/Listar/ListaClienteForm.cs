@@ -1,18 +1,24 @@
-﻿using CRUD_cliente_IACO.Infraestrutura;
+﻿
+using CRUD_cliente_IACO.Repositorios.Interfaces;
 using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using CRUD_cliente_IACO.Modelos;
 
-namespace CadastroDeCliente
+namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
-    public partial class FormListagemDeClientes : Form
+    public partial class ListaClienteForm : Form
     {
+        private readonly IClienteRepository _clienteRepository;
 
-        
-        public FormListagemDeClientes()
+        public ListaClienteForm(IClienteRepository clienteRepository)
         {
-            InitializeComponent();
-           
+            if(clienteRepository == null)
+            {
+                throw new ArgumentNullException(nameof(clienteRepository));
+            }
+                InitializeComponent();
+                _clienteRepository = clienteRepository;
         }
 
 
@@ -20,10 +26,11 @@ namespace CadastroDeCliente
         {
             try
             {
-                DataTable dt = DalHelper.GetClients();
-                if (dt != null && dt.Rows.Count > 0)
+                //DataTable dt = DalHelper.GetClients();
+                List<Modelos.Cliente> listaClientes = _clienteRepository.ConsultarClientes();
+                if (listaClientes != null && listaClientes.Count > 0)
                 {
-                    dataGridView1.DataSource = dt;
+                    dataGridView1.DataSource = listaClientes;
                 }
                 else
                 {

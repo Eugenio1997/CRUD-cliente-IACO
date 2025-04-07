@@ -1,4 +1,4 @@
-﻿using CRUD_clientes_IACO.Modelos;
+﻿using CRUD_cliente_IACO.Modelos;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using Oracle.DataAccess.Client;

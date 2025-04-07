@@ -1,24 +1,42 @@
 using CRUD_cliente_IACO.Enums;
-using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
-using CRUD_cliente_IACO.Validadores;
-using CRUD_clientes_IACO.Modelos;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace CRUD_clientes_IACO
-{
-    public partial class CadastrarCliente : Form
-    {
-        private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
-        private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
-        private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
-        private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
 
-        private static CadastrarCliente _instance;
+namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
+{
+    public partial class CadastroClienteForm : Form
+    {
+        //private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
+        //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
+        //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
+
+        private static CadastroClienteForm _instance;
         private int passoAtual = 0;
 
-        public CadastrarCliente()
+
+        /// <summary>
+        /// VALIDACOES DE CADA CAMPO DO FORMULARIO
+        /// </summary>
+
+        /*
+        private void PrimeiroNome_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string valor = PrimeiroNome.Text;
+
+            if (string.IsNullOrEmpty(valor) || !Regex.IsMatch(valor, primeiroNomeRegex))
+            {
+                MessageBox.Show("O campo Primeiro Nome é obrigatório e deve conter apenas letras, com 3 a 50 caracteres.", "Erro de Validação");
+                PrimeiroNome.Focus();
+                e.Cancel = true;
+            }
+        }
+        */
+
+
+        public CadastroClienteForm()
         {
             InitializeComponent();
             AdicionarEventosNosCampos();
@@ -27,13 +45,13 @@ namespace CRUD_clientes_IACO
         }
 
         /// Seguindo o padrao Singleton
-        public static CadastrarCliente instance
+        public static CadastroClienteForm instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new CadastrarCliente();
+                    _instance = new CadastroClienteForm();
                 }
 
                 return _instance;
@@ -56,29 +74,15 @@ namespace CRUD_clientes_IACO
         }
 
 
-
-
-
         private void CadastrarCliente_Load(object sender, EventArgs e)
         {
             MostrarPasso();
         }
 
-        private void PrimeiroNome_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            string valor = PrimeiroNome.Text;
-
-            if (string.IsNullOrEmpty(valor) || !Regex.IsMatch(valor, primeiroNomeRegex))
-            {
-                MessageBox.Show("O Primeiro Nome é obrigatório e deve ter entre 3 e 50 caracteres válidos.", "Erro de Validação");
-                PrimeiroNome.Focus(); // opcional, o foco já será mantido por causa do e.Cancel
-                e.Cancel = true; // impede o usuário de sair do campo até corrigir
-            }
-        }
 
         private void Btn_Proximo_Click(object sender, EventArgs e)
         {
-            Cliente clienteNovo = new Cliente {
+            Modelos.Cliente clienteNovo = new Modelos.Cliente {
                 
             };
             //fazer validação

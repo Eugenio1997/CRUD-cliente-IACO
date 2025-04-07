@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Configuration;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
@@ -15,6 +8,19 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
     {
         private readonly IClienteRepository _clienteRepository;
         private static CadastroEnderecoClienteForm _instance;
+
+        public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
+        {
+            InitializeComponent();
+            if (clienteRepository == null)
+                throw new ArgumentNullException(nameof(clienteRepository));
+
+            _clienteRepository = clienteRepository;
+        }
+
+        //no parameless
+        private CadastroEnderecoClienteForm(){}
+
 
         public static CadastroEnderecoClienteForm instance
         {
@@ -29,11 +35,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             }
         }
 
-        public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
-        {
-            _clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(clienteRepository));
-            InitializeComponent();
-        }
 
         // Exemplo de método usando o repository injetado
         private void SalvarEndereco(Modelos.Cliente cliente)
@@ -41,11 +42,11 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             try
             {
                 _clienteRepository.AtualizarCliente(cliente);
-                MessageBox.Show("Endereço salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Cliente salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao salvar endereço: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao salvar Cliente: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

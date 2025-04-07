@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace CRUD_clientes_IACO
+namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
-    partial class CadastrarCliente
+    partial class CadastroClienteForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -213,7 +213,7 @@ namespace CRUD_clientes_IACO
             this.Btn_Limpar.UseVisualStyleBackColor = false;
             this.Btn_Limpar.Click += new System.EventHandler(this.Btn_Limpar_Click);
             // 
-            // CadastrarCliente
+            // CadastroClienteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -236,7 +236,7 @@ namespace CRUD_clientes_IACO
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Btn_Proximo);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "CadastrarCliente";
+            this.Name = "CadastroClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.ResumeLayout(false);

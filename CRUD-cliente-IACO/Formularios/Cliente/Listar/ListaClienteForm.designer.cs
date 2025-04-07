@@ -1,6 +1,6 @@
-﻿namespace CadastroDeCliente
+﻿namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
-    partial class FormListagemDeClientes
+    partial class ListaClienteForm
     {
         /// <summary>
         /// Required designer variable.
@@ -62,14 +62,14 @@
             // 
             this.clientesBindingSource.DataMember = "Clientes";
             // 
-            // FormListagemDeClientes
+            // ListaClienteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 430);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.ListagemDeClientes);
-            this.Name = "FormListagemDeClientes";
+            this.Name = "ListaClienteForm";
             this.Text = "Registro de Clientes";
             this.Load += new System.EventHandler(this.FormListagemDeClientes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -83,8 +83,5 @@
         private System.Windows.Forms.Label ListagemDeClientes;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource clientesBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nomeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn foneDataGridViewTextBoxColumn;
     }
 }

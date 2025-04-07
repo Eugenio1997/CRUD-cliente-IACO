@@ -11,12 +11,13 @@ namespace CRUD_cliente_IACO.IoC
     {
         public override void Load()
         {
-            // Bind da conexão
-            Bind<IDbConnection>().To<OracleConnection>()
+            
+            Bind<OracleConnection>()
+                .ToSelf()
                 .WithConstructorArgument("connectionString",
                     ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString);
 
-            // Bind do repository
+            
             Bind<IClienteRepository>().To<ClienteRepository>();
         }
     }

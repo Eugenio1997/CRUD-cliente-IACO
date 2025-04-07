@@ -23,7 +23,7 @@ namespace CRUD_cliente_IACO
             _kernel = new StandardKernel(new NinjectConfig());
 
             // Criar o formulário principal usando Ninject
-            var mainForm = _kernel.Get<CadastroEnderecoClienteForm>();
+            var mainForm = _kernel.Get<CadastroClienteForm>();
             
             Application.Run(mainForm);
         }
