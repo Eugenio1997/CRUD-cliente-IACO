@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\NinjectConfig.cs" />
+    <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />
     <Compile Include="Repositorios\ClienteRepository.cs" />
     <Compile Include="Enums\GenerosEnum.cs" />

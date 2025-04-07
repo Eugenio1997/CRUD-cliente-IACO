@@ -2,6 +2,7 @@ using CRUD_cliente_IACO.Enums;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using CRUD_cliente_IACO.Modelos.DTOs;
 
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
@@ -13,6 +14,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
 
+        private readonly ClienteDTO _clienteDTO;
         private static CadastroClienteForm _instance;
         private int passoAtual = 0;
 
@@ -41,6 +43,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             InitializeComponent();
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
+            _clienteDTO = new ClienteDTO();
             //PrimeiroNome.Validating += PrimeiroNome_Validating; ;
         }
 
@@ -82,11 +85,15 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         private void Btn_Proximo_Click(object sender, EventArgs e)
         {
-            Modelos.Cliente clienteNovo = new Modelos.Cliente {
-                
-            };
-            //fazer validação
-            //UsuarioValidador.instance.Validar()
+
+            // Preenche o DTO com os dados do formulário
+            _clienteDTO.PrimeiroNome = PrimeiroNome.Text;
+            _clienteDTO.Sobrenome = Sobrenome.Text;
+            _clienteDTO.Email = Email.Text;
+            _clienteDTO.Telefone = Telefone.Text;
+            _clienteDTO.CPF = CPF.Text;
+            _clienteDTO.DataNascimento = DateTime.ParseExact(DataDeNascimento.Text, "dd/MM/yyyy", null);
+            _clienteDTO.Genero = (GenerosEnum)Genero.SelectedValue;
 
             if (passoAtual == 0)
             {
@@ -116,6 +123,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         {
             foreach (Control ctrl in this.Controls)
             {
+ 
                 if (ctrl is TextBox)
                 {
                     ((TextBox)ctrl).TextChanged += (sender, e) => VerificarCamposPreenchidos();
@@ -128,36 +136,38 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 {
                     ((ComboBox)ctrl).SelectedIndexChanged += (sender, e) => VerificarCamposPreenchidos();
                 }
+
             }
 
             Btn_Proximo.Enabled = false;
-        }
+       }
 
-        private void VerificarCamposPreenchidos()
-        {
-            /// excluindo os caracteres da máscara
-            CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-            DataDeNascimento.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-            Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+       private void VerificarCamposPreenchidos()
+       {
+           /// excluindo os caracteres da máscara
+           CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+           DataDeNascimento.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+           Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
 
-            bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text.Trim()) &&
-                                    !string.IsNullOrEmpty(Sobrenome.Text.Trim()) &&
-                                    Genero.SelectedIndex != -1 &&
-                                    !string.IsNullOrEmpty(CPF.Text.Trim()) &&
-                                    !string.IsNullOrEmpty(DataDeNascimento.Text.Trim()) &&
-                                    !string.IsNullOrEmpty(Telefone.Text.Trim()) &&
-                                    !string.IsNullOrEmpty(Email.Text.Trim());
+           bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text.Trim()) &&
+                                   !string.IsNullOrEmpty(Sobrenome.Text.Trim()) &&
+                                   Genero.SelectedIndex != -1 &&
+                                   !string.IsNullOrEmpty(CPF.Text.Trim()) &&
+                                   !string.IsNullOrEmpty(DataDeNascimento.Text.Trim()) &&
+                                   !string.IsNullOrEmpty(Telefone.Text.Trim()) &&
+                                   !string.IsNullOrEmpty(Email.Text.Trim());
 
-            Btn_Proximo.Enabled = todosPreenchidos;
-        }
+           Btn_Proximo.Enabled = todosPreenchidos;
+       }
 
-        private void PreencherComboBoxGeneros()
-        {
-            Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
-            Genero.SelectedItem = GenerosEnum.Homem;
+       private void PreencherComboBoxGeneros()
+       {
+           Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
+           Genero.SelectedItem = GenerosEnum.Homem;
 
-        }
+       }
 
-        
-    }
+
+   }
 }
+ 

@@ -21,7 +21,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 _clienteRepository = clienteRepository;
         }
 
-
+        /*
         private void showClientsOnDatagrid()
         {
             try
@@ -48,6 +48,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         {
             showClientsOnDatagrid();
         }
-
+        */
     }
 }

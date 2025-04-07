@@ -25,31 +25,50 @@ namespace CRUD_cliente_IACO.Repositorios
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            using (var command = _connection.CreateCommand())
+            using (var oracleCommand = _connection.CreateCommand())
             {
-                command.CommandText = @"
+                oracleCommand.CommandText = @"
                     INSERT INTO CLIENTES 
-                        (ID, PRIMEIRO_NOME, SOBRENOME, EMAIL, TELEFONE, DATA_NASCIMENTO)
+                        (ID, PRIMEIRO_NOME, SOBRENOME, EMAIL, TELEFONE, DATA_NASCIMENTO, CEP, RUA, NUMERO_RESIDENCIA, BAIRRO, CIDADE, ESTADO )
                     VALUES 
-                        (SEQ_CLIENTES.NEXTVAL, :primeiroNome, :sobrenome, :email, :telefone, :dataNascimento)
+                        (SEQ_CLIENTES.NEXTVAL, :primeiroNome, :sobrenome, :email, :telefone, :dataNascimento, :cep, :rua, :numeroResidencia, :bairro, :cidade, :estado)
                     RETURNING ID INTO :id";
 
-                var oracleCommand = (OracleCommand)command;
+
+                //TELA DE CADASTRO DE DADOS PESSOAIS DO CLIENTE (1º TELA)
 
                 oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
                 oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
                 oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":dataNascimento", OracleDbType.Date).Value = cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
-                
+
+                //TELA DE CADASTRO DE ENDEREÇO DO CLIENTE (2º TELA)
+
+                oracleCommand.Parameters.Add(":cep", OracleDbType.Varchar2).Value = cliente.Endereco.CEP;
+                oracleCommand.Parameters.Add(":rua", OracleDbType.Varchar2).Value = cliente.Endereco.Rua;
+                oracleCommand.Parameters.Add(":numeroResidencia", OracleDbType.Varchar2).Value = cliente.Endereco.NumeroResidencia;
+                oracleCommand.Parameters.Add(":bairro", OracleDbType.Varchar2).Value = cliente.Endereco.Bairro;
+                oracleCommand.Parameters.Add(":cidade", OracleDbType.Date).Value = cliente.Endereco.Cidade;
+                oracleCommand.Parameters.Add(":estado", OracleDbType.Date).Value = cliente.Endereco.Estado;
+
+
+
+                /*
+                Define que este é um parâmetro de saída (OUTPUT)
+                ParameterDirection.Output indica que o valor virá do banco de dados para o programa
+                Isso é necessário porque estamos usando RETURNING ID INTO :id na query
+                */
                 var idParam = oracleCommand.Parameters.Add(":id", OracleDbType.Int32);
                 idParam.Direction = ParameterDirection.Output;
+
 
                 oracleCommand.ExecuteNonQuery();
                 cliente.Id = Convert.ToInt32(idParam.Value.ToString());
             }
         }
 
+        /*
         // READ - Consultar todos os clientes
         public List<Cliente> ConsultarClientes()
         {
@@ -99,9 +118,9 @@ namespace CRUD_cliente_IACO.Repositorios
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            using (var command = _connection.CreateCommand())
+            using (var oracleCommand = _connection.CreateCommand())
             {
-                command.CommandText = @"
+                oracleCommand.CommandText = @"
                     SELECT 
                         ID,
                         PRIMEIRO_NOME,
@@ -112,10 +131,9 @@ namespace CRUD_cliente_IACO.Repositorios
                     FROM CLIENTES
                     WHERE ID = :id";
 
-                var oracleCommand = (OracleCommand)command;
                 oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = id;
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = oracleCommand.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -140,9 +158,9 @@ namespace CRUD_cliente_IACO.Repositorios
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            using (var command = _connection.CreateCommand())
+            using (var oracleCommand = _connection.CreateCommand())
             {
-                command.CommandText = @"
+                oracleCommand.CommandText = @"
                     UPDATE CLIENTES 
                     SET 
                         PRIMEIRO_NOME = :primeiroNome,
@@ -151,14 +169,14 @@ namespace CRUD_cliente_IACO.Repositorios
                         TELEFONE = :telefone
                     WHERE ID = :id";
 
-                var oracleCommand = (OracleCommand)command;
+              
                 oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
                 oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
                 oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
                 oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = cliente.Id;
 
-                int rowsAffected = command.ExecuteNonQuery();
+                int rowsAffected = oracleCommand.ExecuteNonQuery();
                 if (rowsAffected == 0)
                 {
                     throw new Exception($"Cliente com ID {cliente.Id} não encontrado.");
@@ -172,19 +190,19 @@ namespace CRUD_cliente_IACO.Repositorios
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            using (var command = _connection.CreateCommand())
+            using (var oracleCommand = _connection.CreateCommand())
             {
-                command.CommandText = "DELETE FROM CLIENTES WHERE ID = :id";
+                oracleCommand.CommandText = "DELETE FROM CLIENTES WHERE ID = :id";
                 
-                var oracleCommand = (OracleCommand)command;
                 oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = id;
 
-                int rowsAffected = command.ExecuteNonQuery();
+                int rowsAffected = oracleCommand.ExecuteNonQuery();
                 if (rowsAffected == 0)
                 {
                     throw new Exception($"Cliente com ID {id} não encontrado.");
                 }
             }
         }
+        */
     }
 } 

@@ -71,7 +71,6 @@
             this.Controls.Add(this.ListagemDeClientes);
             this.Name = "ListaClienteForm";
             this.Text = "Registro de Clientes";
-            this.Load += new System.EventHandler(this.FormListagemDeClientes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientesBindingSource)).EndInit();
             this.ResumeLayout(false);

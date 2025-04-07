@@ -10,8 +10,8 @@ namespace CRUD_cliente_IACO.Modelos
         [RangeValidator(1, RangeBoundaryType.Inclusive, int.MaxValue, RangeBoundaryType.Inclusive, MessageTemplate = "O ID deve ser um número inteiro positivo.")]
         public int Id { get; set; }
 
-        [NotNullValidator(MessageTemplate = "O campo Nome é obrigatório.")]
-        [StringLengthValidator(3, 50, MessageTemplate = "O Nome deve ter entre 3 e 50 caracteres.")]
+        [NotNullValidator(MessageTemplate = "O campo Primeiro Nome é obrigatório.")]
+        [StringLengthValidator(3, 50, MessageTemplate = "O Primeiro Nome deve ter entre 3 e 50 caracteres.")]
         [RegexValidator(@"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$", MessageTemplate = "O Nome contém caracteres inválidos.")]
         public string PrimeiroNome { get; set; }
 

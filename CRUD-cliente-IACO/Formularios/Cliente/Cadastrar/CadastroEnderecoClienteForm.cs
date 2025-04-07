@@ -8,6 +8,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
     {
         private readonly IClienteRepository _clienteRepository;
         private static CadastroEnderecoClienteForm _instance;
+        private CadastroClienteForm _cadastroClientForm;
+
 
         public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
         {
@@ -15,6 +17,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
 
+            _cadastroClientForm = CadastroClienteForm.instance;
             _clienteRepository = clienteRepository;
         }
 
@@ -37,11 +40,18 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
 
         // Exemplo de método usando o repository injetado
-        private void SalvarEndereco(Modelos.Cliente cliente)
+        private void SalvarCliente(Modelos.Cliente cliente)
         {
             try
             {
-                _clienteRepository.AtualizarCliente(cliente);
+
+                /*
+                    1. Recuperar o ClienteDTO instanciado no formulario anterior
+                    2. Fazer o cast do ClienteDTO para Cliente
+                    3. Adicionar à propriedade Endereço do Cliente os respectivos valores
+                */
+
+                _clienteRepository.InserirCliente(cliente);
                 MessageBox.Show("Cliente salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
