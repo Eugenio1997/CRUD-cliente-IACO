@@ -3,20 +3,22 @@ using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Modelos.DTOs;
-
+using System.Globalization;
+using CRUD_cliente_IACO.Repositorios.Interfaces;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
     public partial class CadastroClienteForm : Form
     {
-        //private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        //private string primeiroNomeRegex = @"^[A-Za-zï¿½-ï¿½ï¿½-ï¿½ï¿½-ï¿½\s'-]{3,50}$";
         //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
 
-        private readonly ClienteDTO _clienteDTO;
+        public readonly ClienteDTO _clienteDTO;
         private static CadastroClienteForm _instance;
-        private int passoAtual = 0;
+        public event EventHandler OnProximo;
+        private readonly IClienteRepository _clienteRepository;
 
 
         /// <summary>
@@ -30,77 +32,90 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             if (string.IsNullOrEmpty(valor) || !Regex.IsMatch(valor, primeiroNomeRegex))
             {
-                MessageBox.Show("O campo Primeiro Nome é obrigatório e deve conter apenas letras, com 3 a 50 caracteres.", "Erro de Validação");
+                MessageBox.Show("O campo Primeiro Nome ï¿½ obrigatï¿½rio e deve conter apenas letras, com 3 a 50 caracteres.", "Erro de Validaï¿½ï¿½o");
                 PrimeiroNome.Focus();
                 e.Cancel = true;
             }
         }
         */
 
-
         public CadastroClienteForm()
+        {
+
+        }
+
+        public CadastroClienteForm(IClienteRepository clienteRepository)
         {
             InitializeComponent();
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
             _clienteDTO = new ClienteDTO();
+            _clienteRepository = clienteRepository;
+            
             //PrimeiroNome.Validating += PrimeiroNome_Validating; ;
         }
 
         /// Seguindo o padrao Singleton
-        public static CadastroClienteForm instance
+        public static CadastroClienteForm GetInstance(IClienteRepository clienteRepository)
         {
-            get
+          
+            if (_instance == null)
             {
-                if (_instance == null)
-                {
-                    _instance = new CadastroClienteForm();
-                }
-
-                return _instance;
+                _instance = new CadastroClienteForm(clienteRepository);
             }
+
+            return _instance;
+           
         }
 
-
+        /*
         private void MostrarPasso()
         {
-            if (passoAtual == 0)
+            if (passoAtual == (int)FormTypeEnum.CadastroDadosPessoaisCliente)
             {
                 this.Show();
-                CadastroEnderecoClienteForm.instance.Hide();
+                CadastroEnderecoClienteForm.GetInstance(_clienteRepository).Hide();
             }
-            else if (passoAtual == 1)
+            else if (passoAtual == (int)FormTypeEnum.CadastroEnderecoCliente)
             {
                 this.Hide();
-                CadastroEnderecoClienteForm.instance.Show();
+                CadastroEnderecoClienteForm.GetInstance(_clienteRepository).Show();
             }
         }
 
-
+       
         private void CadastrarCliente_Load(object sender, EventArgs e)
         {
             MostrarPasso();
         }
-
+         */
 
         private void Btn_Proximo_Click(object sender, EventArgs e)
         {
 
-            // Preenche o DTO com os dados do formulário
+            // Preenche o DTO com os dados do formulÃ¡rio
             _clienteDTO.PrimeiroNome = PrimeiroNome.Text;
             _clienteDTO.Sobrenome = Sobrenome.Text;
             _clienteDTO.Email = Email.Text;
+            _clienteDTO.DataNascimento = DataDeNascimento.Value;
             _clienteDTO.Telefone = Telefone.Text;
             _clienteDTO.CPF = CPF.Text;
-            _clienteDTO.DataNascimento = DateTime.ParseExact(DataDeNascimento.Text, "dd/MM/yyyy", null);
-            _clienteDTO.Genero = (GenerosEnum)Genero.SelectedValue;
+            _clienteDTO.Genero = (GenerosEnum)Genero.SelectedItem;
 
+
+            // Dispara o evento
+            if (OnProximo != null)
+                OnProximo(this, EventArgs.Empty);
+            /*
             if (passoAtual == 0)
             {
                 passoAtual = 1;
                 MostrarPasso();
             }
+            */
         }
+
+        
 
         private void Btn_Limpar_Click(object sender, EventArgs e)
         {
@@ -144,12 +159,11 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
        private void VerificarCamposPreenchidos()
        {
-           /// excluindo os caracteres da máscara
-           CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-           DataDeNascimento.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-           Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            /// excluindo os caracteres da mÃ¡scara
+            CPF.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            Telefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
 
-           bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text.Trim()) &&
+            bool todosPreenchidos = !string.IsNullOrEmpty(PrimeiroNome.Text.Trim()) &&
                                    !string.IsNullOrEmpty(Sobrenome.Text.Trim()) &&
                                    Genero.SelectedIndex != -1 &&
                                    !string.IsNullOrEmpty(CPF.Text.Trim()) &&
@@ -164,10 +178,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
        {
            Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
            Genero.SelectedItem = GenerosEnum.Homem;
-
        }
 
-
-   }
+    }
 }
  

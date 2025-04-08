@@ -45,9 +45,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Genero = new System.Windows.Forms.ComboBox();
             this.Btn_Proximo = new System.Windows.Forms.Button();
             this.CPF = new System.Windows.Forms.MaskedTextBox();
-            this.DataDeNascimento = new System.Windows.Forms.MaskedTextBox();
             this.Telefone = new System.Windows.Forms.MaskedTextBox();
             this.Btn_Limpar = new System.Windows.Forms.Button();
+            this.DataDeNascimento = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // label1
@@ -172,7 +172,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Btn_Proximo.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Proximo.Name = "Btn_Proximo";
             this.Btn_Proximo.Size = new System.Drawing.Size(70, 28);
-            this.Btn_Proximo.TabIndex = 19;
+            this.Btn_Proximo.TabIndex = 18;
             this.Btn_Proximo.Text = "Próximo";
             this.Btn_Proximo.UseVisualStyleBackColor = false;
             this.Btn_Proximo.Click += new System.EventHandler(this.Btn_Proximo_Click);
@@ -185,21 +185,13 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.CPF.Size = new System.Drawing.Size(100, 20);
             this.CPF.TabIndex = 10;
             // 
-            // DataDeNascimento
-            // 
-            this.DataDeNascimento.Location = new System.Drawing.Point(223, 166);
-            this.DataDeNascimento.Mask = "00/00/0000";
-            this.DataDeNascimento.Name = "DataDeNascimento";
-            this.DataDeNascimento.Size = new System.Drawing.Size(100, 20);
-            this.DataDeNascimento.TabIndex = 12;
-            // 
             // Telefone
             // 
             this.Telefone.Location = new System.Drawing.Point(223, 219);
             this.Telefone.Mask = "00 00000-0000";
             this.Telefone.Name = "Telefone";
             this.Telefone.Size = new System.Drawing.Size(100, 20);
-            this.Telefone.TabIndex = 20;
+            this.Telefone.TabIndex = 14;
             // 
             // Btn_Limpar
             // 
@@ -208,19 +200,26 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Btn_Limpar.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Limpar.Name = "Btn_Limpar";
             this.Btn_Limpar.Size = new System.Drawing.Size(70, 28);
-            this.Btn_Limpar.TabIndex = 21;
+            this.Btn_Limpar.TabIndex = 17;
             this.Btn_Limpar.Text = "Limpar";
             this.Btn_Limpar.UseVisualStyleBackColor = false;
             this.Btn_Limpar.Click += new System.EventHandler(this.Btn_Limpar_Click);
+            // 
+            // DataDeNascimento
+            // 
+            this.DataDeNascimento.Location = new System.Drawing.Point(223, 166);
+            this.DataDeNascimento.Name = "DataDeNascimento";
+            this.DataDeNascimento.Size = new System.Drawing.Size(100, 20);
+            this.DataDeNascimento.TabIndex = 12;
             // 
             // CadastroClienteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 320);
+            this.Controls.Add(this.DataDeNascimento);
             this.Controls.Add(this.Btn_Limpar);
             this.Controls.Add(this.Telefone);
-            this.Controls.Add(this.DataDeNascimento);
             this.Controls.Add(this.CPF);
             this.Controls.Add(this.Genero);
             this.Controls.Add(this.Email);
@@ -238,7 +237,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CadastroClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Cadastro de dados pessoais";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,8 +259,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         private ComboBox Genero;
         private Button Btn_Proximo;
         private MaskedTextBox CPF;
-        private MaskedTextBox DataDeNascimento;
         private MaskedTextBox Telefone;
         private Button Btn_Limpar;
+        private DateTimePicker DataDeNascimento;
     }
 }

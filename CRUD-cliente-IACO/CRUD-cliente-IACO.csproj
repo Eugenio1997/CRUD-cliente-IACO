@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\FormTypeEnum.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />

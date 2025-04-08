@@ -19,6 +19,11 @@ namespace CRUD_cliente_IACO.Repositorios
             _connection = connection;
         }
 
+        public ClienteRepository()
+        {
+
+        }
+
         // CREATE - Inserir novo cliente
         public void InserirCliente(Cliente cliente)
         {

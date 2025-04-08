@@ -19,13 +19,27 @@ namespace CRUD_cliente_IACO
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Configurar Ninject
             _kernel = new StandardKernel(new NinjectConfig());
 
-            // Criar o formulário principal usando Ninject
-            var mainForm = _kernel.Get<CadastroClienteForm>();
-            
-            Application.Run(mainForm);
+            // Cria os dois formulários com injeção
+            var cadastroForm = _kernel.Get<CadastroClienteForm>();
+            var enderecoForm = _kernel.Get<CadastroEnderecoClienteForm>();
+
+            // Evento: Avançar para o próximo formulário
+            cadastroForm.OnProximo += (s, e) =>
+            {
+                cadastroForm.Hide();
+                enderecoForm.Show();
+            };
+
+            // Evento: Voltar para o formulário anterior
+            enderecoForm.OnVoltar += (s, e) =>
+            {
+                enderecoForm.Hide();
+                cadastroForm.Show();
+            };
+
+            Application.Run(cadastroForm);
         }
     }
 }

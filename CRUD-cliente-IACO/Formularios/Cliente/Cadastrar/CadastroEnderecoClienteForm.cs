@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
+using CRUD_cliente_IACO.Enums;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
@@ -9,7 +10,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         private readonly IClienteRepository _clienteRepository;
         private static CadastroEnderecoClienteForm _instance;
         private CadastroClienteForm _cadastroClientForm;
-
+        public event EventHandler OnVoltar;
 
         public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
         {
@@ -17,25 +18,21 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
 
-            _cadastroClientForm = CadastroClienteForm.instance;
+            _cadastroClientForm = CadastroClienteForm.GetInstance(_clienteRepository);
             _clienteRepository = clienteRepository;
         }
 
-        //no parameless
-        private CadastroEnderecoClienteForm(){}
 
-
-        public static CadastroEnderecoClienteForm instance
+        public static CadastroEnderecoClienteForm GetInstance(IClienteRepository clienteRepository)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new CadastroEnderecoClienteForm();
-                }
 
-                return _instance;
+            if (_instance == null)
+            {
+                _instance = new CadastroEnderecoClienteForm(clienteRepository);
             }
+
+            return _instance;
+          
         }
 
 
@@ -58,6 +55,23 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             {
                 MessageBox.Show($"Erro ao salvar Cliente: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Btn_Voltar_Click(object sender, EventArgs e)
+        {
+            //_cadastroClientForm.passoAtual--;
+
+            if (OnVoltar != null)
+                OnVoltar(this, EventArgs.Empty);
+
+            /*
+            if (_cadastroClientForm.passoAtual == (int)FormTypeEnum.CadastroDadosPessoaisCliente)
+            {
+                _instance.Hide();
+                _cadastroClientForm.Show();
+            }
+            */
+
         }
     }
 }
