@@ -45,6 +45,22 @@ namespace CRUD_cliente_IACO.Modelos
         public string Email { get; set; }
 
 
+        public override string ToString()
+        {
+            return $"Primeiro Nome: {PrimeiroNome}\n" +
+                   $"Sobrenome: {Sobrenome}\n" +
+                   $"CPF: {CPF}\n" +
+                   $"Nascimento: {DataNascimento:dd/MM/yyyy}\n" +
+                   $"Email: {Email}\n" +
+                   $"Telefone: {Telefone}\n" +
+                   $"Gênero: {Genero}" +
+                   $"CEP: {Endereco.CEP}\n" +
+                   $"Bairro: {Endereco.Bairro}\n" +
+                   $"Rua: {Endereco.Rua}\n" +
+                   $"Cidade: {Endereco.Cidade}\n" +
+                   $"Estado: {Endereco.Estado}\n" +
+                   $"Nº Residencia: {Endereco.NumeroResidencia}";
+        }
 
 
     }

@@ -175,7 +175,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Btn_Proximo.TabIndex = 18;
             this.Btn_Proximo.Text = "Próximo";
             this.Btn_Proximo.UseVisualStyleBackColor = false;
-            this.Btn_Proximo.Click += new System.EventHandler(this.Btn_Proximo_Click);
             // 
             // CPF
             // 
@@ -203,7 +202,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Btn_Limpar.TabIndex = 17;
             this.Btn_Limpar.Text = "Limpar";
             this.Btn_Limpar.UseVisualStyleBackColor = false;
-            this.Btn_Limpar.Click += new System.EventHandler(this.Btn_Limpar_Click);
             // 
             // DataDeNascimento
             // 

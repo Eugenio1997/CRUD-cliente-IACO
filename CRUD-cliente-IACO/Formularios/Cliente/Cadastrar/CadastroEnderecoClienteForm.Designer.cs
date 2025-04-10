@@ -41,7 +41,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.NResidencia = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_Cadastrar = new System.Windows.Forms.Button();
             this.btnVoltar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -153,14 +153,15 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Nº Residencia";
             // 
-            // button1
+            // Btn_Cadastrar
             // 
-            this.button1.Location = new System.Drawing.Point(414, 271);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 28);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Cadastrar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Btn_Cadastrar.Location = new System.Drawing.Point(414, 271);
+            this.Btn_Cadastrar.Name = "Btn_Cadastrar";
+            this.Btn_Cadastrar.Size = new System.Drawing.Size(70, 28);
+            this.Btn_Cadastrar.TabIndex = 15;
+            this.Btn_Cadastrar.Text = "Cadastrar";
+            this.Btn_Cadastrar.UseVisualStyleBackColor = true;
+            this.Btn_Cadastrar.Click += new System.EventHandler(this.Btn_Cadastrar_Click);
             // 
             // btnVoltar
             // 
@@ -171,7 +172,6 @@
             this.btnVoltar.TabIndex = 14;
             this.btnVoltar.Text = "Voltar";
             this.btnVoltar.UseVisualStyleBackColor = false;
-            this.btnVoltar.Click += new System.EventHandler(this.Btn_Voltar_Click);
             // 
             // CadastroEnderecoClienteForm
             // 
@@ -179,7 +179,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 320);
             this.Controls.Add(this.btnVoltar);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Btn_Cadastrar);
             this.Controls.Add(this.NResidencia);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Rua);
@@ -216,7 +216,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox NResidencia;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Btn_Cadastrar;
         private System.Windows.Forms.Button btnVoltar;
     }
 }

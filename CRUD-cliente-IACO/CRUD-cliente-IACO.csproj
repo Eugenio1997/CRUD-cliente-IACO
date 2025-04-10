@@ -99,9 +99,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEventArgs\ClienteDTOEventArgs.cs" />
     <Compile Include="Enums\FormTypeEnum.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
+    <Compile Include="Repositorios\Interfaces\Formularios\ICadastroClienteForm.cs" />
+    <Compile Include="Repositorios\Interfaces\Formularios\ICadastroEnderecoClienteForm.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />
     <Compile Include="Repositorios\ClienteRepository.cs" />
     <Compile Include="Enums\GenerosEnum.cs" />

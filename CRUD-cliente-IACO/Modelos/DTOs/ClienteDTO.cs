@@ -30,5 +30,16 @@ namespace CRUD_cliente_IACO.Modelos.DTOs
                 Email = this.Email
             };
         }
+
+        public override string ToString()
+        {
+            return $"Primeiro Nome: {PrimeiroNome}\n" +
+                   $"Sobrenome: {Sobrenome}\n" +
+                   $"CPF: {CPF}\n" +
+                   $"Nascimento: {DataNascimento:dd/MM/yyyy}\n" +
+                   $"Email: {Email}\n" +
+                   $"Telefone: {Telefone}\n" +
+                   $"Gênero: {Genero}";
+        }
     }
 }

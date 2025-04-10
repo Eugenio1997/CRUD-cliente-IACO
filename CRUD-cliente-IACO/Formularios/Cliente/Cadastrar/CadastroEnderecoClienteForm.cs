@@ -2,15 +2,19 @@
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.Enums;
+using CRUD_cliente_IACO.Repositorios.Interfaces.Formularios;
+using CRUD_cliente_IACO.Modelos.DTOs;
+using CRUD_cliente_IACO.CustomEventArgs;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
-    public partial class CadastroEnderecoClienteForm : Form
+    public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
     {
         private readonly IClienteRepository _clienteRepository;
-        private static CadastroEnderecoClienteForm _instance;
-        private CadastroClienteForm _cadastroClientForm;
+        private ClienteDTO _clienteDTO;
+        private ICadastroClienteForm _cadastroClientForm;
         public event EventHandler OnVoltar;
+
 
         public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
         {
@@ -18,37 +22,40 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
 
-            _cadastroClientForm = CadastroClienteForm.GetInstance(_clienteRepository);
+
             _clienteRepository = clienteRepository;
+
+            //_cadastroClientForm.ClienteDTOEnviado += CadastroClienteForm_ClienteDTOEnviado;
+
         }
 
+       
 
-        public static CadastroEnderecoClienteForm GetInstance(IClienteRepository clienteRepository)
+        public void CadastroClienteForm_ClienteDTOEnviado(object sender, ClienteDTOEventArgs e)
         {
-
-            if (_instance == null)
-            {
-                _instance = new CadastroEnderecoClienteForm(clienteRepository);
-            }
-
-            return _instance;
-          
+            ClienteDTO clienteDTO = e.ClienteDTO;
+            MessageBox.Show($"Cliente recebido: {clienteDTO.PrimeiroNome}, nasceu em {clienteDTO.DataNascimento.Year}.");
         }
 
-
-        // Exemplo de método usando o repository injetado
-        private void SalvarCliente(Modelos.Cliente cliente)
+        public void SalvarCliente()
         {
             try
             {
-
+                Modelos.Cliente clientNovo = _clienteDTO.ToCliente();
+                clientNovo.Endereco.CEP = CEP.Text;
+                clientNovo.Endereco.Rua = Rua.Text;
+                clientNovo.Endereco.NumeroResidencia = NResidencia.Text;
+                clientNovo.Endereco.Cidade = Cidade.Text;
+                clientNovo.Endereco.Estado = Estado.Text;
                 /*
                     1. Recuperar o ClienteDTO instanciado no formulario anterior
                     2. Fazer o cast do ClienteDTO para Cliente
                     3. Adicionar à propriedade Endereço do Cliente os respectivos valores
                 */
 
-                _clienteRepository.InserirCliente(cliente);
+                MessageBox.Show(clientNovo.ToString());
+
+                //_clienteRepository.InserirCliente(cliente);
                 MessageBox.Show("Cliente salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -57,21 +64,27 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             }
         }
 
-        private void Btn_Voltar_Click(object sender, EventArgs e)
+       
+        public void Btn_Voltar_Click(object sender, EventArgs e)
         {
-            //_cadastroClientForm.passoAtual--;
 
             if (OnVoltar != null)
                 OnVoltar(this, EventArgs.Empty);
+        }
 
-            /*
-            if (_cadastroClientForm.passoAtual == (int)FormTypeEnum.CadastroDadosPessoaisCliente)
-            {
-                _instance.Hide();
-                _cadastroClientForm.Show();
-            }
-            */
+        private void Btn_Cadastrar_Click(object sender, System.EventArgs e)
+        {
+            SalvarCliente();
+        }
 
+        public void AdicionarEventosNosCampos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void VerificarCamposPreenchidos()
+        {
+            throw new NotImplementedException();
         }
     }
 }
