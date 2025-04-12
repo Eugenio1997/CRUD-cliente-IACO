@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using Ninject;
 using CRUD_cliente_IACO.IoC;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+using CRUD_cliente_IACO.Factories;
+using CRUD_cliente_IACO.Repositorios.Interfaces;
 
 namespace CRUD_cliente_IACO
 {
@@ -21,9 +23,13 @@ namespace CRUD_cliente_IACO
 
             _kernel = new StandardKernel(new NinjectConfig());
 
-            // Cria os dois formulários com injeção
-            var cadastroForm = _kernel.Get<CadastroClienteForm>();
-            var enderecoForm = _kernel.Get<CadastroEnderecoClienteForm>();
+            //recuperando a implementacao concreta passando a abstracao atraves de Ninject
+            var clienteRepository = _kernel.Get<IClienteRepository>();
+
+
+            // Usa a factory para obter as instâncias dos formulários
+            var cadastroForm = FormFactory.GetCadastroClienteForm(clienteRepository);
+            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(clienteRepository, cadastroForm);
 
             // Evento: Avançar para o próximo formulário
             cadastroForm.OnProximo += (s, e) =>

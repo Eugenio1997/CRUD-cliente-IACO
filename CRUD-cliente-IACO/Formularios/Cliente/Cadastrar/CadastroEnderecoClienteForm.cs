@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
-using CRUD_cliente_IACO.Enums;
-using CRUD_cliente_IACO.Repositorios.Interfaces.Formularios;
 using CRUD_cliente_IACO.Modelos.DTOs;
+using CRUD_cliente_IACO.Modelos;
+using Newtonsoft.Json;
 using CRUD_cliente_IACO.CustomEventArgs;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
@@ -11,51 +11,61 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
     public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
     {
         private readonly IClienteRepository _clienteRepository;
-        private ClienteDTO _clienteDTO;
-        private ICadastroClienteForm _cadastroClientForm;
+        private readonly ICadastroClienteForm _cadastroClienteForm;
         public event EventHandler OnVoltar;
+        private ClienteDTO _clienteDTO;
 
-
-        public CadastroEnderecoClienteForm(IClienteRepository clienteRepository)
+        public CadastroEnderecoClienteForm(
+            IClienteRepository clienteRepository,
+            ICadastroClienteForm cadastroClienteForm)
         {
             InitializeComponent();
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
-
+            if (cadastroClienteForm == null)
+                throw new ArgumentNullException(nameof(cadastroClienteForm));
 
             _clienteRepository = clienteRepository;
+            _cadastroClienteForm = cadastroClienteForm;
+            _cadastroClienteForm.OnClienteDTOEnviado += CadastroClienteForm_OnClienteDTORecebido;
 
-            //_cadastroClientForm.ClienteDTOEnviado += CadastroClienteForm_ClienteDTOEnviado;
 
         }
 
-       
+        public void CadastroClienteForm_OnClienteDTORecebido(object sender, ClienteDTOEventArgs e)
+        {            
+            _clienteDTO = e.ClienteDTO;
+        }
 
-        public void CadastroClienteForm_ClienteDTOEnviado(object sender, ClienteDTOEventArgs e)
+        private void Btn_Cadastrar_Click(object sender, EventArgs e)
         {
-            ClienteDTO clienteDTO = e.ClienteDTO;
-            MessageBox.Show($"Cliente recebido: {clienteDTO.PrimeiroNome}, nasceu em {clienteDTO.DataNascimento.Year}.");
+            SalvarCliente();
         }
 
         public void SalvarCliente()
         {
             try
             {
-                Modelos.Cliente clientNovo = _clienteDTO.ToCliente();
-                clientNovo.Endereco.CEP = CEP.Text;
-                clientNovo.Endereco.Rua = Rua.Text;
-                clientNovo.Endereco.NumeroResidencia = NResidencia.Text;
-                clientNovo.Endereco.Cidade = Cidade.Text;
-                clientNovo.Endereco.Estado = Estado.Text;
-                /*
-                    1. Recuperar o ClienteDTO instanciado no formulario anterior
-                    2. Fazer o cast do ClienteDTO para Cliente
-                    3. Adicionar à propriedade Endereço do Cliente os respectivos valores
-                */
+                // Preencher o endereço no ClienteDTO
+                _clienteDTO.Endereco = new Endereco
+                {
+                    CEP = CEP.Text,
+                    Rua = Rua.Text,
+                    NumeroResidencia = NResidencia.Text,
+                    Bairro = Bairro.Text,
+                    Cidade = Cidade.Text,
+                    Estado = Estado.Text
+                };
 
-                MessageBox.Show(clientNovo.ToString());
+                // Converter DTO para Cliente e salvar
+                var cliente = _clienteDTO.ToCliente();
 
-                //_clienteRepository.InserirCliente(cliente);
+                // Serializa o objeto para JSON
+                string clienteJSON = JsonConvert.SerializeObject(cliente, Formatting.Indented);
+
+                MessageBox.Show(clienteJSON);
+                //_clienteRepository.Inserir(cliente);
+
                 MessageBox.Show("Cliente salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -64,27 +74,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             }
         }
 
-       
-        public void Btn_Voltar_Click(object sender, EventArgs e)
+        private void btnVoltar_Click(object sender, EventArgs e)
         {
-
-            if (OnVoltar != null)
-                OnVoltar(this, EventArgs.Empty);
+            OnVoltar?.Invoke(this, EventArgs.Empty);
         }
 
-        private void Btn_Cadastrar_Click(object sender, System.EventArgs e)
-        {
-            SalvarCliente();
-        }
-
-        public void AdicionarEventosNosCampos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void VerificarCamposPreenchidos()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

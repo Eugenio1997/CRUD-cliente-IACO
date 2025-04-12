@@ -78,6 +78,10 @@
       <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -100,11 +104,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventArgs\ClienteDTOEventArgs.cs" />
-    <Compile Include="Enums\FormTypeEnum.cs" />
+    <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
-    <Compile Include="Repositorios\Interfaces\Formularios\ICadastroClienteForm.cs" />
-    <Compile Include="Repositorios\Interfaces\Formularios\ICadastroEnderecoClienteForm.cs" />
+    <Compile Include="Repositorios\Interfaces\ICadastroClienteForm.cs" />
+    <Compile Include="Repositorios\Interfaces\ICadastroEnderecoClienteForm.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />
     <Compile Include="Repositorios\ClienteRepository.cs" />
     <Compile Include="Enums\GenerosEnum.cs" />

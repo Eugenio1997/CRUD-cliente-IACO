@@ -6,7 +6,6 @@ using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.Repositorios;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Modelos.DTOs;
-using CRUD_cliente_IACO.Repositorios.Interfaces.Formularios;
 
 namespace CRUD_cliente_IACO.IoC
 {
@@ -23,13 +22,6 @@ namespace CRUD_cliente_IACO.IoC
             // Bindings para repositórios
             Bind<IClienteRepository>().To<ClienteRepository>().InSingletonScope();
 
-            // Bindings para DTOs
-            Bind<ClienteDTO>().ToSelf().InSingletonScope();
-
-            // Bindings para formulários
-            Bind<ICadastroClienteForm>().To<CadastroClienteForm>().InSingletonScope();
-            Bind<ICadastroEnderecoClienteForm>().To<CadastroEnderecoClienteForm>().InSingletonScope();
-            //Bind<CadastroEnderecoClienteForm>().ToSelf().InTransientScope();
         }
     }
 } 
