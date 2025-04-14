@@ -2,6 +2,7 @@
 using CRUD_cliente_IACO.Factories;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ namespace CRUD_cliente_IACO.Validacoes
     public static class ValidadorDeCliente
     {
         private static string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
-        private static string sobrenomeRegex = @"^[a-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        private static string sobrenomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
         private static string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
         private static string cpfRegex = @"^\d{11}$"; // sem máscara
         private static string telefoneRegex = @"^\d{10,11}$"; // 10 ou 11 dígitos (sem máscara)

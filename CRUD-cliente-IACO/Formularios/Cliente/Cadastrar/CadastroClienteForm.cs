@@ -7,6 +7,8 @@ using CRUD_cliente_IACO.CustomEventArgs;
 using System.Text.RegularExpressions;
 using CRUD_cliente_IACO.Validacoes;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
@@ -25,6 +27,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         public event EventHandler OnProximo;
         public event EventHandler<ClienteDTOEventArgs> OnClienteDTOEnviado;
 
+        private bool _estaLimpandoCampos = false;
         /// <summary>
         /// VALIDACOES DE CADA CAMPO DO FORMULARIO
         /// </summary>
@@ -46,10 +49,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             //Eventos KeyPress de cada campo
 
-
             PrimeiroNome.KeyPress += PrimeiroNome_KeyPress;
             Sobrenome.KeyPress += Sobrenome_KeyPress;
             Genero.SelectedIndexChanged += Genero_SelectedIndexChanged;
+
         }
 
 
@@ -95,6 +98,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
        public void PreencherComboBoxGeneros()
        {
+            
             var generos = new List<string>
             {
                 "Selecione o gênero",
@@ -105,7 +109,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
            Genero.DataSource = generos;
            Genero.SelectedIndex = 0;
-           
 
        }
 
@@ -120,7 +123,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 Telefone = Telefone.Text,
                 CPF = CPF.Text,
                 DataNascimento = DataDeNascimento.Value,
-                Genero = (GenerosEnum)Genero.SelectedValue,
+                Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), Genero.SelectedItem.ToString())
             };
 
 
@@ -133,19 +136,31 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         public void Btn_Limpar_Click(object sender, EventArgs e)
         {
-            foreach (Control ctrl in this.Controls)
+            _estaLimpandoCampos = true;
+
+            foreach (Control controle in this.Controls)
             {
-                if (ctrl is TextBox)
-                    ((TextBox)ctrl).Text = "";
+                if (controle is TextBox)
+                    ((TextBox)controle).Text = "";
 
-                else if (ctrl is ComboBox)
-                    ((ComboBox)ctrl).SelectedIndex = 0;
+                else if (controle is ComboBox)
+                    ((ComboBox)controle).SelectedIndex = 0;
 
-                else if (ctrl is MaskedTextBox)
-                    ((MaskedTextBox)ctrl).Text = "";
+                else if (controle is MaskedTextBox)
+                    ((MaskedTextBox)controle).Text = "";
+
+                else if (controle is DateTimePicker)
+                {
+                    ((DateTimePicker)controle).Value = DateTime.Now;
+                }
             }
 
             Btn_Proximo.Enabled = false;
+          
+            // Foco no primeiro campo
+            PrimeiroNome.Focus();
+            _estaLimpandoCampos = false;
+
         }
 
         private void PrimeiroNome_KeyPress(object sender, KeyPressEventArgs e)
@@ -158,6 +173,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         }
         private void Genero_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            if (_estaLimpandoCampos) return;
+
             string generoSelecionado = Genero.SelectedItem?.ToString();
 
             // Exemplo: Exibir no console
