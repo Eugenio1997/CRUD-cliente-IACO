@@ -4,12 +4,15 @@ using System.Windows.Forms;
 using CRUD_cliente_IACO.Modelos.DTOs;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.CustomEventArgs;
+using System.Text.RegularExpressions;
+using CRUD_cliente_IACO.Validacoes;
+using System.Collections.Generic;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
     public partial class CadastroClienteForm : Form, ICadastroClienteForm
     {
-        //private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
         //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
@@ -26,21 +29,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         /// VALIDACOES DE CADA CAMPO DO FORMULARIO
         /// </summary>
 
-        /*
-        private void PrimeiroNome_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            string valor = PrimeiroNome.Text;
-
-            if (string.IsNullOrEmpty(valor) || !Regex.IsMatch(valor, primeiroNomeRegex))
-            {
-                MessageBox.Show("O campo Primeiro Nome é obrigatório e deve conter apenas letras, com 3 a 50 caracteres.", "Erro de Validação");
-                PrimeiroNome.Focus();
-                e.Cancel = true;
-            }
-        }
-        */
-
-
         public CadastroClienteForm(IClienteRepository clienteRepository)
         {
             InitializeComponent();
@@ -48,10 +36,20 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 throw new ArgumentNullException(nameof(clienteRepository));
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
-            Console.WriteLine($"CadastroClienteForm (NO CONSTRUTOR) criado - HashCode: {this.GetHashCode()}");
 
             _clienteRepository = clienteRepository;
-            //PrimeiroNome.Validating += PrimeiroNome_Validating; ;
+            DataDeNascimento.Format = DateTimePickerFormat.Custom;
+            DataDeNascimento.CustomFormat = "dd/MM/yyyy";
+
+            //Eventos LEAVE de cada campo
+            CamposTodos_Validating();
+
+            //Eventos KeyPress de cada campo
+
+
+            PrimeiroNome.KeyPress += PrimeiroNome_KeyPress;
+            Sobrenome.KeyPress += Sobrenome_KeyPress;
+            Genero.SelectedIndexChanged += Genero_SelectedIndexChanged;
         }
 
 
@@ -97,8 +95,17 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
        public void PreencherComboBoxGeneros()
        {
-           Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
-           Genero.SelectedItem = GenerosEnum.Homem;
+            var generos = new List<string>
+            {
+                "Selecione o gênero",
+                GenerosEnum.Homem.ToString(),
+                GenerosEnum.Mulher.ToString(),
+                GenerosEnum.PrefiroNaoIdentificar.ToString()
+            };
+
+           Genero.DataSource = generos;
+           Genero.SelectedIndex = 0;
+           
 
        }
 
@@ -140,6 +147,71 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             Btn_Proximo.Enabled = false;
         }
+
+        private void PrimeiroNome_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ValidadorDeCliente.ValidarPrimeiroNome_KeyPress(PrimeiroNome, e);
+        }
+        private void Sobrenome_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ValidadorDeCliente.ValidarSobreNome_KeyPress(Sobrenome, e);
+        }
+        private void Genero_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string generoSelecionado = Genero.SelectedItem?.ToString();
+
+            // Exemplo: Exibir no console
+            Console.WriteLine("Gênero selecionado: " + generoSelecionado);
+
+            // Se quiser, pode validar aqui:
+            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(Genero);
+        }
+
+
+
+        //Referencia os eventos LEAVE de cada campo
+        private void CamposTodos_Validating()
+        {
+            PrimeiroNome.Validating += PrimeiroNome_Validating;
+            Sobrenome.Validating += Sobrenome_Validating;
+            Genero.Validating += Genero_Validating;
+            CPF.Validating += CPF_Validating;
+            Telefone.Validating += Telefone_Validating;
+            Email.Validating += Email_Validating;
+        }
+
+        //Eventos LEAVE
+        private void PrimeiroNome_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarPrimeiroNome_Validating(PrimeiroNome);
+            
+        }
+
+        private void Sobrenome_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarSobrenome_Validating(Sobrenome);
+        }
+
+        private void Genero_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarGenero_Validating(Genero);
+        }
+
+        private void CPF_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarCPF_Validating(CPF);
+        }
+
+        private void Telefone_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarTelefone_Validating(Telefone);
+        }
+
+        private void Email_Validating(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarEmail_Validating(Email);
+        }
+
     }
 }
  

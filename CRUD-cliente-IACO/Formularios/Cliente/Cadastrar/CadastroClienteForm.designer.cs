@@ -54,9 +54,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             this.label1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(12, 7);
+            this.label1.Location = new System.Drawing.Point(9, 6);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(687, 55);
+            this.label1.Size = new System.Drawing.Size(687, 63);
             this.label1.TabIndex = 0;
             this.label1.Text = "Cadastrar Cliente";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -64,106 +65,114 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(67, 119);
+            this.label2.Location = new System.Drawing.Point(64, 129);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 17);
+            this.label2.Size = new System.Drawing.Size(75, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Primeiro Nome";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(67, 186);
+            this.label3.Location = new System.Drawing.Point(64, 199);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 17);
+            this.label3.Size = new System.Drawing.Size(61, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Sobrenome";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(63, 250);
+            this.label4.Location = new System.Drawing.Point(64, 262);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 17);
+            this.label4.Size = new System.Drawing.Size(42, 13);
             this.label4.TabIndex = 5;
             this.label4.Text = "Genero";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(297, 117);
+            this.label6.Location = new System.Drawing.Point(297, 129);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(34, 17);
+            this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 9;
             this.label6.Text = "CPF";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(296, 185);
+            this.label7.Location = new System.Drawing.Point(297, 199);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(136, 17);
+            this.label7.Size = new System.Drawing.Size(104, 13);
             this.label7.TabIndex = 11;
             this.label7.Text = "Data de Nascimento";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(297, 250);
+            this.label8.Location = new System.Drawing.Point(297, 262);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(64, 17);
+            this.label8.Size = new System.Drawing.Size(49, 13);
             this.label8.TabIndex = 13;
             this.label8.Text = "Telefone";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(527, 118);
+            this.label9.Location = new System.Drawing.Point(499, 129);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(42, 17);
+            this.label9.Size = new System.Drawing.Size(32, 13);
             this.label9.TabIndex = 15;
             this.label9.Text = "Email";
             // 
             // PrimeiroNome
             // 
-            this.PrimeiroNome.Location = new System.Drawing.Point(67, 137);
-            this.PrimeiroNome.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PrimeiroNome.Location = new System.Drawing.Point(65, 145);
+            this.PrimeiroNome.Margin = new System.Windows.Forms.Padding(2);
             this.PrimeiroNome.Name = "PrimeiroNome";
-            this.PrimeiroNome.Size = new System.Drawing.Size(125, 22);
+            this.PrimeiroNome.Size = new System.Drawing.Size(127, 20);
             this.PrimeiroNome.TabIndex = 2;
             // 
             // Sobrenome
             // 
-            this.Sobrenome.Location = new System.Drawing.Point(67, 204);
-            this.Sobrenome.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Sobrenome.Location = new System.Drawing.Point(65, 214);
+            this.Sobrenome.Margin = new System.Windows.Forms.Padding(2);
             this.Sobrenome.Name = "Sobrenome";
-            this.Sobrenome.Size = new System.Drawing.Size(125, 22);
+            this.Sobrenome.Size = new System.Drawing.Size(127, 20);
             this.Sobrenome.TabIndex = 4;
+            this.Sobrenome.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sobrenome_KeyPress);
             // 
             // Email
             // 
-            this.Email.Location = new System.Drawing.Point(527, 137);
-            this.Email.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Email.Location = new System.Drawing.Point(502, 145);
+            this.Email.Margin = new System.Windows.Forms.Padding(2);
             this.Email.Name = "Email";
-            this.Email.Size = new System.Drawing.Size(125, 22);
+            this.Email.Size = new System.Drawing.Size(127, 20);
             this.Email.TabIndex = 16;
             // 
             // Genero
             // 
             this.Genero.FormattingEnabled = true;
-            this.Genero.Location = new System.Drawing.Point(67, 268);
-            this.Genero.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Genero.Location = new System.Drawing.Point(65, 277);
+            this.Genero.Margin = new System.Windows.Forms.Padding(2);
             this.Genero.Name = "Genero";
-            this.Genero.Size = new System.Drawing.Size(125, 24);
+            this.Genero.Size = new System.Drawing.Size(127, 21);
             this.Genero.TabIndex = 6;
             // 
             // Btn_Proximo
             // 
             this.Btn_Proximo.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Btn_Proximo.Location = new System.Drawing.Point(560, 332);
-            this.Btn_Proximo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Btn_Proximo.Location = new System.Drawing.Point(555, 338);
+            this.Btn_Proximo.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Proximo.Name = "Btn_Proximo";
-            this.Btn_Proximo.Size = new System.Drawing.Size(93, 34);
+            this.Btn_Proximo.Size = new System.Drawing.Size(70, 28);
             this.Btn_Proximo.TabIndex = 18;
             this.Btn_Proximo.Text = "Próximo";
             this.Btn_Proximo.UseVisualStyleBackColor = false;
@@ -171,29 +180,27 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             // CPF
             // 
-            this.CPF.Location = new System.Drawing.Point(297, 137);
-            this.CPF.Margin = new System.Windows.Forms.Padding(4);
+            this.CPF.Location = new System.Drawing.Point(300, 145);
             this.CPF.Mask = "000.000.000-00";
             this.CPF.Name = "CPF";
-            this.CPF.Size = new System.Drawing.Size(132, 22);
+            this.CPF.Size = new System.Drawing.Size(127, 20);
             this.CPF.TabIndex = 10;
             // 
             // Telefone
             // 
-            this.Telefone.Location = new System.Drawing.Point(297, 270);
-            this.Telefone.Margin = new System.Windows.Forms.Padding(4);
+            this.Telefone.Location = new System.Drawing.Point(300, 278);
             this.Telefone.Mask = "00 00000-0000";
             this.Telefone.Name = "Telefone";
-            this.Telefone.Size = new System.Drawing.Size(132, 22);
+            this.Telefone.Size = new System.Drawing.Size(127, 20);
             this.Telefone.TabIndex = 14;
             // 
             // Btn_Limpar
             // 
             this.Btn_Limpar.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Btn_Limpar.Location = new System.Drawing.Point(435, 332);
-            this.Btn_Limpar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Btn_Limpar.Location = new System.Drawing.Point(461, 338);
+            this.Btn_Limpar.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Limpar.Name = "Btn_Limpar";
-            this.Btn_Limpar.Size = new System.Drawing.Size(93, 34);
+            this.Btn_Limpar.Size = new System.Drawing.Size(70, 28);
             this.Btn_Limpar.TabIndex = 17;
             this.Btn_Limpar.Text = "Limpar";
             this.Btn_Limpar.UseVisualStyleBackColor = false;
@@ -201,17 +208,17 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             // DataDeNascimento
             // 
-            this.DataDeNascimento.Location = new System.Drawing.Point(297, 204);
-            this.DataDeNascimento.Margin = new System.Windows.Forms.Padding(4);
+            this.DataDeNascimento.CustomFormat = "dd/MM/yyyy";
+            this.DataDeNascimento.Location = new System.Drawing.Point(300, 215);
             this.DataDeNascimento.Name = "DataDeNascimento";
-            this.DataDeNascimento.Size = new System.Drawing.Size(132, 22);
+            this.DataDeNascimento.Size = new System.Drawing.Size(127, 20);
             this.DataDeNascimento.TabIndex = 12;
             // 
             // CadastroClienteForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(713, 394);
+            this.ClientSize = new System.Drawing.Size(707, 403);
             this.Controls.Add(this.DataDeNascimento);
             this.Controls.Add(this.Btn_Limpar);
             this.Controls.Add(this.Telefone);
@@ -229,7 +236,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Btn_Proximo);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CadastroClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro de dados pessoais";

@@ -104,7 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventArgs\ClienteDTOEventArgs.cs" />
+    <Compile Include="Enums\FormTypeEnum.cs" />
     <Compile Include="Factories\FormFactory.cs" />
+    <Compile Include="Factories\ToolTipFactory.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
     <Compile Include="Repositorios\Interfaces\ICadastroClienteForm.cs" />
@@ -134,7 +136,7 @@
     <Compile Include="Modelos\Endereco.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TesteConexao.cs" />
+    <Compile Include="Validacoes\ValidadorDeCliente.cs" />
     <Compile Include="Validadores\UsuarioValidador.cs" />
     <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.resx">
       <DependentUpon>CadastroClienteForm.cs</DependentUpon>
