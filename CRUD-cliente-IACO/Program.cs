@@ -5,6 +5,7 @@ using CRUD_cliente_IACO.IoC;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Factories;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
+using CRUD_cliente_IACO.Services.Interfaces;
 
 namespace CRUD_cliente_IACO
 {
@@ -25,11 +26,12 @@ namespace CRUD_cliente_IACO
 
             //recuperando a implementacao concreta passando a abstracao atraves de Ninject
             var clienteRepository = _kernel.Get<IClienteRepository>();
+            var cepService = _kernel.Get<ICEPService>();
 
 
             // Usa a factory para obter as instâncias dos formulários
             var cadastroForm = FormFactory.GetCadastroClienteForm(clienteRepository);
-            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(clienteRepository, cadastroForm);
+            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(clienteRepository, cadastroForm, cepService);
 
             // Evento: Avançar para o próximo formulário
             cadastroForm.OnProximo += (s, e) =>

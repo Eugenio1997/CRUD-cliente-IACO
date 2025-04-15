@@ -1,5 +1,6 @@
 ﻿using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
+using CRUD_cliente_IACO.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,12 @@ namespace CRUD_cliente_IACO.Factories
 
         public static CadastroEnderecoClienteForm GetCadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
-            ICadastroClienteForm cadastroClienteForm)
+            ICadastroClienteForm cadastroClienteForm,
+            ICEPService cepService)
         {
             if (_cadastroEnderecoClienteForm == null || _cadastroEnderecoClienteForm.IsDisposed)
             {
-                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm);
+                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm, cepService);
             }
             return _cadastroEnderecoClienteForm;
         }

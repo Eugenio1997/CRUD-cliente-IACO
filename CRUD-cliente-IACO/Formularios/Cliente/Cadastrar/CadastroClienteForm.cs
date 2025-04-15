@@ -4,11 +4,9 @@ using System.Windows.Forms;
 using CRUD_cliente_IACO.Modelos.DTOs;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.CustomEventArgs;
-using System.Text.RegularExpressions;
 using CRUD_cliente_IACO.Validacoes;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Newtonsoft.Json;
+
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
@@ -187,7 +185,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
 
 
-        //Referencia os eventos LEAVE de cada campo
+        //Referencia os eventos VALIDATING de cada campo
         private void CamposTodos_Validating()
         {
             PrimeiroNome.Validating += PrimeiroNome_Validating;
@@ -198,7 +196,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             Email.Validating += Email_Validating;
         }
 
-        //Eventos LEAVE
+        //Eventos VALIDATING
         private void PrimeiroNome_Validating(object sender, EventArgs e)
         {
             ValidadorDeCliente.ValidarPrimeiroNome_Validating(PrimeiroNome);

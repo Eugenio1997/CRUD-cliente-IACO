@@ -5,19 +5,35 @@ using CRUD_cliente_IACO.Modelos.DTOs;
 using CRUD_cliente_IACO.Modelos;
 using Newtonsoft.Json;
 using CRUD_cliente_IACO.CustomEventArgs;
+using CRUD_cliente_IACO.Validacoes;
+using CRUD_cliente_IACO.Services.Interfaces;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
     public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
     {
+        //flags
+        private bool dadosRecuperadosPorCepService = false;
+
+        //Repositorios (Camada de acesso ao banco)
         private readonly IClienteRepository _clienteRepository;
+
+        //Formularios
         private readonly ICadastroClienteForm _cadastroClienteForm;
+
+        //Servicos
+        private ICEPService _CEPService;
+
+        //Eventos
         public event EventHandler OnVoltar;
+
+        //DTO's
         private ClienteDTO _clienteDTO;
 
         public CadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
-            ICadastroClienteForm cadastroClienteForm)
+            ICadastroClienteForm cadastroClienteForm,
+            ICEPService CEPService)
         {
             InitializeComponent();
             if (clienteRepository == null)
@@ -25,11 +41,59 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             if (cadastroClienteForm == null)
                 throw new ArgumentNullException(nameof(cadastroClienteForm));
 
+            AdicionarEventosNosCampos();
             _clienteRepository = clienteRepository;
             _cadastroClienteForm = cadastroClienteForm;
             _cadastroClienteForm.OnClienteDTOEnviado += CadastroClienteForm_OnClienteDTORecebido;
+            _CEPService = CEPService;
+            //Eventos VALIDATING de cada campo
+            //CamposTodos_Validating();
+            
+            Estado.SelectedIndexChanged += Estado_SelectedIndexChanged;
+
+            //Eventos KeyPress de cada campo
+
+            CEP.KeyPress += CEP_KeyPress;
+
+            //Eventos TextChanged
+            CEP.TextChanged += CEP_TextChanged;
 
 
+
+        }
+
+        public void AdicionarEventosNosCampos()
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+
+                if (ctrl is TextBox)
+                {
+                    ((TextBox)ctrl).TextChanged += (sender, e) => VerificarCamposPreenchidos();
+                }
+                else if (ctrl is MaskedTextBox)
+                {
+                    ((MaskedTextBox)ctrl).TextChanged += (sender, e) => VerificarCamposPreenchidos();
+                }
+
+            }
+
+            Btn_Cadastrar.Enabled = false;
+        }
+
+        public void VerificarCamposPreenchidos()
+        {
+            /// excluindo os caracteres da máscara
+            CEP.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+
+            bool todosPreenchidos = !string.IsNullOrEmpty(CEP.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Estado.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Bairro.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Rua.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(Cidade.Text.Trim()) &&
+                                    !string.IsNullOrEmpty(NResidencia.Text.Trim());
+
+            Btn_Cadastrar.Enabled = todosPreenchidos;
         }
 
         public void CadastroClienteForm_OnClienteDTORecebido(object sender, ClienteDTOEventArgs e)
@@ -37,7 +101,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             _clienteDTO = e.ClienteDTO;
         }
 
-        private void Btn_Cadastrar_Click(object sender, EventArgs e)
+        public void Btn_Cadastrar_Click(object sender, EventArgs e)
         {
             SalvarCliente();
         }
@@ -74,10 +138,58 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             }
         }
 
-        private void btnVoltar_Click(object sender, EventArgs e)
+        public void btnVoltar_Click(object sender, EventArgs e)
         {
             OnVoltar?.Invoke(this, EventArgs.Empty);
         }
 
+        
+        //EVENTOS KEYPRESS
+        public void CEP_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ValidadorDeClienteEndereco.ValidarCEP_KeyPress(CEP, e);
+
+        }
+
+        public void Estado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            string estadoSelecionado = Estado.SelectedItem?.ToString();
+
+            Console.WriteLine("Estado selecionado: " + estadoSelecionado);
+
+            ValidadorDeClienteEndereco.ValidarEstado_SelectedIndexChanged(Estado);
+        }
+
+
+        public void CEP_TextChanged(object sender, EventArgs e)
+        {
+
+            //verifica se o controle está em branco ou se foi inserido letras
+            if (ValidadorDeClienteEndereco.CEP_TextChanged(CEP))
+            {
+                dadosRecuperadosPorCepService = true;
+                //fazer request para obter dados de endereco baseado no cep
+                EnderecoDTO cepDados = _CEPService.ConsultarEnderecoPorCep(CEP.Text);
+                Rua.Text = cepDados.Rua;
+                Bairro.Text = cepDados.Bairro;
+                Cidade.Text = cepDados.Cidade;
+                Estado.Text = cepDados.Estado;
+
+
+                Rua.ReadOnly = true;
+                Bairro.ReadOnly = true;
+                Cidade.Enabled = false;
+                Estado.Enabled = false;
+
+                NResidencia.Focus();
+                return;
+            }
+            else
+            {
+                MessageBox.Show("CPF Inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CEP.Focus();
+            }
+        }
     }
 }

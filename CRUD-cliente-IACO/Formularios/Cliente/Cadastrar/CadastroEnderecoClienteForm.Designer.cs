@@ -32,10 +32,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.CEP = new System.Windows.Forms.TextBox();
-            this.Estado = new System.Windows.Forms.TextBox();
-            this.Cidade = new System.Windows.Forms.TextBox();
-            this.Bairro = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.Rua = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -43,6 +39,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.Btn_Cadastrar = new System.Windows.Forms.Button();
             this.btnVoltar = new System.Windows.Forms.Button();
+            this.CEP = new System.Windows.Forms.MaskedTextBox();
+            this.Estado = new System.Windows.Forms.ComboBox();
+            this.Cidade = new System.Windows.Forms.ComboBox();
+            this.Bairro = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -78,63 +78,35 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(479, 113);
+            this.label4.Location = new System.Drawing.Point(264, 113);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
-            this.label4.TabIndex = 10;
+            this.label4.TabIndex = 6;
             this.label4.Text = "Cidade";
-            // 
-            // CEP
-            // 
-            this.CEP.Location = new System.Drawing.Point(49, 129);
-            this.CEP.Name = "CEP";
-            this.CEP.Size = new System.Drawing.Size(127, 20);
-            this.CEP.TabIndex = 3;
-            // 
-            // Estado
-            // 
-            this.Estado.Location = new System.Drawing.Point(49, 248);
-            this.Estado.Name = "Estado";
-            this.Estado.Size = new System.Drawing.Size(127, 20);
-            this.Estado.TabIndex = 5;
-            // 
-            // Cidade
-            // 
-            this.Cidade.Location = new System.Drawing.Point(482, 129);
-            this.Cidade.Name = "Cidade";
-            this.Cidade.Size = new System.Drawing.Size(127, 20);
-            this.Cidade.TabIndex = 11;
-            // 
-            // Bairro
-            // 
-            this.Bairro.Location = new System.Drawing.Point(267, 129);
-            this.Bairro.Name = "Bairro";
-            this.Bairro.Size = new System.Drawing.Size(127, 20);
-            this.Bairro.TabIndex = 7;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(264, 113);
+            this.label5.Location = new System.Drawing.Point(264, 232);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
-            this.label5.TabIndex = 6;
+            this.label5.TabIndex = 8;
             this.label5.Text = "Bairro";
             // 
             // Rua
             // 
-            this.Rua.Location = new System.Drawing.Point(267, 248);
+            this.Rua.Location = new System.Drawing.Point(482, 129);
             this.Rua.Name = "Rua";
             this.Rua.Size = new System.Drawing.Size(127, 20);
-            this.Rua.TabIndex = 9;
+            this.Rua.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(264, 232);
+            this.label6.Location = new System.Drawing.Point(479, 113);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
-            this.label6.TabIndex = 8;
+            this.label6.TabIndex = 10;
             this.label6.Text = "Rua";
             // 
             // NResidencia
@@ -174,22 +146,55 @@
             this.btnVoltar.UseVisualStyleBackColor = false;
             this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
             // 
+            // CEP
+            // 
+            this.CEP.Location = new System.Drawing.Point(49, 129);
+            this.CEP.Mask = "00000-000";
+            this.CEP.Name = "CEP";
+            this.CEP.Size = new System.Drawing.Size(127, 20);
+            this.CEP.TabIndex = 3;
+            this.CEP.TextChanged += new System.EventHandler(this.CEP_TextChanged);
+            this.CEP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CEP_KeyPress);
+            // 
+            // Estado
+            // 
+            this.Estado.FormattingEnabled = true;
+            this.Estado.Location = new System.Drawing.Point(49, 248);
+            this.Estado.Name = "Estado";
+            this.Estado.Size = new System.Drawing.Size(127, 21);
+            this.Estado.TabIndex = 5;
+            // 
+            // Cidade
+            // 
+            this.Cidade.FormattingEnabled = true;
+            this.Cidade.Location = new System.Drawing.Point(267, 129);
+            this.Cidade.Name = "Cidade";
+            this.Cidade.Size = new System.Drawing.Size(127, 21);
+            this.Cidade.TabIndex = 7;
+            // 
+            // Bairro
+            // 
+            this.Bairro.Location = new System.Drawing.Point(267, 249);
+            this.Bairro.Name = "Bairro";
+            this.Bairro.Size = new System.Drawing.Size(127, 20);
+            this.Bairro.TabIndex = 9;
+            // 
             // CadastroEnderecoClienteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 403);
+            this.Controls.Add(this.Bairro);
+            this.Controls.Add(this.Cidade);
+            this.Controls.Add(this.Estado);
+            this.Controls.Add(this.CEP);
             this.Controls.Add(this.btnVoltar);
             this.Controls.Add(this.Btn_Cadastrar);
             this.Controls.Add(this.NResidencia);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Rua);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.Bairro);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.Cidade);
-            this.Controls.Add(this.Estado);
-            this.Controls.Add(this.CEP);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -208,10 +213,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox CEP;
-        private System.Windows.Forms.TextBox Estado;
-        private System.Windows.Forms.TextBox Cidade;
-        private System.Windows.Forms.TextBox Bairro;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox Rua;
         private System.Windows.Forms.Label label6;
@@ -219,5 +220,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button Btn_Cadastrar;
         private System.Windows.Forms.Button btnVoltar;
+        private System.Windows.Forms.MaskedTextBox CEP;
+        private System.Windows.Forms.ComboBox Estado;
+        private System.Windows.Forms.ComboBox Cidade;
+        private System.Windows.Forms.TextBox Bairro;
     }
 }
