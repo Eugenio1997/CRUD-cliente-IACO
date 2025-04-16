@@ -25,11 +25,12 @@ namespace CRUD_cliente_IACO.Factories
         public static CadastroEnderecoClienteForm GetCadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
             ICadastroClienteForm cadastroClienteForm,
-            ICEPService cepService)
+            ICEPService cepService,
+            IEstadoService estadoService)
         {
             if (_cadastroEnderecoClienteForm == null || _cadastroEnderecoClienteForm.IsDisposed)
             {
-                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm, cepService);
+                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm, cepService, estadoService);
             }
             return _cadastroEnderecoClienteForm;
         }

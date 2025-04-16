@@ -27,11 +27,12 @@ namespace CRUD_cliente_IACO
             //recuperando a implementacao concreta passando a abstracao atraves de Ninject
             var clienteRepository = _kernel.Get<IClienteRepository>();
             var cepService = _kernel.Get<ICEPService>();
+            var estadoService = _kernel.Get<IEstadoService>();
 
 
             // Usa a factory para obter as instâncias dos formulários
             var cadastroForm = FormFactory.GetCadastroClienteForm(clienteRepository);
-            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(clienteRepository, cadastroForm, cepService);
+            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(clienteRepository, cadastroForm, cepService, estadoService);
 
             // Evento: Avançar para o próximo formulário
             cadastroForm.OnProximo += (s, e) =>

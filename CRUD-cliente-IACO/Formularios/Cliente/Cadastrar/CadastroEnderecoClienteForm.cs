@@ -7,12 +7,14 @@ using Newtonsoft.Json;
 using CRUD_cliente_IACO.CustomEventArgs;
 using CRUD_cliente_IACO.Validacoes;
 using CRUD_cliente_IACO.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
     public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
     {
         //flags
+        private bool campoCEPLimpoAposDadosRecuperados = false;
         private bool dadosRecuperadosPorCepService = false;
 
         //Repositorios (Camada de acesso ao banco)
@@ -23,6 +25,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         //Servicos
         private ICEPService _CEPService;
+        private IEstadoService _EstadoService;
 
         //Eventos
         public event EventHandler OnVoltar;
@@ -30,10 +33,15 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //DTO's
         private ClienteDTO _clienteDTO;
 
+        //Timer
+        private Timer _debounceCepTimer;
+
+
         public CadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
             ICadastroClienteForm cadastroClienteForm,
-            ICEPService CEPService)
+            ICEPService CEPService,
+            IEstadoService EstadoService)
         {
             InitializeComponent();
             if (clienteRepository == null)
@@ -58,9 +66,65 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             //Eventos TextChanged
             CEP.TextChanged += CEP_TextChanged;
 
+            //Eventos Leave
+            CEP.Leave += CEP_Leave;
+
 
 
         }
+
+
+        private void CadastroEnderecoClienteForm_Load(object sender, EventArgs e)
+        {
+            _debounceCepTimer = new Timer();
+            _debounceCepTimer.Interval = 2000; // 2000 ms de espera após a digitação
+            _debounceCepTimer.Tick += DebounceCepTimer_Tick;
+        }
+
+
+
+
+        private void DebounceCepTimer_Tick(object sender, EventArgs e)
+        {
+            _debounceCepTimer.Stop(); // parar o timer após disparar
+
+            string cep = CEP.Text.Trim();
+
+            // Validação simples: se não tiver 8 numeros, retorna 'false' 
+            if (!ValidadorDeClienteEndereco.CEP_TextChanged(CEP) || string.IsNullOrEmpty(cep))
+            {
+                CEP.Focus();
+                return;
+            }
+
+            // Chama o serviço
+            try
+            {
+                dadosRecuperadosPorCepService = true;
+
+                EnderecoDTO cepDados = _CEPService.ConsultarEnderecoPorCep(cep);
+                Rua.Text = cepDados.Rua;
+                Bairro.Text = cepDados.Bairro;
+                Cidade.Text = cepDados.Cidade;
+                Estado.Text = cepDados.Estado;
+
+                Rua.ReadOnly = false;
+                Bairro.ReadOnly = false;
+                Cidade.Enabled = false;
+                Estado.Enabled = false;
+
+                NResidencia.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("CEP não encontrado ou inválido", "Erro ao buscar o endereço", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CEP.Focus();
+            }
+
+        }
+
+
+
 
         public void AdicionarEventosNosCampos()
         {
@@ -164,30 +228,39 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         public void CEP_TextChanged(object sender, EventArgs e)
         {
-
-            //verifica se o controle está em branco ou se foi inserido letras
-            if (ValidadorDeClienteEndereco.CEP_TextChanged(CEP))
+            //caso o maskedTextBox CEP fique vazio, entao os demais campos preenchidos
+            //devem ser limpos.
+            if (string.IsNullOrEmpty(CEP.Text) &&
+                !string.IsNullOrEmpty(Estado.Text) &&
+                !string.IsNullOrEmpty(Cidade.Text) &&
+                !string.IsNullOrEmpty(Bairro.Text) &&
+                !string.IsNullOrEmpty(Rua.Text)
+                )
             {
-                dadosRecuperadosPorCepService = true;
-                //fazer request para obter dados de endereco baseado no cep
-                EnderecoDTO cepDados = _CEPService.ConsultarEnderecoPorCep(CEP.Text);
-                Rua.Text = cepDados.Rua;
-                Bairro.Text = cepDados.Bairro;
-                Cidade.Text = cepDados.Cidade;
-                Estado.Text = cepDados.Estado;
+                //limpando os campos
+                Estado.Text = "";
+                Cidade.Text = "";
+                Bairro.Text = "";
+                Rua.Text = "";
 
-
+                //habilitando os campos novamente
                 Rua.ReadOnly = true;
                 Bairro.ReadOnly = true;
                 Cidade.Enabled = false;
-                Estado.Enabled = false;
+                Estado.Enabled = true;
 
-                NResidencia.Focus();
-                return;
+                //Estado.DataSource = ;
+                List<EstadoDTO> estados = _EstadoService.ObterEstados();
+                Console.WriteLine(estados);
             }
-            else
+            _debounceCepTimer.Stop(); //limpa o timer anterior
+            _debounceCepTimer.Start(); //inicia um novo contador a partir do zero
+        }
+
+        private void CEP_Leave(object sender, EventArgs e)
+        {
+            if (!ValidadorDeClienteEndereco.CEP_Leave(CEP))
             {
-                MessageBox.Show("CPF Inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 CEP.Focus();
             }
         }

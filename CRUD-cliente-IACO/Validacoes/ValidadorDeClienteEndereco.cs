@@ -46,19 +46,31 @@ namespace CRUD_cliente_IACO.Validacoes
             txt.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             valor = txt.Text;
 
-            if (string.IsNullOrEmpty(valor))
+            if (!Regex.IsMatch(valor, cepRegex))
             {
                 ToolTipFactory.Configurar(true, ToolTipIcon.Error, "Erro de Validação");
-                ToolTipFactory.Show("O campo CEP é obrigatório.", txt, 2000);
-                txt.Focus();
+                ToolTipFactory.Show("O campo CEP deve conter números (8 números).", txt, 2000);
                 return false;
 
             }
 
-            else if (!Regex.IsMatch(valor, cepRegex))
+            return true;
+        }
+
+
+        public static bool CEP_Leave(MaskedTextBox txt)
+        {
+
+            string valor = txt.Text.Trim();
+
+            // Remove a máscara
+            txt.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            valor = txt.Text;
+
+            if (string.IsNullOrEmpty(valor))
             {
                 ToolTipFactory.Configurar(true, ToolTipIcon.Error, "Erro de Validação");
-                ToolTipFactory.Show("O campo CEP deve conter apenas números (8 números).", txt, 2000);
+                ToolTipFactory.Show("O campo CEP é obrigatório.", txt, 2000);
                 txt.Focus();
                 return false;
 

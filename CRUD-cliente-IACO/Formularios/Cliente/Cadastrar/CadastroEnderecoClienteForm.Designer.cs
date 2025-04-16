@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,6 +44,7 @@
             this.Estado = new System.Windows.Forms.ComboBox();
             this.Cidade = new System.Windows.Forms.ComboBox();
             this.Bairro = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -155,6 +157,7 @@
             this.CEP.TabIndex = 3;
             this.CEP.TextChanged += new System.EventHandler(this.CEP_TextChanged);
             this.CEP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CEP_KeyPress);
+            this.CEP.Leave += new System.EventHandler(this.CEP_Leave);
             // 
             // Estado
             // 
@@ -202,6 +205,7 @@
             this.Name = "CadastroEnderecoClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro de Endereço";
+            this.Load += new System.EventHandler(this.CadastroEnderecoClienteForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -224,5 +228,6 @@
         private System.Windows.Forms.ComboBox Estado;
         private System.Windows.Forms.ComboBox Cidade;
         private System.Windows.Forms.TextBox Bairro;
+        private System.Windows.Forms.Timer timer1;
     }
 }
