@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,7 +43,7 @@
             this.Estado = new System.Windows.Forms.ComboBox();
             this.Cidade = new System.Windows.Forms.ComboBox();
             this.Bairro = new System.Windows.Forms.TextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -157,7 +156,6 @@
             this.CEP.TabIndex = 3;
             this.CEP.TextChanged += new System.EventHandler(this.CEP_TextChanged);
             this.CEP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CEP_KeyPress);
-            this.CEP.Leave += new System.EventHandler(this.CEP_Leave);
             // 
             // Estado
             // 
@@ -182,11 +180,24 @@
             this.Bairro.Size = new System.Drawing.Size(127, 20);
             this.Bairro.TabIndex = 9;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.SystemColors.Window;
+            this.label8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label8.Location = new System.Drawing.Point(46, 152);
+            this.label8.Name = "label8";
+            this.label8.Padding = new System.Windows.Forms.Padding(2);
+            this.label8.Size = new System.Drawing.Size(87, 17);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Campo opcional";
+            // 
             // CadastroEnderecoClienteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 403);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.Bairro);
             this.Controls.Add(this.Cidade);
             this.Controls.Add(this.Estado);
@@ -228,6 +239,6 @@
         private System.Windows.Forms.ComboBox Estado;
         private System.Windows.Forms.ComboBox Cidade;
         private System.Windows.Forms.TextBox Bairro;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label8;
     }
 }

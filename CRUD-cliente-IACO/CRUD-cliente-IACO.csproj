@@ -108,11 +108,14 @@
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
+    <Compile Include="Modelos\DTOs\CidadeDTO.cs" />
     <Compile Include="Modelos\DTOs\EnderecoDTO.cs" />
     <Compile Include="Modelos\DTOs\ClienteDTO.cs" />
     <Compile Include="Modelos\DTOs\EstadoDTO.cs" />
-    <Compile Include="Repositorios\Interfaces\ICadastroClienteForm.cs" />
-    <Compile Include="Repositorios\Interfaces\ICadastroEnderecoClienteForm.cs" />
+    <Compile Include="Formularios\Interfaces\ICadastroClienteForm.cs" />
+    <Compile Include="Formularios\Interfaces\ICadastroEnderecoClienteForm.cs" />
+    <Compile Include="Services\CidadeService.cs" />
+    <Compile Include="Services\Interfaces\ICidadeService.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />
     <Compile Include="Repositorios\ClienteRepository.cs" />
     <Compile Include="Enums\GenerosEnum.cs" />

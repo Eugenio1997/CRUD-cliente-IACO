@@ -14,8 +14,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
     public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
     {
         //flags
-        private bool campoCEPLimpoAposDadosRecuperados = false;
+        private bool comboBoxDeEstadoPopulado = false;
         private bool dadosRecuperadosPorCepService = false;
+        private bool comboBoxDeCidadePopulado = false;
 
         //Repositorios (Camada de acesso ao banco)
         private readonly IClienteRepository _clienteRepository;
@@ -26,6 +27,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //Servicos
         private ICEPService _CEPService;
         private IEstadoService _EstadoService;
+        private ICidadeService _CidadeService;
 
         //Eventos
         public event EventHandler OnVoltar;
@@ -36,12 +38,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //Timer
         private Timer _debounceCepTimer;
 
+        //Listas
+        List<EstadoDTO> estados;
+        List<CidadeDTO> cidades;
 
         public CadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
             ICadastroClienteForm cadastroClienteForm,
             ICEPService CEPService,
-            IEstadoService EstadoService)
+            IEstadoService EstadoService,
+            ICidadeService CidadeService)
         {
             InitializeComponent();
             if (clienteRepository == null)
@@ -54,6 +60,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             _cadastroClienteForm = cadastroClienteForm;
             _cadastroClienteForm.OnClienteDTOEnviado += CadastroClienteForm_OnClienteDTORecebido;
             _CEPService = CEPService;
+            _EstadoService = EstadoService;
+            _CidadeService = CidadeService;
             //Eventos VALIDATING de cada campo
             //CamposTodos_Validating();
             
@@ -67,9 +75,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             CEP.TextChanged += CEP_TextChanged;
 
             //Eventos Leave
-            CEP.Leave += CEP_Leave;
-
-
+            //CEP.Leave += CEP_Leave;
 
         }
 
@@ -79,6 +85,29 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             _debounceCepTimer = new Timer();
             _debounceCepTimer.Interval = 2000; // 2000 ms de espera após a digitação
             _debounceCepTimer.Tick += DebounceCepTimer_Tick;
+
+           
+            estados = _EstadoService.ObterEstados();
+
+            if (estados != null)
+            {
+
+                // Inserindo item padrão no topo da lista
+                estados.Insert(0, new EstadoDTO
+                {
+                    Nome = "Selecione o Estado",
+                    CodigoIbge = 0
+                });
+
+                Estado.DataSource = estados;
+                Estado.DisplayMember = "Nome";   // O que será exibido no ComboBox
+                Estado.ValueMember = "CodigoIbge";       // O valor por trás (opcional, mas útil)
+                Estado.SelectedIndex = 0;
+
+                comboBoxDeEstadoPopulado = true;
+                Cidade.Enabled = false;
+            }
+
         }
 
 
@@ -218,9 +247,36 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         public void Estado_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            string estadoSelecionado = Estado.SelectedItem?.ToString();
+            var estadoSelecionado = (EstadoDTO)Estado.SelectedItem;
 
-            Console.WriteLine("Estado selecionado: " + estadoSelecionado);
+
+            if ( estadoSelecionado.Nome != "Selecione o Estado")
+            {
+                var cidades = _CidadeService.ObterCidadesPorEstado(estadoSelecionado.Sigla);
+                foreach (var cidade in cidades)
+                {
+                    Console.WriteLine(cidade.Nome);
+                }
+
+                cidades.Insert(0, new CidadeDTO
+                {
+                    Nome = "Selecione a Cidade",
+                    CodigoIbge = 0
+                });
+
+                Cidade.DataSource = cidades;
+                Cidade.DisplayMember = "Nome";
+                Cidade.ValueMember = "CodigoIbge";
+                Cidade.SelectedIndex = 0;
+
+                comboBoxDeCidadePopulado = true;
+            }
+            //fazer requisicao para pegar as cidades do determinado estado
+            
+            //bloquear o combobox de Estado
+         
+
+            Console.WriteLine("Estado selecionado: " + estadoSelecionado.Nome);
 
             ValidadorDeClienteEndereco.ValidarEstado_SelectedIndexChanged(Estado);
         }
@@ -249,14 +305,12 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 Cidade.Enabled = false;
                 Estado.Enabled = true;
 
-                //Estado.DataSource = ;
-                List<EstadoDTO> estados = _EstadoService.ObterEstados();
-                Console.WriteLine(estados);
             }
             _debounceCepTimer.Stop(); //limpa o timer anterior
             _debounceCepTimer.Start(); //inicia um novo contador a partir do zero
         }
 
+        /*
         private void CEP_Leave(object sender, EventArgs e)
         {
             if (!ValidadorDeClienteEndereco.CEP_Leave(CEP))
@@ -264,5 +318,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 CEP.Focus();
             }
         }
+        */
     }
 }

@@ -27,6 +27,7 @@ namespace CRUD_cliente_IACO.IoC
             // Bindings para Serviços
             Bind<ICEPService>().To<CEPService>().InSingletonScope();
             Bind<IEstadoService>().To<EstadoService>().InSingletonScope();
+            Bind<ICidadeService>().To<CidadeService>().InSingletonScope();
 
         }
     }

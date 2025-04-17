@@ -9,6 +9,7 @@ namespace CRUD_cliente_IACO.Services
 {
     public class EstadoService : IEstadoService
     {
+        
         public List<EstadoDTO> ObterEstados()
         {
 
@@ -22,8 +23,8 @@ namespace CRUD_cliente_IACO.Services
             {
                 string json = reader.ReadToEnd();
 
-                List<EstadoDTO> estados = JsonConvert.DeserializeObject<List<EstadoDTO>>(json);
-                return estados;
+                return JsonConvert.DeserializeObject<List<EstadoDTO>>(json);
+                
             }
 
         }

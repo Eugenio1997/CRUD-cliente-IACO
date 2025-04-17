@@ -57,7 +57,7 @@ namespace CRUD_cliente_IACO.Validacoes
             return true;
         }
 
-
+        /*
         public static bool CEP_Leave(MaskedTextBox txt)
         {
 
@@ -78,6 +78,7 @@ namespace CRUD_cliente_IACO.Validacoes
 
             return true;
         }
+        */
 
         public static void ValidarEstado_SelectedIndexChanged(ComboBox combo)
         {
