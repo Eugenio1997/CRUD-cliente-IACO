@@ -15,19 +15,37 @@ namespace CRUD_cliente_IACO.Services
         public List<CidadeDTO> ObterCidadesPorEstado(string siglaEstado)
         {
 
-            string url = $"https://servicodados.ibge.gov.br/api/v1/localidades/estados/{siglaEstado}/municipios";
 
+            string url = $"https://brasilapi.com.br/api/ibge/municipios/v1/{siglaEstado}";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            try
             {
-                string json = reader.ReadToEnd();
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string json = reader.ReadToEnd();
 
-                return JsonConvert.DeserializeObject<List<CidadeDTO>>(json);
+                    return JsonConvert.DeserializeObject<List<CidadeDTO>>(json);
 
+                }
             }
+            catch(WebException ex)
+            {
+                Console.WriteLine("Erro ao obter cidades: " + ex.Message);
+
+                if (ex.Response != null)
+                {
+                    using (var stream = ex.Response.GetResponseStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string errorResponse = reader.ReadToEnd();
+                        Console.WriteLine("Resposa do servidor: " + errorResponse);
+                    }
+                }
+            }
+            return new List<CidadeDTO>();
         }
     }
 }

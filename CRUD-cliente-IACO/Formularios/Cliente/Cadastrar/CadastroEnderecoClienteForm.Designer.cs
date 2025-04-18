@@ -172,6 +172,7 @@
             this.Cidade.Name = "Cidade";
             this.Cidade.Size = new System.Drawing.Size(127, 21);
             this.Cidade.TabIndex = 7;
+            this.Cidade.SelectedIndexChanged += new System.EventHandler(this.Cidade_SelectedIndexChanged);
             // 
             // Bairro
             // 
