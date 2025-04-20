@@ -6,10 +6,12 @@ using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Factories;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.Services.Interfaces;
+using Oracle.DataAccess.Client;
+using System.Configuration;
 
 namespace CRUD_cliente_IACO
 {
-    static class Program
+    public class Program
     {
         private static IKernel _kernel;
 
@@ -17,8 +19,9 @@ namespace CRUD_cliente_IACO
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -49,7 +52,20 @@ namespace CRUD_cliente_IACO
                 cadastroForm.Show();
             };
 
-            Application.Run(cadastroForm);
+            string connString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
+
+            using (var conn = new OracleConnection(connString))
+            {
+       
+                // Rodar o seeder
+                DatabaseSeeder.Seed(conn);
+
+                // Abrir o formulário principal
+                Application.Run(cadastroForm);
+            }
+
+
+
         }
     }
 }
