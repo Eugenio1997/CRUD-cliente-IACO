@@ -16,6 +16,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
     {
         //flags
         private bool campoCEPlimpo = true;
+        private bool comboBoxDeCidadePopulado = false;
 
         //Repositorios (Camada de acesso ao banco)
         private readonly IClienteRepository _clienteRepository;
@@ -127,25 +128,28 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
                 EnderecoDTO cepDados = _CEPService.ConsultarEnderecoPorCep(cep);
                 if (cepDados != null)
+                {
+
                     campoCEPlimpo = false;
 
-                Rua.Text = cepDados.Rua;
-                Bairro.Text = cepDados.Bairro;
-                Cidade.Text = cepDados.Cidade;
-                Estado.Text = cepDados.Estado;
+                    Rua.Text = cepDados.Rua;
+                    Bairro.Text = cepDados.Bairro;
+                    Cidade.Text = cepDados.Cidade;
+                    Estado.Text = cepDados.Estado;
 
-                if (campoCEPlimpo)
-                {
                     Rua.ReadOnly = false;
                     Bairro.ReadOnly = false;
                 }
-
                
-                //NResidencia.ReadOnly = true;
                 Cidade.Enabled = false;
                 Estado.Enabled = false;
-                
+                                
                 NResidencia.Focus();
+
+                if (!string.IsNullOrEmpty(NResidencia.Text))
+                {
+                    Btn_Cadastrar.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -253,17 +257,12 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             var estadoSelecionado = (EstadoDTO)Estado.SelectedItem;
             CultureInfo cultura = CultureInfo.CurrentCulture;
 
+
+
             if ( estadoSelecionado.Nome != "Selecione o Estado")
             {
                 var cidades = _CidadeService.ObterCidadesPorEstado(estadoSelecionado.Sigla);
-                foreach (var cidade in cidades)
-                {
-                    string capitalizado = cultura.TextInfo.ToTitleCase(cidade.Nome);
-                    cidade.Nome = capitalizado;
-                    Console.WriteLine(cidade.Nome);
-                    
-                }
-
+             
                 cidades.Insert(0, new CidadeDTO
                 {
                     Nome = "Selecione a Cidade",
@@ -275,7 +274,12 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 Cidade.ValueMember = "CodigoIbge";
                 Cidade.SelectedIndex = 0;
 
+                Bairro.Text = "";
+                Rua.Text = "";
+                NResidencia.Text = "";
+
             }
+
            
             Console.WriteLine("Estado selecionado: " + estadoSelecionado.Nome);
 
@@ -294,15 +298,23 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 !string.IsNullOrEmpty(Rua.Text)
                 )
             {
+
+
+
+
                 //limpando os campos
-                Estado.Text = "";
+                Estado.Text = "Selecione o Estado" ;
                 Cidade.Text = "";
                 Bairro.Text = "";
                 Rua.Text = "";
 
                
                 Cidade.Enabled = false;
+
+
                 Estado.Enabled = true;
+
+
 
             }
             _debounceCepTimer.Stop(); //limpa o timer anterior
@@ -313,6 +325,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         {
             Cidade.Enabled = true;
             comboBoxDeCidadePopulado = true;
+            Bairro.Text = "";
+            Rua.Text = "";
+            NResidencia.Text = "";
 
         }
 
