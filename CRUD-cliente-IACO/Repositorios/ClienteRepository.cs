@@ -49,8 +49,8 @@ namespace CRUD_cliente_IACO.Repositorios
                 oracleCommand.Parameters.Add(":rua", OracleDbType.Varchar2).Value = cliente.Endereco.Rua;
                 oracleCommand.Parameters.Add(":numeroResidencia", OracleDbType.Varchar2).Value = cliente.Endereco.NumeroResidencia;
                 oracleCommand.Parameters.Add(":bairro", OracleDbType.Varchar2).Value = cliente.Endereco.Bairro;
-                oracleCommand.Parameters.Add(":cidade", OracleDbType.Date).Value = cliente.Endereco.Cidade;
-                oracleCommand.Parameters.Add(":estado", OracleDbType.Date).Value = cliente.Endereco.Estado;
+                oracleCommand.Parameters.Add(":cidade", OracleDbType.Varchar2).Value = cliente.Endereco.Cidade;
+                oracleCommand.Parameters.Add(":estado", OracleDbType.Varchar2).Value = cliente.Endereco.Estado;
 
 
 
