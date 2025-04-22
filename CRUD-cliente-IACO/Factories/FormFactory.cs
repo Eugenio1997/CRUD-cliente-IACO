@@ -12,7 +12,7 @@ namespace CRUD_cliente_IACO.Factories
         private static CadastroEnderecoClienteForm _cadastroEnderecoClienteForm;
         private static ListaClienteForm _listaClienteForm;
 
-        public static CadastroClienteForm GetCadastroClienteForm(IClienteRepository clienteRepository, ListaClienteForm listaClienteForm)
+        public static CadastroClienteForm GetEditarClienteForm(IClienteRepository clienteRepository, ListaClienteForm listaClienteForm)
         {
             if (_cadastroClienteForm == null || _cadastroClienteForm.IsDisposed)
             {

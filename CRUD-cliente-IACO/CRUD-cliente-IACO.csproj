@@ -108,6 +108,12 @@
     <Compile Include="Enums\FormTypeEnum.cs" />
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
+    <Compile Include="Formularios\Cliente\Editar\EditarClienteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\Cliente\Editar\EditarClienteForm.Designer.cs">
+      <DependentUpon>EditarClienteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Interfaces\IListagemClienteForm.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\CidadeDTO.cs" />
@@ -156,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroEnderecoClienteForm.resx">
       <DependentUpon>CadastroEnderecoClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\Cliente\Editar\EditarClienteForm.resx">
+      <DependentUpon>EditarClienteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\Cliente\Listar\ListaClienteForm.resx">
       <DependentUpon>ListaClienteForm.cs</DependentUpon>

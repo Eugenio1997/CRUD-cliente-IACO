@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.ListagemDeClientes = new System.Windows.Forms.Label();
             this.clientesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewClientes = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.clientesBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientes)).BeginInit();
             this.SuspendLayout();
             // 
             // ListagemDeClientes
@@ -41,11 +41,10 @@
             this.ListagemDeClientes.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ListagemDeClientes.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ListagemDeClientes.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.ListagemDeClientes.Location = new System.Drawing.Point(16, 22);
-            this.ListagemDeClientes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ListagemDeClientes.Location = new System.Drawing.Point(17, 18);
             this.ListagemDeClientes.Name = "ListagemDeClientes";
-            this.ListagemDeClientes.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
-            this.ListagemDeClientes.Size = new System.Drawing.Size(914, 60);
+            this.ListagemDeClientes.Padding = new System.Windows.Forms.Padding(10);
+            this.ListagemDeClientes.Size = new System.Drawing.Size(566, 49);
             this.ListagemDeClientes.TabIndex = 0;
             this.ListagemDeClientes.Text = "LISTAGEM DE CLIENTES";
             // 
@@ -53,28 +52,28 @@
             // 
             this.clientesBindingSource.DataMember = "Clientes";
             // 
-            // dataGridView1
+            // dataGridViewClientes
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(67, 130);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(754, 252);
-            this.dataGridView1.TabIndex = 1;
+            this.dataGridViewClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewClientes.Location = new System.Drawing.Point(17, 106);
+            this.dataGridViewClientes.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewClientes.Name = "dataGridViewClientes";
+            this.dataGridViewClientes.RowTemplate.Height = 24;
+            this.dataGridViewClientes.Size = new System.Drawing.Size(566, 205);
+            this.dataGridViewClientes.TabIndex = 1;
+            this.dataGridViewClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewClientes_CellClick);
             // 
             // ListaClienteForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(943, 438);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(608, 356);
+            this.Controls.Add(this.dataGridViewClientes);
             this.Controls.Add(this.ListagemDeClientes);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListaClienteForm";
             this.Text = "Listagem de clientes";
-            this.Resize += new System.EventHandler(this.ListaClienteForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.clientesBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -83,6 +82,6 @@
 
         private System.Windows.Forms.Label ListagemDeClientes;
         private System.Windows.Forms.BindingSource clientesBindingSource;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewClientes;
     }
 }

@@ -236,7 +236,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             //verifica se algum código se inscreveu no evento e dispara evento
             OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
-            
+
             /*
             if (_listaClienteForm != null)
             {
@@ -246,7 +246,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 _listaClienteForm.BringToFront();
             }
             */
-            
+
         }
     }
 }

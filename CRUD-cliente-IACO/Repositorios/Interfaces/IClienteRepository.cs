@@ -8,9 +8,11 @@ namespace CRUD_cliente_IACO.Repositorios.Interfaces
         void InserirCliente(Cliente cliente);
         
         List<Cliente> ConsultarClientes();
+        void ExcluirCliente(int id);
+        void AtualizarCliente(Cliente cliente);
+
         /*
         Cliente ConsultarClientePorId(int id);
-        void AtualizarCliente(Cliente cliente);
         void ExcluirCliente(int id);
         */
     }

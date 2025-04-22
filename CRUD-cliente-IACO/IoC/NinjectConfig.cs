@@ -19,7 +19,7 @@ namespace CRUD_cliente_IACO.IoC
             Bind<OracleConnection>()
                 .ToSelf()
                 .WithConstructorArgument("connectionString",
-                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString);
+                    ConfigurationManager.ConnectionStrings["OracleConnectionIACO"].ConnectionString);
 
             // Bindings para repositórios
             Bind<IClienteRepository>().To<ClienteRepository>().InSingletonScope();

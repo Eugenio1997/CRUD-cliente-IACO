@@ -36,7 +36,7 @@ namespace CRUD_cliente_IACO
             */
 
             // Primeiro cria o CadastroClienteForm com valor temporário null
-            var cadastroFormTemp = FormFactory.GetCadastroClienteForm(clienteRepository, null);
+            var cadastroFormTemp = FormFactory.GetEditarClienteForm(clienteRepository, null);
 
             // Depois cria o ListaClienteForm passando o cadastro real
             var listaForm = FormFactory.GetListagemClienteForm(clienteRepository, cadastroFormTemp);
@@ -58,7 +58,10 @@ namespace CRUD_cliente_IACO
              }
              */
 
-            string connString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
+            //string connString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
+           
+            string connString = ConfigurationManager.ConnectionStrings["OracleConnectionIACO"].ConnectionString;
+          
 
             using (var conn = new OracleConnection(connString))
             {

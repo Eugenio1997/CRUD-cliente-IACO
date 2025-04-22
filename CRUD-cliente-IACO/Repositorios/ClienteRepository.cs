@@ -6,6 +6,7 @@ using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.Modelos;
 using CRUD_cliente_IACO.Enums;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace CRUD_cliente_IACO.Repositorios
 {
@@ -131,7 +132,7 @@ namespace CRUD_cliente_IACO.Repositorios
 
             return clientes;
         }
-        
+
         /*
         // READ - Consultar cliente por ID
         public Cliente ConsultarClientePorId(int id)
@@ -172,7 +173,7 @@ namespace CRUD_cliente_IACO.Repositorios
                 }
             }
         }
-
+        */
         // UPDATE - Atualizar cliente
         public void AtualizarCliente(Cliente cliente)
         {
@@ -180,50 +181,83 @@ namespace CRUD_cliente_IACO.Repositorios
                 _connection.Open();
 
             using (var oracleCommand = _connection.CreateCommand())
+            using (var transaction = _connection.BeginTransaction())
             {
-                oracleCommand.CommandText = @"
+
+                try
+                {
+                    oracleCommand.CommandText = @"
                     UPDATE CLIENTES 
                     SET 
                         PRIMEIRO_NOME = :primeiroNome,
                         SOBRENOME = :sobrenome,
-                        EMAIL = :email,
-                        TELEFONE = :telefone
-                    WHERE ID = :id";
+                        GENERO = :genero,
+                        CPF = :cpf,
+                        DATA_NASCIMENTO = :dataNascimento,
+                        TELEFONE = :telefone,
+                        EMAIL = :email
+                    WHERE ID = :idCliente";
 
-              
-                oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
-                oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
-                oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
-                oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
-                oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = cliente.Id;
 
-                int rowsAffected = oracleCommand.ExecuteNonQuery();
-                if (rowsAffected == 0)
-                {
-                    throw new Exception($"Cliente com ID {cliente.Id} não encontrado.");
+                    oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
+                    oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
+                    oracleCommand.Parameters.Add(":genero", OracleDbType.Varchar2).Value = cliente.Sobrenome;
+                    oracleCommand.Parameters.Add(":cpf", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
+                    oracleCommand.Parameters.Add(":dataNascimento", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
+                    oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
+                    oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
+                    oracleCommand.Parameters.Add(":idCliente", OracleDbType.Int32).Value = cliente.IdCliente;
+
+                    var idClienteParam = oracleCommand.Parameters.Add(":idCliente", OracleDbType.Int32);
+                    idClienteParam.Direction = ParameterDirection.Output;
+
+                    var confirmar = MessageBox.Show("Tem certeza que deseja atualizar?", "Confirmar", MessageBoxButtons.YesNo);
+                    if (confirmar == DialogResult.Yes)
+                    {
+                        oracleCommand.ExecuteNonQuery();
+
+                        cliente.IdCliente = Convert.ToInt32(idClienteParam.Value.ToString());
+
+                        transaction.Commit();
+                    }
+
+                    
                 }
-            }
-        }
+                catch (OracleException ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine("Erro ao atualizar cliente:");
+                    Console.WriteLine(ex.Message);
+                }
 
+            }
+
+        }
+        
         // DELETE - Excluir cliente
         public void ExcluirCliente(int id)
         {
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
+            using (var transaction = _connection.BeginTransaction())
             using (var oracleCommand = _connection.CreateCommand())
             {
-                oracleCommand.CommandText = "DELETE FROM CLIENTES WHERE ID = :id";
-                
-                oracleCommand.Parameters.Add(":id", OracleDbType.Int32).Value = id;
+                oracleCommand.Transaction = transaction;
+                oracleCommand.CommandText = "DELETE FROM CLIENTES WHERE ID_CLIENTE = :id";
+                oracleCommand.Parameters.Add(":idCliente", OracleDbType.Int32).Value = id;
 
                 int rowsAffected = oracleCommand.ExecuteNonQuery();
+
                 if (rowsAffected == 0)
                 {
+                    transaction.Rollback();
                     throw new Exception($"Cliente com ID {id} não encontrado.");
                 }
+
+                transaction.Commit();
             }
         }
-        */
+
     }
 } 
