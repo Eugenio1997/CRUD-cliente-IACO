@@ -6,6 +6,10 @@ namespace CRUD_cliente_IACO.Modelos
     public sealed class Endereco
     {
 
+        [NotNullValidator(MessageTemplate = "O campo IdEndereco é obrigatório.")]
+        [RangeValidator(1, RangeBoundaryType.Inclusive, int.MaxValue, RangeBoundaryType.Inclusive, MessageTemplate = "O IdEndereco deve ser um número inteiro positivo.")]
+        public int IdEndereco { get; set; }
+
         [StringLengthValidator(3, 50, MessageTemplate = "O CEP deve ter entre 3 e 20 caracteres.")]
         public string CEP { get; set; }
 

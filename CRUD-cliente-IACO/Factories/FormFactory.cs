@@ -1,10 +1,8 @@
 ﻿using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+using CRUD_cliente_IACO.Formularios.Cliente.Listar;
+using CRUD_cliente_IACO.Formularios.Interfaces;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
-using CRUD_cliente_IACO.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace CRUD_cliente_IACO.Factories
 {
@@ -12,28 +10,42 @@ namespace CRUD_cliente_IACO.Factories
     {
         private static CadastroClienteForm _cadastroClienteForm;
         private static CadastroEnderecoClienteForm _cadastroEnderecoClienteForm;
+        private static ListaClienteForm _listaClienteForm;
 
-        public static CadastroClienteForm GetCadastroClienteForm(IClienteRepository clienteRepository)
+        public static CadastroClienteForm GetCadastroClienteForm(IClienteRepository clienteRepository, ListaClienteForm listaClienteForm)
         {
             if (_cadastroClienteForm == null || _cadastroClienteForm.IsDisposed)
             {
-                _cadastroClienteForm = new CadastroClienteForm(clienteRepository);
+                _cadastroClienteForm = new CadastroClienteForm(clienteRepository, listaClienteForm);
             }
             return _cadastroClienteForm;
         }
 
+        /*
         public static CadastroEnderecoClienteForm GetCadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
             ICadastroClienteForm cadastroClienteForm,
             ICEPService cepService,
             IEstadoService estadoService,
-            ICidadeService cidadeService)
+            ICidadeService cidadeService,
+            IListagemClienteForm listagemClienteForm)
         {
+
+
             if (_cadastroEnderecoClienteForm == null || _cadastroEnderecoClienteForm.IsDisposed)
             {
-                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm, cepService, estadoService, cidadeService);
+                _cadastroEnderecoClienteForm = new CadastroEnderecoClienteForm(clienteRepository, cadastroClienteForm, cepService, estadoService, cidadeService, listagemClienteForm);
             }
             return _cadastroEnderecoClienteForm;
+        }
+        */
+        public static ListaClienteForm GetListagemClienteForm(IClienteRepository clienteRepository, ICadastroClienteForm cadastroForm)
+        {
+            if (_listaClienteForm == null || _listaClienteForm.IsDisposed)
+            {
+                _listaClienteForm = new ListaClienteForm(clienteRepository, cadastroForm);
+            }
+            return _listaClienteForm;
         }
     }
 }

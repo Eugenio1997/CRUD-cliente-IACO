@@ -11,9 +11,9 @@ namespace CRUD_cliente_IACO.Repositorios.Interfaces
     public interface ICadastroClienteForm
     {
 
-        event EventHandler<ClienteDTOEventArgs> OnClienteDTOEnviado;
+        event EventHandler<ClienteEventArgs> OnClienteEnviado;
         
-        void Btn_Proximo_Click(object sender, EventArgs e);
+        void Btn_Cadastrar_Click(object sender, EventArgs e);
         void Btn_Limpar_Click(object sender, EventArgs e);
         void AdicionarEventosNosCampos();
         void VerificarCamposPreenchidos();

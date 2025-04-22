@@ -4,6 +4,8 @@ using Oracle.DataAccess.Client;
 using System.Collections.Generic;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.Modelos;
+using CRUD_cliente_IACO.Enums;
+using System.Linq;
 
 namespace CRUD_cliente_IACO.Repositorios
 {
@@ -26,49 +28,52 @@ namespace CRUD_cliente_IACO.Repositorios
                 _connection.Open();
 
             using (var oracleCommand = _connection.CreateCommand())
+            using (var transaction = _connection.BeginTransaction()) // para garantir atomicidade
             {
-                oracleCommand.CommandText = @"
-                    INSERT INTO CLIENTES 
-                        (ID, PRIMEIRO_NOME, SOBRENOME, EMAIL, TELEFONE, DATA_NASCIMENTO, CEP, RUA, NUMERO_RESIDENCIA, BAIRRO, CIDADE, ESTADO )
-                    VALUES 
-                        (SEQ_CLIENTES.NEXTVAL, :primeiroNome, :sobrenome, :email, :telefone, :dataNascimento, :cep, :rua, :numeroResidencia, :bairro, :cidade, :estado)
-                    RETURNING ID INTO :id";
+                oracleCommand.Transaction = transaction;
 
+                try
+                {
+                  
+                    // 1. INSERIR CLIENTE
+                    oracleCommand.CommandText = @"
+                INSERT INTO CLIENTES 
+                    (ID_CLIENTE, PRIMEIRO_NOME, SOBRENOME, GENERO, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL)
+                VALUES 
+                    (SEQ_CLIENTES.NEXTVAL, :primeiroNome, :sobrenome, :genero, :cpf, :dataNascimento, :telefone, :email)
+                RETURNING ID_CLIENTE INTO :idCliente";
 
-                //TELA DE CADASTRO DE DADOS PESSOAIS DO CLIENTE (1º TELA)
+                    oracleCommand.Parameters.Clear();
+                    oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
+                    oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
+                    oracleCommand.Parameters.Add(":genero", OracleDbType.Varchar2).Value = (int)cliente.Genero;
+                    oracleCommand.Parameters.Add(":cpf", OracleDbType.Varchar2).Value = cliente.CPF;
+                    oracleCommand.Parameters.Add(":dataNascimento", OracleDbType.Date).Value =
+                        cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
+                    oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value =
+                        string.IsNullOrEmpty(cliente.Telefone) ? (object)DBNull.Value : cliente.Telefone;
+                    oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value =
+                        string.IsNullOrEmpty(cliente.Email) ? (object)DBNull.Value : cliente.Email;
 
-                oracleCommand.Parameters.Add(":primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
-                oracleCommand.Parameters.Add(":sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
-                oracleCommand.Parameters.Add(":email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
-                oracleCommand.Parameters.Add(":telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
-                oracleCommand.Parameters.Add(":dataNascimento", OracleDbType.Date).Value = cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
+                    var idClienteParam = oracleCommand.Parameters.Add(":idCliente", OracleDbType.Int32);
+                    idClienteParam.Direction = ParameterDirection.Output;
 
-                //TELA DE CADASTRO DE ENDEREÇO DO CLIENTE (2º TELA)
+                    oracleCommand.ExecuteNonQuery();
+                    cliente.IdCliente = Convert.ToInt32(idClienteParam.Value.ToString());
 
-                oracleCommand.Parameters.Add(":cep", OracleDbType.Varchar2).Value = cliente.Endereco.CEP;
-                oracleCommand.Parameters.Add(":rua", OracleDbType.Varchar2).Value = cliente.Endereco.Rua;
-                oracleCommand.Parameters.Add(":numeroResidencia", OracleDbType.Varchar2).Value = cliente.Endereco.NumeroResidencia;
-                oracleCommand.Parameters.Add(":bairro", OracleDbType.Varchar2).Value = cliente.Endereco.Bairro;
-                oracleCommand.Parameters.Add(":cidade", OracleDbType.Varchar2).Value = cliente.Endereco.Cidade;
-                oracleCommand.Parameters.Add(":estado", OracleDbType.Varchar2).Value = cliente.Endereco.Estado;
-
-
-
-                /*
-                Define que este é um parâmetro de saída (OUTPUT)
-                ParameterDirection.Output indica que o valor virá do banco de dados para o programa
-                Isso é necessário porque estamos usando RETURNING ID INTO :id na query
-                */
-                var idParam = oracleCommand.Parameters.Add(":id", OracleDbType.Int32);
-                idParam.Direction = ParameterDirection.Output;
-
-
-                oracleCommand.ExecuteNonQuery();
-                cliente.Id = Convert.ToInt32(idParam.Value.ToString());
+                    transaction.Commit();
+                }
+                catch (OracleException ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine("Erro ao inserir cliente:");
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
-        /*
+
+       
         // READ - Consultar todos os clientes
         public List<Cliente> ConsultarClientes()
         {
@@ -77,41 +82,57 @@ namespace CRUD_cliente_IACO.Repositorios
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            using (var command = _connection.CreateCommand())
+            using (var oracleCommand = _connection.CreateCommand())
             {
-                command.CommandText = @"
-                    SELECT 
-                        ID,
-                        PRIMEIRO_NOME,
-                        SOBRENOME,
-                        EMAIL,
-                        TELEFONE,
-                        DATA_NASCIMENTO
-                    FROM CLIENTES
-                    ORDER BY PRIMEIRO_NOME, SOBRENOME";
 
-                using (var reader = command.ExecuteReader())
+                try
                 {
-                    while (reader.Read())
-                    {
-                        var cliente = new Cliente
-                        {
-                            Id = Convert.ToInt32(reader["ID"]),
-                            PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
-                            Sobrenome = reader["SOBRENOME"].ToString(),
-                            Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
-                            Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                            DataNascimento = Convert.ToDateTime(reader["DATA_NASCIMENTO"])
-                        };
+                    oracleCommand.CommandText = @"
+                    SELECT 
+                        c.ID_CLIENTE,
+                        c.PRIMEIRO_NOME,
+                        c.SOBRENOME,
+                        c.GENERO,
+                        c.CPF,
+                        c.DATA_NASCIMENTO,
+                        c.TELEFONE,
+                        c.EMAIL
+                    FROM CLIENTES c
+                    ORDER BY c.PRIMEIRO_NOME, c.SOBRENOME";
 
-                        clientes.Add(cliente);
+                    using (var reader = oracleCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var cliente = new Cliente
+                            {
+                                IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                                PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                                Sobrenome = reader["SOBRENOME"].ToString(),
+                                Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.PrefiroNaoIdentificar,
+                                CPF = reader["CPF"].ToString(),
+                                Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                                Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                                DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+                               
+                            };
+
+                            clientes.Add(cliente); // Adicionar o cliente à lista dentro do loop
+                        }
                     }
                 }
+                catch( OracleException ex)
+                {
+                    Console.WriteLine("Erro ao ler clientes");
+                    Console.WriteLine(ex.Message);
+                }
+
             }
 
             return clientes;
         }
-
+        
+        /*
         // READ - Consultar cliente por ID
         public Cliente ConsultarClientePorId(int id)
         {

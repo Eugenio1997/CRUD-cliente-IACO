@@ -9,6 +9,7 @@ namespace CRUD_cliente_IACO.Validadores
 {
     public class UsuarioValidador
     {
+        /*
         private static UsuarioValidador _instance;
         private readonly string _connectionString;
 
@@ -90,5 +91,6 @@ namespace CRUD_cliente_IACO.Validadores
             }
             return mensagens;
         }
+        */
     }
 }

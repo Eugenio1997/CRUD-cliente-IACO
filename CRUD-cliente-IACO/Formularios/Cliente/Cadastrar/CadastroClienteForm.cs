@@ -6,7 +6,10 @@ using CRUD_cliente_IACO.Repositorios.Interfaces;
 using CRUD_cliente_IACO.CustomEventArgs;
 using CRUD_cliente_IACO.Validacoes;
 using System.Collections.Generic;
-
+using CRUD_cliente_IACO.Modelos;
+using CRUD_cliente_IACO.Formularios.Interfaces;
+using CRUD_cliente_IACO.Formularios.Cliente.Listar;
+using System.Drawing;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
@@ -19,26 +22,33 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         
         private IClienteRepository _clienteRepository;
+        private ListaClienteForm _listaClienteForm;
         public ClienteDTO clienteDTO;
 
         //public event EventHandler OnVoltar;
         public event EventHandler OnProximo;
-        public event EventHandler<ClienteDTOEventArgs> OnClienteDTOEnviado;
+        public event EventHandler<ClienteEventArgs> OnClienteEnviado;
 
         private bool _estaLimpandoCampos = false;
         /// <summary>
         /// VALIDACOES DE CADA CAMPO DO FORMULARIO
         /// </summary>
 
-        public CadastroClienteForm(IClienteRepository clienteRepository)
+        public CadastroClienteForm(
+            IClienteRepository clienteRepository,
+            ListaClienteForm listaClienteForm = null
+            )
         {
             InitializeComponent();
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
+           
+
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
 
             _clienteRepository = clienteRepository;
+            _listaClienteForm = listaClienteForm;
             DataDeNascimento.Format = DateTimePickerFormat.Custom;
             DataDeNascimento.CustomFormat = "dd/MM/yyyy";
 
@@ -53,7 +63,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         }
 
-
+        public void DefinirFormularioLista(ListaClienteForm listaForm)
+        {
+            _listaClienteForm = listaForm;
+        }
         public void AdicionarEventosNosCampos()
         {
             foreach (Control ctrl in this.Controls)
@@ -74,7 +87,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             }
 
-            Btn_Proximo.Enabled = false;
+            Btn_Cadastrar.Enabled = false;
        }
 
         public void VerificarCamposPreenchidos()
@@ -91,7 +104,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                                    !string.IsNullOrEmpty(Telefone.Text.Trim()) &&
                                    !string.IsNullOrEmpty(Email.Text.Trim());
 
-           Btn_Proximo.Enabled = todosPreenchidos;
+           Btn_Cadastrar.Enabled = todosPreenchidos;
        }
 
        public void PreencherComboBoxGeneros()
@@ -109,28 +122,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
            Genero.SelectedIndex = 0;
 
        }
-
-        public void Btn_Proximo_Click(object sender, EventArgs e)
-        {
-            // Preenche o DTO com os dados do formulário
-            clienteDTO = new ClienteDTO
-            {
-                PrimeiroNome = PrimeiroNome.Text,
-                Sobrenome = Sobrenome.Text,
-                Email = Email.Text,
-                Telefone = Telefone.Text,
-                CPF = CPF.Text,
-                DataNascimento = DataDeNascimento.Value,
-                Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), Genero.SelectedItem.ToString())
-            };
-
-
-            //verifica se algum código se inscreveu no evento e dispara evento
-            OnClienteDTOEnviado.Invoke(this, new ClienteDTOEventArgs(clienteDTO));        
-                
-            if(OnClienteDTOEnviado != null)
-                OnProximo?.Invoke(this, EventArgs.Empty);
-        }
 
         public void Btn_Limpar_Click(object sender, EventArgs e)
         {
@@ -153,7 +144,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 }
             }
 
-            Btn_Proximo.Enabled = false;
+            Btn_Cadastrar.Enabled = false;
           
             // Foco no primeiro campo
             PrimeiroNome.Focus();
@@ -228,6 +219,35 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             ValidadorDeCliente.ValidarEmail_Validating(Email);
         }
 
+        public void Btn_Cadastrar_Click(object sender, EventArgs e)
+        {
+            // Preenche o Cliente com os dados do formulário
+            var cliente = new Modelos.Cliente
+            {
+                PrimeiroNome = PrimeiroNome.Text,
+                Sobrenome = Sobrenome.Text,
+                Email = Email.Text,
+                Telefone = Telefone.Text,
+                CPF = CPF.Text,
+                DataNascimento = DataDeNascimento.Value,
+                Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), Genero.SelectedItem.ToString())
+            };
+
+
+            //verifica se algum código se inscreveu no evento e dispara evento
+            OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
+            
+            /*
+            if (_listaClienteForm != null)
+            {
+                _listaClienteForm.StartPosition = FormStartPosition.Manual;
+                _listaClienteForm.Location = new Point(0, 0); // canto superior esquerdo
+                _listaClienteForm.Show();
+                _listaClienteForm.BringToFront();
+            }
+            */
+            
+        }
     }
 }
  

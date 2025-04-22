@@ -103,10 +103,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomEventArgs\ClienteDTOEventArgs.cs" />
+    <Compile Include="CustomEventArgs\ClienteEventArgs.cs" />
+    <Compile Include="DatabaseSeeder.cs" />
     <Compile Include="Enums\FormTypeEnum.cs" />
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
+    <Compile Include="Formularios\Interfaces\IListagemClienteForm.cs" />
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\CidadeDTO.cs" />
     <Compile Include="Modelos\DTOs\EnderecoDTO.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Modelos\DTOs\EstadoDTO.cs" />
     <Compile Include="Formularios\Interfaces\ICadastroClienteForm.cs" />
     <Compile Include="Formularios\Interfaces\ICadastroEnderecoClienteForm.cs" />
+    <Compile Include="Modelos\Views\ClienteView.cs" />
     <Compile Include="Services\CidadeService.cs" />
     <Compile Include="Services\Interfaces\ICidadeService.cs" />
     <Compile Include="Repositorios\Interfaces\IClienteRepository.cs" />
@@ -169,6 +172,7 @@
     </Compile>
     <None Include="App.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="bin\Debug\CRUD-cliente-IACO.exe.config" />
     <None Include="packages.config" />

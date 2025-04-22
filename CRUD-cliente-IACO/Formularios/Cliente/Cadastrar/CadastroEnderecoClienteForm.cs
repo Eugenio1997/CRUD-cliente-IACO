@@ -9,11 +9,14 @@ using CRUD_cliente_IACO.Validacoes;
 using CRUD_cliente_IACO.Services.Interfaces;
 using System.Collections.Generic;
 using System.Globalization;
+using CRUD_cliente_IACO.Formularios.Interfaces;
+using CRUD_cliente_IACO.Factories;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
-    public partial class CadastroEnderecoClienteForm : Form, ICadastroEnderecoClienteForm
+    public partial class CadastroEnderecoClienteForm : Form
     {
+        /*
         //flags
         private bool campoCEPlimpo = true;
         private bool comboBoxDeCidadePopulado = false;
@@ -28,6 +31,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         private ICEPService _CEPService;
         private IEstadoService _EstadoService;
         private ICidadeService _CidadeService;
+        public IListagemClienteForm listagemClienteFormRef;
 
         //Eventos
         public event EventHandler OnVoltar;
@@ -47,13 +51,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             ICadastroClienteForm cadastroClienteForm,
             ICEPService CEPService,
             IEstadoService EstadoService,
-            ICidadeService CidadeService)
+            ICidadeService CidadeService,
+            IListagemClienteForm listagemClienteForm)
         {
             InitializeComponent();
             if (clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
             if (cadastroClienteForm == null)
                 throw new ArgumentNullException(nameof(cadastroClienteForm));
+            if (listagemClienteForm == null)
+                throw new ArgumentNullException(nameof(listagemClienteForm));
 
             AdicionarEventosNosCampos();
             _clienteRepository = clienteRepository;
@@ -62,9 +69,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             _CEPService = CEPService;
             _EstadoService = EstadoService;
             _CidadeService = CidadeService;
+            listagemClienteFormRef = listagemClienteForm;
             //Eventos VALIDATING de cada campo
             //CamposTodos_Validating();
-            
+
             Estado.SelectedIndexChanged += Estado_SelectedIndexChanged;
 
             //Eventos KeyPress de cada campo
@@ -227,10 +235,19 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 // Serializa o objeto para JSON
                 string clienteJSON = JsonConvert.SerializeObject(cliente, Formatting.Indented);
 
-                MessageBox.Show(clienteJSON);
-                //_clienteRepository.Inserir(cliente);
+                //MessageBox.Show(clienteJSON);
+
+                _clienteRepository.InserirCliente(cliente);
 
                 MessageBox.Show("Cliente salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                // Abrindo o formulário com DataGridView
+                listagemClienteFormRef = FormFactory.GetListagemClienteForm(_clienteRepository);
+                listagemClienteFormRef.showClientsOnDatagrid();
+                
+
+                this.Close(); // ou this.Hide(); se quiser apenas esconder
             }
             catch (Exception ex)
             {
@@ -331,7 +348,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         }
 
-        /*
+        
         private void CEP_Leave(object sender, EventArgs e)
         {
             if (!ValidadorDeClienteEndereco.CEP_Leave(CEP))

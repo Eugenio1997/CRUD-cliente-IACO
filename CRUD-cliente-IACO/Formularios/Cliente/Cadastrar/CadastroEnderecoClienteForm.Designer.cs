@@ -134,7 +134,6 @@
             this.Btn_Cadastrar.TabIndex = 15;
             this.Btn_Cadastrar.Text = "Cadastrar";
             this.Btn_Cadastrar.UseVisualStyleBackColor = true;
-            this.Btn_Cadastrar.Click += new System.EventHandler(this.Btn_Cadastrar_Click);
             // 
             // btnVoltar
             // 
@@ -145,7 +144,6 @@
             this.btnVoltar.TabIndex = 14;
             this.btnVoltar.Text = "Voltar";
             this.btnVoltar.UseVisualStyleBackColor = false;
-            this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
             // 
             // CEP
             // 
@@ -154,8 +152,6 @@
             this.CEP.Name = "CEP";
             this.CEP.Size = new System.Drawing.Size(127, 20);
             this.CEP.TabIndex = 3;
-            this.CEP.TextChanged += new System.EventHandler(this.CEP_TextChanged);
-            this.CEP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CEP_KeyPress);
             // 
             // Estado
             // 
@@ -172,7 +168,6 @@
             this.Cidade.Name = "Cidade";
             this.Cidade.Size = new System.Drawing.Size(127, 21);
             this.Cidade.TabIndex = 7;
-            this.Cidade.SelectedIndexChanged += new System.EventHandler(this.Cidade_SelectedIndexChanged);
             // 
             // Bairro
             // 
@@ -217,7 +212,6 @@
             this.Name = "CadastroEnderecoClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro de Endereço";
-            this.Load += new System.EventHandler(this.CadastroEnderecoClienteForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

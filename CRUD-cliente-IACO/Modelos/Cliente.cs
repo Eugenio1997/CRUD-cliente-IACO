@@ -6,9 +6,9 @@ namespace CRUD_cliente_IACO.Modelos
 {
     public class Cliente
     {
-        [NotNullValidator(MessageTemplate = "O campo ID é obrigatório.")]
-        [RangeValidator(1, RangeBoundaryType.Inclusive, int.MaxValue, RangeBoundaryType.Inclusive, MessageTemplate = "O ID deve ser um número inteiro positivo.")]
-        public int Id { get; set; }
+        [NotNullValidator(MessageTemplate = "O campo IdCliente é obrigatório.")]
+        [RangeValidator(1, RangeBoundaryType.Inclusive, int.MaxValue, RangeBoundaryType.Inclusive, MessageTemplate = "O IdCliente deve ser um número inteiro positivo.")]
+        public int IdCliente { get; set; }
 
         [NotNullValidator(MessageTemplate = "O campo Primeiro Nome é obrigatório.")]
         [StringLengthValidator(3, 50, MessageTemplate = "O Primeiro Nome deve ter entre 3 e 50 caracteres.")]
@@ -22,10 +22,6 @@ namespace CRUD_cliente_IACO.Modelos
 
         [NotNullValidator(MessageTemplate = "O campo Gênero é obrigatório.")]
         public GenerosEnum Genero { get; set; }
-
-        [NotNullValidator(MessageTemplate = "O campo Endereço é obrigatório.")]
-        public Endereco Endereco { get; set; }
-
         [NotNullValidator(MessageTemplate = "O campo CPF é obrigatório.")]
         [StringLengthValidator(3, 50, MessageTemplate = "O CPF deve ter entre 3 e 50 caracteres.")]
         [RegexValidator(@"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$", MessageTemplate = "Formato de CPF inválido.")]
@@ -53,13 +49,7 @@ namespace CRUD_cliente_IACO.Modelos
                    $"Nascimento: {DataNascimento:dd/MM/yyyy}\n" +
                    $"Email: {Email}\n" +
                    $"Telefone: {Telefone}\n" +
-                   $"Gênero: {Genero}" +
-                   $"CEP: {Endereco.CEP}\n" +
-                   $"Bairro: {Endereco.Bairro}\n" +
-                   $"Rua: {Endereco.Rua}\n" +
-                   $"Cidade: {Endereco.Cidade}\n" +
-                   $"Estado: {Endereco.Estado}\n" +
-                   $"Nº Residencia: {Endereco.NumeroResidencia}";
+                   $"Gênero: {Genero}";
         }
 
 

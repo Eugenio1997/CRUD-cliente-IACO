@@ -15,23 +15,7 @@ namespace CRUD_cliente_IACO.Modelos.DTOs
         public DateTime DataNascimento { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
-        public Endereco Endereco { get; set; }
-
-        // Método para converter o DTO em um Cliente quando todos os dados estiverem prontos
-        public Cliente ToCliente()
-        {
-            return new Cliente
-            {
-                PrimeiroNome = this.PrimeiroNome,
-                Sobrenome = this.Sobrenome,
-                Genero = this.Genero,
-                CPF = this.CPF,
-                DataNascimento = this.DataNascimento,
-                Telefone = this.Telefone,
-                Email = this.Email,
-                Endereco = this.Endereco
-            };
-        }
+        
 
         public override string ToString()
         {

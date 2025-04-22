@@ -43,7 +43,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Sobrenome = new System.Windows.Forms.TextBox();
             this.Email = new System.Windows.Forms.TextBox();
             this.Genero = new System.Windows.Forms.ComboBox();
-            this.Btn_Proximo = new System.Windows.Forms.Button();
+            this.Btn_Cadastrar = new System.Windows.Forms.Button();
             this.CPF = new System.Windows.Forms.MaskedTextBox();
             this.Telefone = new System.Windows.Forms.MaskedTextBox();
             this.Btn_Limpar = new System.Windows.Forms.Button();
@@ -158,22 +158,22 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Genero.Size = new System.Drawing.Size(168, 24);
             this.Genero.TabIndex = 6;
             // 
-            // Btn_Proximo
+            // Btn_Cadastrar
             // 
-            this.Btn_Proximo.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Btn_Proximo.Location = new System.Drawing.Point(740, 416);
-            this.Btn_Proximo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Btn_Proximo.Name = "Btn_Proximo";
-            this.Btn_Proximo.Size = new System.Drawing.Size(93, 34);
-            this.Btn_Proximo.TabIndex = 18;
-            this.Btn_Proximo.Text = "Próximo";
-            this.Btn_Proximo.UseVisualStyleBackColor = false;
-            this.Btn_Proximo.Click += new System.EventHandler(this.Btn_Proximo_Click);
+            this.Btn_Cadastrar.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Btn_Cadastrar.Location = new System.Drawing.Point(740, 416);
+            this.Btn_Cadastrar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Btn_Cadastrar.Name = "Btn_Cadastrar";
+            this.Btn_Cadastrar.Size = new System.Drawing.Size(93, 34);
+            this.Btn_Cadastrar.TabIndex = 18;
+            this.Btn_Cadastrar.Text = "Cadastrar";
+            this.Btn_Cadastrar.UseVisualStyleBackColor = false;
+            this.Btn_Cadastrar.Click += new System.EventHandler(this.Btn_Cadastrar_Click);
             // 
             // CPF
             // 
             this.CPF.Location = new System.Drawing.Point(400, 178);
-            this.CPF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CPF.Margin = new System.Windows.Forms.Padding(4);
             this.CPF.Mask = "000,000,000-00";
             this.CPF.Name = "CPF";
             this.CPF.Size = new System.Drawing.Size(168, 22);
@@ -182,7 +182,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // Telefone
             // 
             this.Telefone.Location = new System.Drawing.Point(400, 342);
-            this.Telefone.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Telefone.Margin = new System.Windows.Forms.Padding(4);
             this.Telefone.Mask = "00 00000-0000";
             this.Telefone.Name = "Telefone";
             this.Telefone.Size = new System.Drawing.Size(168, 22);
@@ -204,7 +204,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             this.DataDeNascimento.CustomFormat = "dd/MM/yyyy";
             this.DataDeNascimento.Location = new System.Drawing.Point(400, 265);
-            this.DataDeNascimento.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DataDeNascimento.Margin = new System.Windows.Forms.Padding(4);
             this.DataDeNascimento.Name = "DataDeNascimento";
             this.DataDeNascimento.Size = new System.Drawing.Size(168, 22);
             this.DataDeNascimento.TabIndex = 12;
@@ -230,7 +230,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Btn_Proximo);
+            this.Controls.Add(this.Btn_Cadastrar);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CadastroClienteForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -254,7 +254,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         private TextBox Sobrenome;
         private TextBox Email;
         private ComboBox Genero;
-        private Button Btn_Proximo;
+        private Button Btn_Cadastrar;
         private MaskedTextBox CPF;
         private MaskedTextBox Telefone;
         private Button Btn_Limpar;
