@@ -29,37 +29,22 @@ namespace CRUD_cliente_IACO
 
             //recuperando a implementacao concreta passando a abstracao atraves de Ninject
             var clienteRepository = _kernel.Get<IClienteRepository>();
-            /*
-            var cepService = _kernel.Get<ICEPService>();
-            var estadoService = _kernel.Get<IEstadoService>();
-            var cidadeService = _kernel.Get<ICidadeService>();
-            */
 
             // Primeiro cria o CadastroClienteForm com valor temporário null
-            var cadastroFormTemp = FormFactory.GetEditarClienteForm(clienteRepository, null);
+            var cadastroFormTemp = FormFactory.GetCadastrarClienteForm(clienteRepository, null);
 
             // Depois cria o ListaClienteForm passando o cadastro real
-            var listaForm = FormFactory.GetListagemClienteForm(clienteRepository, cadastroFormTemp);
+            var listaForm = FormFactory.GetListagemClienteForm(clienteRepository);
 
             // Agora atualiza o campo listaForm dentro do cadastroForm
             cadastroFormTemp.DefinirFormularioLista(listaForm);
-            /*
-            var enderecoForm = FormFactory.GetCadastroEnderecoClienteForm(
-                clienteRepository, cadastroForm, cepService,
-                estadoService, cidadeService, listaForm
-           );
-           */
-            // Evento: Avançar para o próximo formulário
-            /*
-             cadastroForm.OnProximo += (s, e) =>
-             {
-                 cadastroForm.Hide();
-                 listaForm.Show();
-             }
-             */
+
+            var menuPrincipalForm = FormFactory.GetMenuPrincipalForm(cadastroFormTemp, listaForm);
+
+
 
             //string connString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
-           
+
             string connString = ConfigurationManager.ConnectionStrings["OracleConnectionIACO"].ConnectionString;
           
 
@@ -70,7 +55,7 @@ namespace CRUD_cliente_IACO
                 DatabaseSeeder.Seed(conn);
 
                 // Abrir o formulário principal
-                Application.Run(cadastroFormTemp);
+                Application.Run(menuPrincipalForm);
             }
 
 

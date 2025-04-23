@@ -1,14 +1,8 @@
 ﻿using CRUD_cliente_IACO.Enums;
-using CRUD_cliente_IACO.Factories;
-using CRUD_cliente_IACO.Repositorios;
+using CRUD_cliente_IACO.Formularios.Cliente.Listar;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+
 using System.Windows.Forms;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
@@ -21,7 +15,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
         public Modelos.Cliente clienteAtual;
         public EditarClienteForm(
             Modelos.Cliente cliente,
-            IClienteRepository clienteRepository = null)
+            ListaClienteForm _listaClienteForm,
+            IClienteRepository clienteRepository = null
+            )
         {
             InitializeComponent();
             clienteAtual = cliente;
@@ -34,6 +30,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
         {
             Genero.DataSource = Enum.GetValues(typeof(GenerosEnum));
 
+            
             PrimeiroNome.Text = clienteAtual.PrimeiroNome;
             Sobrenome.Text = clienteAtual.Sobrenome;
             CPF.Text = clienteAtual.CPF;
@@ -46,19 +43,27 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
 
         private void Btn_Editar_Click(object sender, EventArgs e)
         {
-
-            var clienteAtualizado = new Modelos.Cliente
+            try
             {
-                PrimeiroNome = PrimeiroNome.Text,
-                Sobrenome = Sobrenome.Text,
-                Email = Email.Text,
-                Telefone = Telefone.Text,
-                CPF = CPF.Text,
-                DataNascimento = DataDeNascimento.Value,
-                Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), Genero.SelectedItem.ToString())
-            };
+                var clienteAtualizado = new Modelos.Cliente
+                {
+                    IdCliente = clienteAtual.IdCliente,
+                    PrimeiroNome = PrimeiroNome.Text,
+                    Sobrenome = Sobrenome.Text,
+                    Email = Email.Text,
+                    Telefone = Telefone.Text,
+                    CPF = CPF.Text,
+                    DataNascimento = DataDeNascimento.Value,
+                    Genero = (GenerosEnum)Genero.SelectedItem
+                };
 
-            _clienteRepository.AtualizarCliente(clienteAtualizado);
+                _clienteRepository.AtualizarCliente(clienteAtualizado);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("O erro é o seguinte: " + ex.Message);
+            }
+
             this.Close();
      
         }

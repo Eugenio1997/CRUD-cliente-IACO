@@ -9,36 +9,33 @@ using System.Windows.Forms;
 using CRUD_cliente_IACO.CustomEventArgs;
 using System.Drawing;
 using CRUD_cliente_IACO.Formularios.Cliente.Editar;
+using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
     public partial class ListaClienteForm : Form, IListagemClienteForm
     {
         private readonly IClienteRepository _clienteRepository;
-        private readonly ICadastroClienteForm _cadastroClienteForm;
+        private readonly CadastroClienteForm _cadastroClienteForm;
+
 
         private Modelos.Cliente _cliente;
 
         public ListaClienteForm(
-            IClienteRepository clienteRepository,
-            ICadastroClienteForm cadastroClienteForm)
+            IClienteRepository clienteRepository)
         {
             if(clienteRepository == null)
                 throw new ArgumentNullException(nameof(clienteRepository));
             
-            if (cadastroClienteForm == null)
-                throw new ArgumentNullException(nameof(cadastroClienteForm));
-
+          
             InitializeComponent();
-            //this.Resize += ListaClienteForm_Resize;
             _clienteRepository = clienteRepository;
-            _cadastroClienteForm = cadastroClienteForm;
 
-            _cadastroClienteForm.OnClienteEnviado += CadastroClienteForm_OnClienteRecebido;
-
+            //_cadastroClienteForm.OnClienteEnviado += CadastroClienteForm_OnClienteRecebido;
 
         }
 
+        /*
         public void CadastroClienteForm_OnClienteRecebido(object sender, ClienteEventArgs e)
         {
             _cliente = e.Cliente;
@@ -49,8 +46,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
             // Isso aqui já chama o método que mostra a tela + carrega os dados
             showClientsOnDatagrid();
-        }
 
+        }
+        */
         public void showClientsOnDatagrid()
         {
             try
@@ -85,10 +83,11 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
  
                     dataGridViewClientes.ScrollBars = ScrollBars.Both;
-                    this.Show();
-                    this.BringToFront();
+                    //this.Show();
+                    this.Visible = false;
+                    //this.BringToFront();
+                    
 
-                 
                 }
                 else
                 {
@@ -128,7 +127,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 if (nomeColuna == "Editar")
                 {
                     // Abrir formulário de edição passando o cliente
-                    EditarClienteForm editarForm = new EditarClienteForm(clienteSelecionado);
+                    EditarClienteForm editarForm = new EditarClienteForm(clienteSelecionado, null, _clienteRepository);
                     editarForm.ShowDialog();
 
                     // Atualiza a lista após edição
@@ -147,5 +146,18 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             }
 
         }
+
+
+        private void campoFiltro_TextChanged(object sender, EventArgs e)
+        {
+            string textoBusca = campoFiltro.Text.ToLower();
+            var clientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
+
+            dataGridViewClientes.DataSource = clientes;
+            dataGridViewClientes.Refresh();
+
+        }
+
+
     }
 }

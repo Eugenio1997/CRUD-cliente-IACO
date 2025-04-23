@@ -1,4 +1,6 @@
-﻿using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+﻿using CRUD_cliente_IACO.Formularios;
+using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+using CRUD_cliente_IACO.Formularios.Cliente.Editar;
 using CRUD_cliente_IACO.Formularios.Cliente.Listar;
 using CRUD_cliente_IACO.Formularios.Interfaces;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
@@ -11,8 +13,11 @@ namespace CRUD_cliente_IACO.Factories
         private static CadastroClienteForm _cadastroClienteForm;
         private static CadastroEnderecoClienteForm _cadastroEnderecoClienteForm;
         private static ListaClienteForm _listaClienteForm;
+        private static MenuPrincipalForm _menuPrincipalForm;
+        private static EditarClienteForm _editarClienteForm;
 
-        public static CadastroClienteForm GetEditarClienteForm(IClienteRepository clienteRepository, ListaClienteForm listaClienteForm)
+
+        public static CadastroClienteForm GetCadastrarClienteForm(IClienteRepository clienteRepository, ListaClienteForm listaClienteForm)
         {
             if (_cadastroClienteForm == null || _cadastroClienteForm.IsDisposed)
             {
@@ -21,6 +26,21 @@ namespace CRUD_cliente_IACO.Factories
             return _cadastroClienteForm;
         }
 
+        public static MenuPrincipalForm GetMenuPrincipalForm(CadastroClienteForm cadastroForm, ListaClienteForm listaForm, IClienteRepository clienteRepository = null)
+        {
+           
+            _cadastroClienteForm = GetCadastrarClienteForm(clienteRepository, _listaClienteForm);
+            _listaClienteForm = GetListagemClienteForm(clienteRepository);
+
+            return _menuPrincipalForm = new MenuPrincipalForm(_cadastroClienteForm, _listaClienteForm);
+        }
+
+        public static EditarClienteForm GetEditarClienteForm(ListaClienteForm listaClienteForm, IClienteRepository clienteRepository)
+        {
+            _listaClienteForm = GetListagemClienteForm(clienteRepository);
+            _editarClienteForm = new EditarClienteForm(null, listaClienteForm, clienteRepository);
+            return _editarClienteForm;
+        }
         /*
         public static CadastroEnderecoClienteForm GetCadastroEnderecoClienteForm(
             IClienteRepository clienteRepository,
@@ -39,11 +59,11 @@ namespace CRUD_cliente_IACO.Factories
             return _cadastroEnderecoClienteForm;
         }
         */
-        public static ListaClienteForm GetListagemClienteForm(IClienteRepository clienteRepository, ICadastroClienteForm cadastroForm)
+        public static ListaClienteForm GetListagemClienteForm(IClienteRepository clienteRepository)
         {
             if (_listaClienteForm == null || _listaClienteForm.IsDisposed)
             {
-                _listaClienteForm = new ListaClienteForm(clienteRepository, cadastroForm);
+                _listaClienteForm = new ListaClienteForm(clienteRepository);
             }
             return _listaClienteForm;
         }

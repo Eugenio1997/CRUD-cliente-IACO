@@ -234,8 +234,17 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             };
 
 
+            Console.WriteLine(cliente);
+            var confirmar = MessageBox.Show("Tem certeza que deseja cadastrar?", "Confirmar", MessageBoxButtons.YesNo);
+            if (confirmar == DialogResult.Yes)
+            {
+                _clienteRepository.InserirCliente(cliente);
+                Close();
+            }
+
             //verifica se algum código se inscreveu no evento e dispara evento
-            OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
+            //OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
+
 
             /*
             if (_listaClienteForm != null)

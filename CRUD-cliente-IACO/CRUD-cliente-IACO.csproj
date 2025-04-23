@@ -106,6 +106,7 @@
     <Compile Include="CustomEventArgs\ClienteEventArgs.cs" />
     <Compile Include="DatabaseSeeder.cs" />
     <Compile Include="Enums\FormTypeEnum.cs" />
+    <Compile Include="Extensions\GenerosEnumsExtensions.cs" />
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
     <Compile Include="Formularios\Cliente\Editar\EditarClienteForm.cs">
@@ -115,6 +116,12 @@
       <DependentUpon>EditarClienteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Interfaces\IListagemClienteForm.cs" />
+    <Compile Include="Formularios\MenuPrincipalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\MenuPrincipalForm.Designer.cs">
+      <DependentUpon>MenuPrincipalForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\CidadeDTO.cs" />
     <Compile Include="Modelos\DTOs\EnderecoDTO.cs" />
@@ -168,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\Cliente\Listar\ListaClienteForm.resx">
       <DependentUpon>ListaClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\MenuPrincipalForm.resx">
+      <DependentUpon>MenuPrincipalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
