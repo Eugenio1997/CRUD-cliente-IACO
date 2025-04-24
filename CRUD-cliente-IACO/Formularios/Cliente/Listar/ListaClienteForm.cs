@@ -66,7 +66,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     if (!dataGridViewClientes.Columns.Contains("Editar"))
                     {
                         DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-                        btnEditar.Name = "Editar";
                         btnEditar.Text = "Editar";
                         btnEditar.UseColumnTextForButtonValue = true;
                         dataGridViewClientes.Columns.Add(btnEditar);
@@ -75,7 +74,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     if (!dataGridViewClientes.Columns.Contains("Excluir"))
                     {
                         DataGridViewButtonColumn btnExcluir = new DataGridViewButtonColumn();
-                        btnExcluir.Name = "Excluir";
                         btnExcluir.Text = "Excluir";
                         btnExcluir.UseColumnTextForButtonValue = true;
                         dataGridViewClientes.Columns.Add(btnExcluir);
