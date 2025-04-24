@@ -128,6 +128,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 {
                     // Abrir formulário de edição passando o cliente
                     EditarClienteForm editarForm = new EditarClienteForm(clienteSelecionado, null, _clienteRepository);
+
                     editarForm.ShowDialog();
 
                     // Atualiza a lista após edição
@@ -136,7 +137,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 }
                 else if (nomeColuna == "Excluir")
                 {
-                    var confirmar = MessageBox.Show("Tem certeza que deseja excluir?", "Confirmar", MessageBoxButtons.YesNo);
+                    var confirmar = MessageBox.Show("Tem certeza que deseja excluir?", "Excluir cliente", MessageBoxButtons.YesNo);
                     if (confirmar == DialogResult.Yes)
                     {
                         _clienteRepository.ExcluirCliente(clienteSelecionado.IdCliente);

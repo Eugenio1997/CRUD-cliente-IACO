@@ -135,7 +135,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // PrimeiroNome
             // 
             this.PrimeiroNome.Location = new System.Drawing.Point(65, 145);
-            this.PrimeiroNome.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PrimeiroNome.Margin = new System.Windows.Forms.Padding(2);
             this.PrimeiroNome.Name = "PrimeiroNome";
             this.PrimeiroNome.Size = new System.Drawing.Size(127, 20);
             this.PrimeiroNome.TabIndex = 2;
@@ -143,7 +143,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // Sobrenome
             // 
             this.Sobrenome.Location = new System.Drawing.Point(65, 214);
-            this.Sobrenome.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Sobrenome.Margin = new System.Windows.Forms.Padding(2);
             this.Sobrenome.Name = "Sobrenome";
             this.Sobrenome.Size = new System.Drawing.Size(127, 20);
             this.Sobrenome.TabIndex = 4;
@@ -152,7 +152,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // Email
             // 
             this.Email.Location = new System.Drawing.Point(502, 145);
-            this.Email.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Email.Margin = new System.Windows.Forms.Padding(2);
             this.Email.Name = "Email";
             this.Email.Size = new System.Drawing.Size(127, 20);
             this.Email.TabIndex = 16;
@@ -161,7 +161,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             this.Genero.FormattingEnabled = true;
             this.Genero.Location = new System.Drawing.Point(65, 277);
-            this.Genero.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Genero.Margin = new System.Windows.Forms.Padding(2);
             this.Genero.Name = "Genero";
             this.Genero.Size = new System.Drawing.Size(127, 21);
             this.Genero.TabIndex = 6;
@@ -170,7 +170,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             this.Btn_Cadastrar.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Btn_Cadastrar.Location = new System.Drawing.Point(555, 338);
-            this.Btn_Cadastrar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Btn_Cadastrar.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Cadastrar.Name = "Btn_Cadastrar";
             this.Btn_Cadastrar.Size = new System.Drawing.Size(70, 28);
             this.Btn_Cadastrar.TabIndex = 18;
@@ -198,7 +198,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             // 
             this.Btn_Limpar.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Btn_Limpar.Location = new System.Drawing.Point(461, 338);
-            this.Btn_Limpar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Btn_Limpar.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Limpar.Name = "Btn_Limpar";
             this.Btn_Limpar.Size = new System.Drawing.Size(70, 28);
             this.Btn_Limpar.TabIndex = 17;
@@ -236,7 +236,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Btn_Cadastrar);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CadastroClienteForm";
             this.Text = "Cadastro de dados pessoais";
             this.ResumeLayout(false);

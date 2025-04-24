@@ -13,7 +13,7 @@ namespace CRUD_cliente_IACO.Factories
         private static CadastroClienteForm _cadastroClienteForm;
         private static CadastroEnderecoClienteForm _cadastroEnderecoClienteForm;
         private static ListaClienteForm _listaClienteForm;
-        private static MenuPrincipalForm _menuPrincipalForm;
+        private static MenuPrincipal _menuPrincipalForm;
         private static EditarClienteForm _editarClienteForm;
 
 
@@ -26,13 +26,13 @@ namespace CRUD_cliente_IACO.Factories
             return _cadastroClienteForm;
         }
 
-        public static MenuPrincipalForm GetMenuPrincipalForm(CadastroClienteForm cadastroForm, ListaClienteForm listaForm, IClienteRepository clienteRepository = null)
+        public static MenuPrincipal GetMenuPrincipalForm(CadastroClienteForm cadastroForm, ListaClienteForm listaForm, IClienteRepository clienteRepository = null)
         {
            
             _cadastroClienteForm = GetCadastrarClienteForm(clienteRepository, _listaClienteForm);
             _listaClienteForm = GetListagemClienteForm(clienteRepository);
 
-            return _menuPrincipalForm = new MenuPrincipalForm(_cadastroClienteForm, _listaClienteForm);
+            return _menuPrincipalForm = new MenuPrincipal(_cadastroClienteForm, _listaClienteForm);
         }
 
         public static EditarClienteForm GetEditarClienteForm(ListaClienteForm listaClienteForm, IClienteRepository clienteRepository)

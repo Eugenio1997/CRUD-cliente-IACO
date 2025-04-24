@@ -149,6 +149,7 @@ namespace CRUD_cliente_IACO.Validacoes
 
         public static void ValidarCPF_Validating(MaskedTextBox txt)
         {
+            //Guarda o valor com a máscara
             string valor = txt.Text.Trim();
 
             // Remove a máscara

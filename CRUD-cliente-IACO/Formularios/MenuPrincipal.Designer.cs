@@ -1,6 +1,6 @@
 ﻿namespace CRUD_cliente_IACO.Formularios
 {
-    partial class MenuPrincipalForm
+    partial class MenuPrincipal
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipalForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.AdicionarCliente = new System.Windows.Forms.PictureBox();
@@ -98,7 +98,7 @@
             this.VisualizarClientesCadastrados.TabStop = false;
             this.VisualizarClientesCadastrados.Click += new System.EventHandler(this.VisualizarClientesCadastrados_Click);
             // 
-            // MenuPrincipalForm
+            // GestaoDeClientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -106,10 +106,9 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.Name = "MenuPrincipalForm";
+            this.Name = "GestaoDeClientes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MenuPrincipalForm";
-            this.Load += new System.EventHandler(this.MenuPrincipalForm_Load);
+            this.Text = "Gestão de Clientes";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AdicionarCliente)).EndInit();
             this.groupBox2.ResumeLayout(false);

@@ -10,11 +10,8 @@ namespace CRUD_cliente_IACO.Repositorios.Interfaces
         List<Cliente> ConsultarClientes();
         void ExcluirCliente(int id);
         void AtualizarCliente(Cliente cliente);
-        List<Cliente> BuscarClientesPorNome(string nome);
-
-        /*
+        List<Cliente> BuscarClientesPorNome(string nome); 
         Cliente ConsultarClientePorId(int id);
-        void ExcluirCliente(int id);
-        */
+        Cliente VerificarClienteExistePorCPF(string cpf);
     }
 } 

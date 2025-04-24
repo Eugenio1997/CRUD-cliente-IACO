@@ -231,7 +231,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Btn_Editar);
+            this.Location = new System.Drawing.Point(1000, 140);
             this.Name = "EditarClienteForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "EditarClienteForm";
             this.ResumeLayout(false);
             this.PerformLayout();

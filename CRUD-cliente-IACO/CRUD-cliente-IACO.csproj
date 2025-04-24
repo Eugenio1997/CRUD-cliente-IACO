@@ -116,11 +116,11 @@
       <DependentUpon>EditarClienteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Interfaces\IListagemClienteForm.cs" />
-    <Compile Include="Formularios\MenuPrincipalForm.cs">
+    <Compile Include="Formularios\MenuPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\MenuPrincipalForm.Designer.cs">
-      <DependentUpon>MenuPrincipalForm.cs</DependentUpon>
+    <Compile Include="Formularios\MenuPrincipal.Designer.cs">
+      <DependentUpon>MenuPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="IoC\NinjectConfig.cs" />
     <Compile Include="Modelos\DTOs\CidadeDTO.cs" />
@@ -162,8 +162,6 @@
     <Compile Include="Services\Interfaces\ICEPService.cs" />
     <Compile Include="Services\Interfaces\IEstadoService.cs" />
     <Compile Include="Validacoes\ValidadorDeClienteDadosPessoais.cs" />
-    <Compile Include="Validacoes\ValidadorDeClienteEndereco.cs" />
-    <Compile Include="Validadores\UsuarioValidador.cs" />
     <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.resx">
       <DependentUpon>CadastroClienteForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,8 +174,8 @@
     <EmbeddedResource Include="Formularios\Cliente\Listar\ListaClienteForm.resx">
       <DependentUpon>ListaClienteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\MenuPrincipalForm.resx">
-      <DependentUpon>MenuPrincipalForm.cs</DependentUpon>
+    <EmbeddedResource Include="Formularios\MenuPrincipal.resx">
+      <DependentUpon>MenuPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -207,6 +205,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="assets\customer.png" />
+    <Content Include="assets\vector-button-plus-icon.jpg" />
     <Content Include="bin\Debug\CRUD-cliente-IACO.exe" />
     <Content Include="bin\Debug\CRUD-cliente-IACO.pdb" />
     <Content Include="regexFormatos.txt" />

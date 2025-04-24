@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 using CRUD_cliente_IACO.Enums;
+using System.Reflection;
 
 namespace CRUD_cliente_IACO.Modelos
 {
@@ -41,6 +42,26 @@ namespace CRUD_cliente_IACO.Modelos
         public string Email { get; set; }
 
 
+        public bool isEqual(Cliente cliente)
+        {
+            foreach (PropertyInfo prop in cliente.GetType().GetProperties())
+            {
+                // Pega o valor da propriedade no objeto passado como parâmetro
+                object valorCliente = prop.GetValue(cliente, null);
+
+                // Pega o valor da propriedade no objeto atual (this)
+                object valorAtual = prop.GetValue(this, null);
+
+                // Se os valores forem diferentes, retorna false
+                if ((valorCliente == null && valorAtual != null) ||
+                    (valorCliente != null && !valorCliente.Equals(valorAtual)))
+                {
+                    return false;
+                }
+            }
+
+            return true; // Todos os valores são iguais
+        }
         public override string ToString()
         {
             return $"Primeiro Nome: {PrimeiroNome}\n" +

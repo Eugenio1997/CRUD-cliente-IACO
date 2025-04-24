@@ -2,7 +2,7 @@
 using CRUD_cliente_IACO.Formularios.Cliente.Listar;
 using CRUD_cliente_IACO.Repositorios.Interfaces;
 using System;
-
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
@@ -23,6 +23,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
             clienteAtual = cliente;
             PreencherCampos();
             _clienteRepository = clienteRepository;
+
         }
 
 
@@ -57,7 +58,24 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Editar
                     Genero = (GenerosEnum)Genero.SelectedItem
                 };
 
-                _clienteRepository.AtualizarCliente(clienteAtualizado);
+                Modelos.Cliente clienteDB = _clienteRepository
+                        .ConsultarClientePorId(clienteAtual.IdCliente);
+
+                if (clienteAtualizado.isEqual(clienteDB))
+                {
+                    MessageBox.Show(
+                        "Os dados inseridos são idênticos aos já cadastrados.\nNenhuma atualização será realizada.",
+                        "Nenhuma alteração detectada",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    return;
+                }
+                else
+                {
+                    _clienteRepository.AtualizarCliente(clienteAtualizado);
+                }
+
             }
             catch (Exception ex)
             {

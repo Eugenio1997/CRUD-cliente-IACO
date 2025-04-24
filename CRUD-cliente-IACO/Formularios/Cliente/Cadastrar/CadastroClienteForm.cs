@@ -234,13 +234,43 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             };
 
 
-            Console.WriteLine(cliente);
-            var confirmar = MessageBox.Show("Tem certeza que deseja cadastrar?", "Confirmar", MessageBoxButtons.YesNo);
-            if (confirmar == DialogResult.Yes)
+            Console.WriteLine(cliente.ToString());
+
+            if (_clienteRepository.VerificarClienteExistePorCPF(cliente.CPF) != null)
+            {
+                MessageBox.Show(
+                    "Já existe um cliente cadastrado com este CPF.\nTente novamente.",
+                    "Cadastro de cliente não permitido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                return;
+            }
+            else
             {
                 _clienteRepository.InserirCliente(cliente);
+                MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
+            /*
+            if (clienteExiste)
+            {
+                MessageBox.Show(
+                    "Os dados inseridos são idênticos aos já cadastrados.\nNenhuma atualização será realizada.",
+                    "Nenhuma alteração detectada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                return;
+            }
+            else
+            {
+                _clienteRepository.AtualizarCliente(clienteAtualizado);
+            }
+            */
+
+           
+         
 
             //verifica se algum código se inscreveu no evento e dispara evento
             //OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
@@ -257,6 +287,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             */
 
         }
+
+        
     }
 }
  

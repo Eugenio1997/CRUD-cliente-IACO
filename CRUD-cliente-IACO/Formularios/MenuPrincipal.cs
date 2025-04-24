@@ -6,13 +6,13 @@ using System.Windows.Forms;
 
 namespace CRUD_cliente_IACO.Formularios
 {
-    public partial class MenuPrincipalForm : Form
+    public partial class MenuPrincipal : Form
     {
         
         public CadastroClienteForm _cadastroForm;
         public ListaClienteForm _listaForm;
 
-        public MenuPrincipalForm(
+        public MenuPrincipal(
             CadastroClienteForm cadastroForm,
             ListaClienteForm listaForm
             )
@@ -20,11 +20,6 @@ namespace CRUD_cliente_IACO.Formularios
             InitializeComponent();
             _cadastroForm = cadastroForm;
             _listaForm = listaForm;
-        }
-
-        public void MenuPrincipalForm_Load(object sender, EventArgs e)
-        {
-
         }
 
         public void AdicionarCliente_Click(object sender, EventArgs e)
