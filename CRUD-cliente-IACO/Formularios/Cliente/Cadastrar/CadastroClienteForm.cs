@@ -19,7 +19,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
-
+        bool formFechado = false;
         
         private IClienteRepository _clienteRepository;
         private ListaClienteForm _listaClienteForm;
@@ -44,8 +44,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 throw new ArgumentNullException(nameof(clienteRepository));
            
 
-            AdicionarEventosNosCampos();
-            PreencherComboBoxGeneros();
 
             _clienteRepository = clienteRepository;
             _listaClienteForm = listaClienteForm;
@@ -60,7 +58,14 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             PrimeiroNome.KeyPress += PrimeiroNome_KeyPress;
             Sobrenome.KeyPress += Sobrenome_KeyPress;
             Genero.SelectedIndexChanged += Genero_SelectedIndexChanged;
+            //this.FormClosed += Formulario_FormClosed;
+            Load += CadastroClienteForm_Load; ;
+        }
 
+        private void CadastroClienteForm_Load(object sender, EventArgs e)
+        {
+            AdicionarEventosNosCampos();
+            PreencherComboBoxGeneros();
         }
 
         public void DefinirFormularioLista(ListaClienteForm listaForm)
@@ -113,9 +118,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             var generos = new List<string>
             {
                 "Selecione o gênero",
-                GenerosEnum.Homem.ToString(),
-                GenerosEnum.Mulher.ToString(),
-                GenerosEnum.PrefiroNaoIdentificar.ToString()
+                GenerosEnum.H.ToString(),
+                GenerosEnum.M.ToString(),
+                GenerosEnum.O.ToString()
             };
 
            Genero.DataSource = generos;
@@ -236,7 +241,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
             Console.WriteLine(cliente.ToString());
 
-            if (_clienteRepository.VerificarClienteExistePorCPF(cliente.CPF) != null)
+            if (_clienteRepository.VerificarClienteExistePorCPF(cliente.CPF))
             {
                 MessageBox.Show(
                     "Já existe um cliente cadastrado com este CPF.\nTente novamente.",
@@ -244,7 +249,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
-                return;
+                CPF.Text = "";
+         
             }
             else
             {
@@ -252,43 +258,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
-            /*
-            if (clienteExiste)
-            {
-                MessageBox.Show(
-                    "Os dados inseridos são idênticos aos já cadastrados.\nNenhuma atualização será realizada.",
-                    "Nenhuma alteração detectada",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-                return;
-            }
-            else
-            {
-                _clienteRepository.AtualizarCliente(clienteAtualizado);
-            }
-            */
 
-           
-         
-
-            //verifica se algum código se inscreveu no evento e dispara evento
-            //OnClienteEnviado.Invoke(this, new ClienteEventArgs(cliente));
-
-
-            /*
-            if (_listaClienteForm != null)
-            {
-                _listaClienteForm.StartPosition = FormStartPosition.Manual;
-                _listaClienteForm.Location = new Point(0, 0); // canto superior esquerdo
-                _listaClienteForm.Show();
-                _listaClienteForm.BringToFront();
-            }
-            */
 
         }
 
-        
     }
 }
  

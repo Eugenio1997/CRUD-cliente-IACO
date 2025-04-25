@@ -15,6 +15,7 @@ namespace CRUD_cliente_IACO.Repositorios
     {
         private readonly OracleConnection _connection;
 
+
         public ClienteRepository(OracleConnection connection)
         {
             if (connection == null)
@@ -130,7 +131,7 @@ namespace CRUD_cliente_IACO.Repositorios
                                     IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
                                     PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
                                     Sobrenome = reader["SOBRENOME"].ToString(),
-                                    Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.PrefiroNaoIdentificar,
+                                    Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.O,
                                     CPF = reader["CPF"].ToString(),
                                     Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                                     Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
@@ -197,7 +198,7 @@ namespace CRUD_cliente_IACO.Repositorios
                                 IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
                                 PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
                                 Sobrenome = reader["SOBRENOME"].ToString(),
-                                Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.PrefiroNaoIdentificar,
+                                Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.O,
                                 CPF = reader["CPF"].ToString(),
                                 Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                                 Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
@@ -249,7 +250,7 @@ namespace CRUD_cliente_IACO.Repositorios
 
                         oracleCommand.Parameters.Add("primeiroNome", OracleDbType.Varchar2).Value = cliente.PrimeiroNome;
                         oracleCommand.Parameters.Add("sobrenome", OracleDbType.Varchar2).Value = cliente.Sobrenome;
-                        oracleCommand.Parameters.Add("genero", OracleDbType.Varchar2).Value = cliente.Genero.ToChar();
+                        oracleCommand.Parameters.Add("genero", OracleDbType.Varchar2).Value = cliente.Genero.ParaChar();
                         oracleCommand.Parameters.Add("cpf", OracleDbType.Varchar2).Value = cliente.CPF ?? (object)DBNull.Value;
                         oracleCommand.Parameters.Add("dataNascimento", OracleDbType.Date).Value =
                             cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
@@ -361,7 +362,8 @@ namespace CRUD_cliente_IACO.Repositorios
                     oracleCommand.CommandText = @"
                         SELECT * 
                         FROM Clientes c 
-                        WHERE LOWER(c.PRIMEIRO_NOME) LIKE :nome OR LOWER(c.SOBRENOME) LIKE :nome";
+                        WHERE 
+                            LOWER(c.PRIMEIRO_NOME) LIKE :nome";
 
 
                     oracleCommand.Parameters.Add(new OracleParameter("nome", OracleDbType.Varchar2)).Value = "%" + nome.ToLowerInvariant() + "%";
@@ -374,28 +376,25 @@ namespace CRUD_cliente_IACO.Repositorios
                         {
                             while (reader.Read())
                             {
-                                var generoTexto = reader.GetString(3);
-                                GenerosEnum generoEnum;
-                                try
-                                {
-                                    generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), generoTexto);
-                                }
-                                catch
-                                {
-                                    generoEnum = GenerosEnum.PrefiroNaoIdentificar;
-                                }
+                                Console.WriteLine((GenerosEnum)Convert.ToInt32(reader["GENERO"]));
 
                                 lista.Add(new Cliente
                                 {
-                                    IdCliente = reader.GetInt32(0),
-                                    PrimeiroNome = reader.GetString(1),
-                                    Sobrenome = reader.GetString(2),
-                                    Genero = generoEnum,
-                                    CPF = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                    Email = reader.IsDBNull(5) ? null : reader.GetString(5),
-                                    Telefone = reader.IsDBNull(6) ? null : reader.GetString(6),
-                                    DataNascimento = reader.IsDBNull(7) ? new DateTime() : reader.GetDateTime(7)
+                                    IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                                    PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                                    Sobrenome = reader["SOBRENOME"].ToString(),
+                                    Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.O,
+                                    CPF = reader["CPF"].ToString(),
+                                    Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                                    Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+
                                 });
+
+
+
+                                    
+
                             }
                         }
                     }
@@ -422,10 +421,10 @@ namespace CRUD_cliente_IACO.Repositorios
             return lista;
         }
 
-        public Cliente VerificarClienteExistePorCPF(string cpf)
+        public bool VerificarClienteExistePorCPF(string cpf)
         {
-            Cliente cliente = new Cliente();
 
+            int clienteExiste = 0;
             try
             {
                 if (_connection.State != ConnectionState.Open)
@@ -435,34 +434,16 @@ namespace CRUD_cliente_IACO.Repositorios
                 using (var oracleCommand = _connection.CreateCommand())
                 {
                     oracleCommand.CommandText = @"
-                        SELECT *
+                        SELECT COUNT(*)
                         FROM Clientes c
                         WHERE c.CPF = :cpf
                     ";
 
-                    oracleCommand.Parameters.Add("cpf", OracleDbType.Varchar2).Value = cpf;
-
+                    //oracleCommand.Parameters.Add("cpf", OracleDbType.Varchar2).Value = cpf;
+                    oracleCommand.Parameters.Add(new OracleParameter("cpf", cpf));
                     try
                     {
-                        using (var reader = oracleCommand.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-
-                                cliente = new Cliente()
-                                {
-                                    IdCliente = reader.GetInt32(0),
-                                    PrimeiroNome = reader.GetString(1),
-                                    Sobrenome = reader.GetString(2),
-                                    Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), reader.GetString(3)),
-                                    CPF = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                    Email = reader.IsDBNull(5) ? null : reader.GetString(5),
-                                    Telefone = reader.IsDBNull(6) ? null : reader.GetString(6),
-                                    DataNascimento = reader.IsDBNull(7) ? new DateTime() : reader.GetDateTime(7)
-                                };
-
-                            }
-                        }
+                        clienteExiste = Convert.ToInt32(oracleCommand.ExecuteScalar());
                     }
                     catch (OracleException ex)
                     {
@@ -484,7 +465,81 @@ namespace CRUD_cliente_IACO.Repositorios
                 }
             }
 
-            return cliente;
+            return clienteExiste > 0;
+
+        }
+
+        public List<Cliente> BuscarClientesPorGenero(string generoId)
+        {
+            var lista = new List<Cliente>();
+
+            try
+            {
+
+                if (_connection.State != ConnectionState.Open)
+                    _connection.Open();
+
+                using (var oracleCommand = _connection.CreateCommand())
+                {
+                    oracleCommand.CommandText = @"
+                        SELECT * 
+                        FROM Clientes c
+                        WHERE c.GENERO = :generoId";
+
+
+                    oracleCommand.Parameters.Add(new OracleParameter("generoId", OracleDbType.Varchar2)).Value = generoId;
+
+
+
+                    try
+                    {
+                        using (var reader = oracleCommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine("GENERO: " + (GenerosEnum)Convert.ToInt32(reader["GENERO"]));
+
+                                GenerosEnum genero = Convert.ToString(reader["GENERO"]).ParaGenerosEnum();
+
+                                lista.Add(new Cliente
+                                {
+                                    IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                                    PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                                    Sobrenome = reader["SOBRENOME"].ToString(),
+                                    Genero = reader["GENERO"] != DBNull.Value ? genero : GenerosEnum.O,
+                                    CPF = reader["CPF"].ToString(),
+                                    Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                                    Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+
+                                });
+
+                            }
+                        }
+                    }
+                    catch (OracleException ex)
+                    {
+                        Console.WriteLine("O erro: " + ex.Message);
+                    }
+
+                }
+
+
+            }
+            catch (OracleException ex)
+            {
+                Console.WriteLine("O erro: " + ex.Message);
+            }
+            finally
+            {
+                
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                
+            }
+            return lista;
         }
 
     }

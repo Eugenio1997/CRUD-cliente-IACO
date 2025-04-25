@@ -239,6 +239,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "CadastroClienteForm";
             this.Text = "Cadastro de dados pessoais";
+            this.Load += new System.EventHandler(this.CadastroClienteForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

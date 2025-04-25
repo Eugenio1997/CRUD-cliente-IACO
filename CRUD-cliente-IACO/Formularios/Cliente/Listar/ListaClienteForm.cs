@@ -10,16 +10,14 @@ using CRUD_cliente_IACO.CustomEventArgs;
 using System.Drawing;
 using CRUD_cliente_IACO.Formularios.Cliente.Editar;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
+using CRUD_cliente_IACO.Enums;
+using CRUD_cliente_IACO.Validacoes;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
     public partial class ListaClienteForm : Form, IListagemClienteForm
     {
         private readonly IClienteRepository _clienteRepository;
-        private readonly CadastroClienteForm _cadastroClienteForm;
-
-
-        private Modelos.Cliente _cliente;
 
         public ListaClienteForm(
             IClienteRepository clienteRepository)
@@ -31,24 +29,41 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             InitializeComponent();
             _clienteRepository = clienteRepository;
 
-            //_cadastroClienteForm.OnClienteEnviado += CadastroClienteForm_OnClienteRecebido;
-
+            Load += ListaClienteForm_Load;
         }
 
-        /*
-        public void CadastroClienteForm_OnClienteRecebido(object sender, ClienteEventArgs e)
+        private void ListaClienteForm_Load(object sender, EventArgs e)
         {
-            _cliente = e.Cliente;
+            PreencherComboBoxGeneros();
+            GeneroFiltro.SelectedIndexChanged += GeneroFiltro_SelectedIndexChanged;
+        }
 
-            Console.WriteLine(_cliente);
+        public void PreencherComboBoxGeneros()
+        {
+            var generos = new List<KeyValuePair<int, string>>
+            {
+                new KeyValuePair<int, string>(-1, "Selecione o gênero"),
+                new KeyValuePair<int, string>((int)GenerosEnum.H, GenerosEnum.H.ToString()),
+                new KeyValuePair<int, string>((int)GenerosEnum.M, GenerosEnum.M.ToString()),
+                new KeyValuePair<int, string>((int)GenerosEnum.O, GenerosEnum.O.ToString())
+            };
 
-            _clienteRepository.InserirCliente(_cliente);
+            GeneroFiltro.DataSource = generos;
+            GeneroFiltro.DisplayMember = "Value";
+            GeneroFiltro.ValueMember = "Key";
+            GeneroFiltro.SelectedIndex = 0;
 
-            // Isso aqui já chama o método que mostra a tela + carrega os dados
-            showClientsOnDatagrid();
+            /*
+            var generos = new List<string>
+            {
+                "Selecione o gênero",
+                GenerosEnum.H.ToString(),
+                GenerosEnum.M.ToString(),
+                GenerosEnum.O.ToString()
+            };
+            */
 
         }
-        */
         public void showClientsOnDatagrid()
         {
             try
@@ -66,6 +81,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     if (!dataGridViewClientes.Columns.Contains("Editar"))
                     {
                         DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                        btnEditar.Name = "Editar"; //Necessario para identificar se a coluna existe ou nao
                         btnEditar.Text = "Editar";
                         btnEditar.UseColumnTextForButtonValue = true;
                         dataGridViewClientes.Columns.Add(btnEditar);
@@ -74,6 +90,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     if (!dataGridViewClientes.Columns.Contains("Excluir"))
                     {
                         DataGridViewButtonColumn btnExcluir = new DataGridViewButtonColumn();
+                        btnExcluir.Name = "Excluir"; //Necessario para identificar se a coluna existe ou nao
                         btnExcluir.Text = "Excluir";
                         btnExcluir.UseColumnTextForButtonValue = true;
                         dataGridViewClientes.Columns.Add(btnExcluir);
@@ -99,17 +116,6 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             }
 
         }
-
-        /*
-        private void ListaClienteForm_Resize(object sender, EventArgs e)
-        {
-            // Calcula a posição central
-            int x = (this.ClientSize.Width - dataGridViewClientes.Width) / 2;
-            int y = (this.ClientSize.Height - dataGridViewClientes.Height) / 2;
-
-            dataGridViewClientes.Location = new Point(x, y);
-        }
-        */
 
         private void dataGridViewClientes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -147,16 +153,41 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         }
 
 
-        private void campoFiltro_TextChanged(object sender, EventArgs e)
+        private void primeiroNomeFiltro_TextChanged(object sender, EventArgs e)
         {
-            string textoBusca = campoFiltro.Text.ToLower();
-            var clientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
+            string textoBusca = primeiroNomeFiltro.Text.ToLower();
+            var listaClientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
 
-            dataGridViewClientes.DataSource = clientes;
+            dataGridViewClientes.DataSource = listaClientes;
             dataGridViewClientes.Refresh();
+        }
 
+        private void GeneroFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
+            var valorSelecionado = (KeyValuePair<int, string>)GeneroFiltro.SelectedItem;
+
+            //string generoSelecionadoNome = (string)GeneroFiltro.SelectedItem;
+            //int valorSelecionado = Convert.ToInt32(GeneroFiltro.SelectedValue);
+
+            Console.WriteLine(valorSelecionado.Key);
+            if (valorSelecionado.Key >= 0)
+            {
+                // Exemplo: Exibir no console
+                //Console.WriteLine("Gênero selecionado: " + generoSelecionadoNome);
+
+                var listaClientes = _clienteRepository.BuscarClientesPorGenero(Convert.ToString(valorSelecionado));
+                dataGridViewClientes.DataSource = listaClientes;
+              
+            }
+           
+            
         }
 
 
+            
+
+      
     }
 }
