@@ -109,6 +109,7 @@
     <Compile Include="Extensions\GenerosEnumsExtensions.cs" />
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
+    <Compile Include="Filtros\Cliente\GeneroFiltro.cs" />
     <Compile Include="Formularios\Cliente\Editar\EditarClienteForm.cs">
       <SubType>Form</SubType>
     </Compile>

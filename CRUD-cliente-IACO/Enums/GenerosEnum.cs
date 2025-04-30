@@ -7,8 +7,8 @@ namespace CRUD_cliente_IACO.Enums
 {
     public enum GenerosEnum
     {
-        H = 0,
-        M = 1,
-        O = 2,
+        Homem = 0,
+        Mulher = 1,
+        Outros = 2,
     }
 }

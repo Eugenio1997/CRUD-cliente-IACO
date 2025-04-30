@@ -12,11 +12,11 @@ namespace CRUD_cliente_IACO.Extensions
         {
             switch (genero)
             {
-                case GenerosEnum.H:
+                case GenerosEnum.Homem:
                     return "0";
-                case GenerosEnum.M:
+                case GenerosEnum.Mulher:
                     return "1";
-                case GenerosEnum.O:
+                case GenerosEnum.Outros:
                     return "2";
                 default:
                     return "2";
@@ -28,13 +28,13 @@ namespace CRUD_cliente_IACO.Extensions
             switch (genero)
             {
                 case "0":
-                    return GenerosEnum.H;
+                    return GenerosEnum.Homem;
                 case "1":
-                    return GenerosEnum.M;
+                    return GenerosEnum.Mulher;
                 case "2":
-                    return GenerosEnum.O;
+                    return GenerosEnum.Outros;
                 default:
-                    return GenerosEnum.O;
+                    return GenerosEnum.Outros;
             }
         }
     }

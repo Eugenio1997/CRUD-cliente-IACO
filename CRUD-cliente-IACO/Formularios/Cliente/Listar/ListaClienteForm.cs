@@ -20,7 +20,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
     {
         private readonly IClienteRepository _clienteRepository;
         bool generoSelecionado = false;
-
+        List<Modelos.Cliente> listaClientes;
         public ListaClienteForm(
             IClienteRepository clienteRepository)
         {
@@ -37,7 +37,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         private void ListaClienteForm_Load(object sender, EventArgs e)
         {
             PreencherComboBoxGeneros();
-            GeneroFiltro.SelectedIndexChanged += GeneroFiltro_SelectedIndexChanged;
+            //GeneroFiltro.SelectedIndexChanged += GeneroFiltro_SelectedIndexChanged;
         }
 
         public void PreencherComboBoxGeneros()
@@ -140,23 +140,26 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         }
 
-
+        /*
         private void primeiroNomeFiltro_TextChanged(object sender, EventArgs e)
         {
+
             string textoBusca = primeiroNomeFiltro.Text.ToLower();
-            var listaClientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
+            listaClientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
 
             dataGridViewClientes.DataSource = listaClientes;
             dataGridViewClientes.Refresh();
         }
+        */
 
+        /*
         private void GeneroFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
 
 
-            //string generoSelecionadoNome = (string)GeneroFiltro.SelectedItem;
+           
             if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
             GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
             int valorSelecionado = (int)generoEnum;
@@ -165,10 +168,50 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
            
             
         }
+        */
 
+        private void btn_buscar_clientes_Click(object sender, EventArgs e)
+        {
 
             
+            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
 
-      
+            //Recuperando o Genero
+            GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
+            int generoIdSelecionado = (int)generoEnum;
+
+            //Recuperando o Primeiro Nome
+            string primeiroNome = PrimeiroNomeFiltro.Text.ToLower();
+
+            //Recuperando o Sobrenome
+            string sobrenome = SobrenomeFiltro.Text.ToLower();
+
+            MessageBox.Show($"O Primeiro Nome é {primeiroNome}\n" + 
+                            $"O Sobrenome é {SobrenomeFiltro}\n" +
+                            $"O genero é {GeneroFiltro}\n" +
+                            $"A Data de Nascimento é {DataNascimentoFiltro}");
+
+        }
+
+        private void LimparFiltros_Click(object sender, EventArgs e)
+        {
+
+            PrimeiroNomeFiltro.Clear();
+            SobrenomeFiltro.Clear();
+            DataNascimentoFiltro.Value = DateTime.Now;
+
+            //limpando o filtro de genero
+            if (GeneroFiltro.SelectedItem.ToString() != "Selecione o gênero")
+            {
+                GeneroFiltro.Items.Clear();
+
+                GeneroFiltro.Items.Add("Selecione o gênero");
+                GeneroFiltro.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
+                GeneroFiltro.SelectedIndex = 0;
+            }
+            
+
+        }
+
     }
 }
