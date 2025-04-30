@@ -12,12 +12,14 @@ using CRUD_cliente_IACO.Formularios.Cliente.Editar;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Enums;
 using CRUD_cliente_IACO.Validacoes;
+using CRUD_cliente_IACO.Extensions;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
     public partial class ListaClienteForm : Form, IListagemClienteForm
     {
         private readonly IClienteRepository _clienteRepository;
+        bool generoSelecionado = false;
 
         public ListaClienteForm(
             IClienteRepository clienteRepository)
@@ -40,28 +42,14 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         public void PreencherComboBoxGeneros()
         {
-            var generos = new List<KeyValuePair<int, string>>
-            {
-                new KeyValuePair<int, string>(-1, "Selecione o gênero"),
-                new KeyValuePair<int, string>((int)GenerosEnum.H, GenerosEnum.H.ToString()),
-                new KeyValuePair<int, string>((int)GenerosEnum.M, GenerosEnum.M.ToString()),
-                new KeyValuePair<int, string>((int)GenerosEnum.O, GenerosEnum.O.ToString())
-            };
+            if (generoSelecionado == false) //se o genero nao tiver sido selecionado
+            {          
+                GeneroFiltro.Items.Add("Selecione o gênero");
+                GeneroFiltro.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
+                GeneroFiltro.SelectedIndex = 0;
+            }
 
-            GeneroFiltro.DataSource = generos;
-            GeneroFiltro.DisplayMember = "Value";
-            GeneroFiltro.ValueMember = "Key";
-            GeneroFiltro.SelectedIndex = 0;
-
-            /*
-            var generos = new List<string>
-            {
-                "Selecione o gênero",
-                GenerosEnum.H.ToString(),
-                GenerosEnum.M.ToString(),
-                GenerosEnum.O.ToString()
-            };
-            */
+            generoSelecionado = true;
 
         }
         public void showClientsOnDatagrid()
@@ -166,21 +154,14 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         {
 
             ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
-            var valorSelecionado = (KeyValuePair<int, string>)GeneroFiltro.SelectedItem;
+
 
             //string generoSelecionadoNome = (string)GeneroFiltro.SelectedItem;
-            //int valorSelecionado = Convert.ToInt32(GeneroFiltro.SelectedValue);
-
-            Console.WriteLine(valorSelecionado.Key);
-            if (valorSelecionado.Key >= 0)
-            {
-                // Exemplo: Exibir no console
-                //Console.WriteLine("Gênero selecionado: " + generoSelecionadoNome);
-
-                var listaClientes = _clienteRepository.BuscarClientesPorGenero(Convert.ToString(valorSelecionado));
-                dataGridViewClientes.DataSource = listaClientes;
-              
-            }
+            if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
+            GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
+            int valorSelecionado = (int)generoEnum;
+            var listaClientes = _clienteRepository.BuscarClientesPorGenero(valorSelecionado.ToString());
+            dataGridViewClientes.DataSource = listaClientes;
            
             
         }

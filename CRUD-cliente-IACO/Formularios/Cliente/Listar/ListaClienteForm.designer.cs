@@ -49,10 +49,11 @@
             this.ListagemDeClientes.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ListagemDeClientes.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ListagemDeClientes.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.ListagemDeClientes.Location = new System.Drawing.Point(17, 18);
+            this.ListagemDeClientes.Location = new System.Drawing.Point(23, 22);
+            this.ListagemDeClientes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ListagemDeClientes.Name = "ListagemDeClientes";
-            this.ListagemDeClientes.Padding = new System.Windows.Forms.Padding(10);
-            this.ListagemDeClientes.Size = new System.Drawing.Size(566, 49);
+            this.ListagemDeClientes.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.ListagemDeClientes.Size = new System.Drawing.Size(755, 60);
             this.ListagemDeClientes.TabIndex = 0;
             this.ListagemDeClientes.Text = "LISTAGEM DE CLIENTES";
             // 
@@ -63,20 +64,21 @@
             // dataGridViewClientes
             // 
             this.dataGridViewClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewClientes.Location = new System.Drawing.Point(17, 154);
-            this.dataGridViewClientes.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewClientes.Location = new System.Drawing.Point(23, 190);
+            this.dataGridViewClientes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewClientes.Name = "dataGridViewClientes";
             this.dataGridViewClientes.RowTemplate.Height = 24;
-            this.dataGridViewClientes.Size = new System.Drawing.Size(566, 191);
+            this.dataGridViewClientes.Size = new System.Drawing.Size(755, 235);
             this.dataGridViewClientes.TabIndex = 6;
             this.dataGridViewClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewClientes_CellClick);
             // 
             // primeiroNomeFiltro
             // 
             this.primeiroNomeFiltro.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.primeiroNomeFiltro.Location = new System.Drawing.Point(6, 52);
+            this.primeiroNomeFiltro.Location = new System.Drawing.Point(8, 64);
+            this.primeiroNomeFiltro.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.primeiroNomeFiltro.Name = "primeiroNomeFiltro";
-            this.primeiroNomeFiltro.Size = new System.Drawing.Size(121, 20);
+            this.primeiroNomeFiltro.Size = new System.Drawing.Size(160, 23);
             this.primeiroNomeFiltro.TabIndex = 2;
             this.primeiroNomeFiltro.TextChanged += new System.EventHandler(this.primeiroNomeFiltro_TextChanged);
             // 
@@ -84,9 +86,10 @@
             // 
             this.FiltroPrimeiroNomeLabel.AutoSize = true;
             this.FiltroPrimeiroNomeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FiltroPrimeiroNomeLabel.Location = new System.Drawing.Point(3, 36);
+            this.FiltroPrimeiroNomeLabel.Location = new System.Drawing.Point(4, 44);
+            this.FiltroPrimeiroNomeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.FiltroPrimeiroNomeLabel.Name = "FiltroPrimeiroNomeLabel";
-            this.FiltroPrimeiroNomeLabel.Size = new System.Drawing.Size(86, 13);
+            this.FiltroPrimeiroNomeLabel.Size = new System.Drawing.Size(112, 17);
             this.FiltroPrimeiroNomeLabel.TabIndex = 1;
             this.FiltroPrimeiroNomeLabel.Text = "Primeiro nome";
             // 
@@ -94,9 +97,10 @@
             // 
             this.GeneroFiltro.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GeneroFiltro.FormattingEnabled = true;
-            this.GeneroFiltro.Location = new System.Drawing.Point(144, 50);
+            this.GeneroFiltro.Location = new System.Drawing.Point(205, 62);
+            this.GeneroFiltro.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GeneroFiltro.Name = "GeneroFiltro";
-            this.GeneroFiltro.Size = new System.Drawing.Size(121, 21);
+            this.GeneroFiltro.Size = new System.Drawing.Size(187, 25);
             this.GeneroFiltro.TabIndex = 4;
             this.GeneroFiltro.SelectedIndexChanged += new System.EventHandler(this.GeneroFiltro_SelectedIndexChanged);
             // 
@@ -108,9 +112,11 @@
             this.Filtros.Controls.Add(this.FiltroPrimeiroNomeLabel);
             this.Filtros.Controls.Add(this.primeiroNomeFiltro);
             this.Filtros.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Filtros.Location = new System.Drawing.Point(17, 70);
+            this.Filtros.Location = new System.Drawing.Point(23, 86);
+            this.Filtros.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Filtros.Name = "Filtros";
-            this.Filtros.Size = new System.Drawing.Size(566, 79);
+            this.Filtros.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Filtros.Size = new System.Drawing.Size(755, 97);
             this.Filtros.TabIndex = 5;
             this.Filtros.TabStop = false;
             this.Filtros.Text = "Filtros";
@@ -118,18 +124,20 @@
             // dateTimePickerFiltro
             // 
             this.dateTimePickerFiltro.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerFiltro.Location = new System.Drawing.Point(291, 52);
+            this.dateTimePickerFiltro.Location = new System.Drawing.Point(432, 59);
+            this.dateTimePickerFiltro.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateTimePickerFiltro.Name = "dateTimePickerFiltro";
-            this.dateTimePickerFiltro.Size = new System.Drawing.Size(200, 26);
+            this.dateTimePickerFiltro.Size = new System.Drawing.Size(265, 30);
             this.dateTimePickerFiltro.TabIndex = 5;
             // 
             // FiltroGeneroLabel
             // 
             this.FiltroGeneroLabel.AutoSize = true;
             this.FiltroGeneroLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FiltroGeneroLabel.Location = new System.Drawing.Point(141, 34);
+            this.FiltroGeneroLabel.Location = new System.Drawing.Point(201, 42);
+            this.FiltroGeneroLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.FiltroGeneroLabel.Name = "FiltroGeneroLabel";
-            this.FiltroGeneroLabel.Size = new System.Drawing.Size(48, 13);
+            this.FiltroGeneroLabel.Size = new System.Drawing.Size(62, 17);
             this.FiltroGeneroLabel.TabIndex = 3;
             this.FiltroGeneroLabel.Text = "Genero";
             // 
@@ -137,21 +145,23 @@
             // 
             this.numeroRegistrosLabel.AutoSize = true;
             this.numeroRegistrosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numeroRegistrosLabel.Location = new System.Drawing.Point(536, 355);
+            this.numeroRegistrosLabel.Location = new System.Drawing.Point(715, 437);
+            this.numeroRegistrosLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.numeroRegistrosLabel.Name = "numeroRegistrosLabel";
-            this.numeroRegistrosLabel.Size = new System.Drawing.Size(51, 16);
+            this.numeroRegistrosLabel.Size = new System.Drawing.Size(59, 20);
             this.numeroRegistrosLabel.TabIndex = 6;
             this.numeroRegistrosLabel.Text = "label1";
             // 
             // ListaClienteForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 379);
+            this.ClientSize = new System.Drawing.Size(811, 466);
             this.Controls.Add(this.numeroRegistrosLabel);
             this.Controls.Add(this.dataGridViewClientes);
             this.Controls.Add(this.ListagemDeClientes);
             this.Controls.Add(this.Filtros);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ListaClienteForm";
             this.Text = "Listagem de clientes";
             this.Load += new System.EventHandler(this.ListaClienteForm_Load);

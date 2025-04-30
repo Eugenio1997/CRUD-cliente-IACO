@@ -10,8 +10,6 @@ namespace CRUD_cliente_IACO.Repositorios.Interfaces
 {
     public interface ICadastroClienteForm
     {
-
-        event EventHandler<ClienteEventArgs> OnClienteEnviado;
         
         void Btn_Cadastrar_Click(object sender, EventArgs e);
         void Btn_Limpar_Click(object sender, EventArgs e);

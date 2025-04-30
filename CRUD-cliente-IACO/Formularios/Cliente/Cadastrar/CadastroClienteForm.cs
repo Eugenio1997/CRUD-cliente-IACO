@@ -19,15 +19,11 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
-        bool formFechado = false;
+        bool generoSelecionado = false;
         
         private IClienteRepository _clienteRepository;
         private ListaClienteForm _listaClienteForm;
         public ClienteDTO clienteDTO;
-
-        //public event EventHandler OnVoltar;
-        public event EventHandler OnProximo;
-        public event EventHandler<ClienteEventArgs> OnClienteEnviado;
 
         private bool _estaLimpandoCampos = false;
         /// <summary>
@@ -66,6 +62,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         {
             AdicionarEventosNosCampos();
             PreencherComboBoxGeneros();
+            VerificarCamposPreenchidos();
         }
 
         public void DefinirFormularioLista(ListaClienteForm listaForm)
@@ -114,17 +111,18 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
        public void PreencherComboBoxGeneros()
        {
-            
-            var generos = new List<string>
+           
+            if(generoSelecionado == false) //se o genero nao tiver sido selecionado
             {
-                "Selecione o gênero",
-                GenerosEnum.H.ToString(),
-                GenerosEnum.M.ToString(),
-                GenerosEnum.O.ToString()
-            };
 
-           Genero.DataSource = generos;
-           Genero.SelectedIndex = 0;
+                Genero.Items.Add("Selecione o gênero");
+                Genero.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
+                Genero.SelectedIndex = 0;
+
+            }
+
+            generoSelecionado = true;
+
 
        }
 
@@ -168,15 +166,19 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         private void Genero_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+            // Se quiser, pode validar aqui:
+            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(Genero);
+
             if (_estaLimpandoCampos) return;
 
             string generoSelecionado = Genero.SelectedItem?.ToString();
 
+
             // Exemplo: Exibir no console
             Console.WriteLine("Gênero selecionado: " + generoSelecionado);
 
-            // Se quiser, pode validar aqui:
-            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(Genero);
+            
+
         }
 
 
