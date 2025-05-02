@@ -36,6 +36,7 @@
             this.FiltroPrimeiroNomeLabel = new System.Windows.Forms.Label();
             this.GeneroFiltro = new System.Windows.Forms.ComboBox();
             this.Filtros = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.BtnLimparFiltros = new System.Windows.Forms.Button();
             this.SobrenomeFiltro = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +44,6 @@
             this.DataNascimentoFiltro = new System.Windows.Forms.DateTimePicker();
             this.FiltroGeneroLabel = new System.Windows.Forms.Label();
             this.numeroRegistrosLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.clientesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientes)).BeginInit();
             this.Filtros.SuspendLayout();
@@ -102,6 +102,7 @@
             this.GeneroFiltro.Name = "GeneroFiltro";
             this.GeneroFiltro.Size = new System.Drawing.Size(146, 21);
             this.GeneroFiltro.TabIndex = 6;
+            this.GeneroFiltro.SelectedIndexChanged += new System.EventHandler(this.GeneroFiltro_SelectedIndexChanged);
             // 
             // Filtros
             // 
@@ -123,6 +124,16 @@
             this.Filtros.TabStop = false;
             this.Filtros.Text = "Filtros";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(19, 80);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(122, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Data de Nascimento";
+            // 
             // BtnLimparFiltros
             // 
             this.BtnLimparFiltros.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -132,7 +143,7 @@
             this.BtnLimparFiltros.TabIndex = 9;
             this.BtnLimparFiltros.Text = "Limpar Filtros";
             this.BtnLimparFiltros.UseVisualStyleBackColor = true;
-            this.BtnLimparFiltros.Click += new System.EventHandler(this.LimparFiltros_Click);
+            this.BtnLimparFiltros.Click += new System.EventHandler(this.Btn_LimparFiltros_Click);
             // 
             // SobrenomeFiltro
             // 
@@ -161,7 +172,7 @@
             this.BtnBuscarClientes.TabIndex = 10;
             this.BtnBuscarClientes.Text = "Buscar";
             this.BtnBuscarClientes.UseVisualStyleBackColor = true;
-            this.BtnBuscarClientes.Click += new System.EventHandler(this.btn_buscar_clientes_Click);
+            this.BtnBuscarClientes.Click += new System.EventHandler(this.Btn_BuscarClientes_Click);
             // 
             // DataNascimentoFiltro
             // 
@@ -191,16 +202,6 @@
             this.numeroRegistrosLabel.Size = new System.Drawing.Size(51, 16);
             this.numeroRegistrosLabel.TabIndex = 12;
             this.numeroRegistrosLabel.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(19, 80);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(122, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Data de Nascimento";
             // 
             // ListaClienteForm
             // 

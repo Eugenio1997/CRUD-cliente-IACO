@@ -9,7 +9,7 @@ namespace CRUD_cliente_IACO.Filtros.Cliente
     {
         public string PrimeiroNome { get; set; }
         public string Sobrenome { get; set; }
-        public string Genero { get; set; }
+        public string GeneroId { get; set; }
         public DateTime DataNascimento { get; set; }
     }
 }

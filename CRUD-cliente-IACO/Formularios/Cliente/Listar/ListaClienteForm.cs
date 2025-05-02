@@ -13,6 +13,7 @@ using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Enums;
 using CRUD_cliente_IACO.Validacoes;
 using CRUD_cliente_IACO.Extensions;
+using CRUD_cliente_IACO.Filtros.Cliente;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
@@ -32,6 +33,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             _clienteRepository = clienteRepository;
 
             Load += ListaClienteForm_Load;
+            BtnBuscarClientes.Click += Btn_BuscarClientes_Click;
+            BtnLimparFiltros.Click += Btn_LimparFiltros_Click;
         }
 
         private void ListaClienteForm_Load(object sender, EventArgs e)
@@ -170,32 +173,47 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         }
         */
 
-        private void btn_buscar_clientes_Click(object sender, EventArgs e)
+        private void Btn_BuscarClientes_Click(object sender, EventArgs e)
         {
+            //ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
 
-            
-            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
 
             //Recuperando o Genero
             GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
             int generoIdSelecionado = (int)generoEnum;
 
+
+            
+
             //Recuperando o Primeiro Nome
-            string primeiroNome = PrimeiroNomeFiltro.Text.ToLower();
+            string primeiroNome = PrimeiroNomeFiltro.Text.Trim().ToLower();
 
             //Recuperando o Sobrenome
-            string sobrenome = SobrenomeFiltro.Text.ToLower();
+            string sobrenome = SobrenomeFiltro.Text.Trim().ToLower();
 
-            MessageBox.Show($"O Primeiro Nome é {primeiroNome}\n" + 
-                            $"O Sobrenome é {SobrenomeFiltro}\n" +
-                            $"O genero é {GeneroFiltro}\n" +
-                            $"A Data de Nascimento é {DataNascimentoFiltro}");
+            MessageBox.Show($"O Primeiro Nome é {primeiroNome}\n" +
+                            $"O Sobrenome é {sobrenome}\n" +
+                            $"O genero é {generoIdSelecionado}\n" +
+                            $"A Data de Nascimento é {DataNascimentoFiltro.Value.Date}");
+            
+           
 
+            ClienteFiltro filtro = new ClienteFiltro {
+
+                PrimeiroNome = primeiroNome,
+                Sobrenome = sobrenome,
+                GeneroId = Convert.ToString(generoIdSelecionado),
+                DataNascimento = DataNascimentoFiltro.Value.Date
+
+            } ;
+
+            listaClientes = _clienteRepository.BuscarClientesPorFiltro(filtro);
+            dataGridViewClientes.DataSource = listaClientes;
+            dataGridViewClientes.Refresh();
         }
 
-        private void LimparFiltros_Click(object sender, EventArgs e)
+        private void Btn_LimparFiltros_Click(object sender, EventArgs e)
         {
-
             PrimeiroNomeFiltro.Clear();
             SobrenomeFiltro.Clear();
             DataNascimentoFiltro.Value = DateTime.Now;
@@ -209,9 +227,19 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 GeneroFiltro.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
                 GeneroFiltro.SelectedIndex = 0;
             }
-            
 
+            if (dataGridViewClientes.Rows.Count == 0)
+            {
+                listaClientes = _clienteRepository.ConsultarClientes();
+                dataGridViewClientes.DataSource = listaClientes;
+                dataGridViewClientes.Refresh();
+            }
         }
 
+        private void GeneroFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
+            if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
+        }
     }
 }

@@ -8,6 +8,7 @@ using CRUD_cliente_IACO.Enums;
 using System.Linq;
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Extensions;
+using CRUD_cliente_IACO.Filtros.Cliente;
 
 namespace CRUD_cliente_IACO.Repositorios
 {
@@ -58,8 +59,8 @@ namespace CRUD_cliente_IACO.Repositorios
                         string cpfSemMascara = new string(cliente.CPF.Where(char.IsDigit).ToArray());
                         oracleCommand.Parameters.Add("cpf", OracleDbType.Varchar2).Value = cpfSemMascara;
 
-                        oracleCommand.Parameters.Add("dataNascimento", OracleDbType.Date).Value =
-                            cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
+                        oracleCommand.Parameters.Add("dataNascimento", OracleDbType.Date).Value = 
+                            cliente.DataNascimento.Date != DateTime.MinValue.Date ? (object)cliente.DataNascimento.Date : DBNull.Value;
                         oracleCommand.Parameters.Add("telefone", OracleDbType.Varchar2).Value =
                             string.IsNullOrEmpty(cliente.Telefone) ? (object)DBNull.Value : cliente.Telefone;
                         oracleCommand.Parameters.Add("email", OracleDbType.Varchar2).Value =
@@ -135,7 +136,7 @@ namespace CRUD_cliente_IACO.Repositorios
                                     CPF = reader["CPF"].ToString(),
                                     Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                                     Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date : DateTime.MinValue.Date,
 
                                 };
 
@@ -202,7 +203,7 @@ namespace CRUD_cliente_IACO.Repositorios
                                 CPF = reader["CPF"].ToString(),
                                 Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
                                 Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                                DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+                                DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date : DateTime.MinValue.Date,
                             };
                         }
                         return null;
@@ -253,7 +254,7 @@ namespace CRUD_cliente_IACO.Repositorios
                         oracleCommand.Parameters.Add("genero", OracleDbType.Varchar2).Value = cliente.Genero.ParaChar();
                         oracleCommand.Parameters.Add("cpf", OracleDbType.Varchar2).Value = cliente.CPF ?? (object)DBNull.Value;
                         oracleCommand.Parameters.Add("dataNascimento", OracleDbType.Date).Value =
-                            cliente.DataNascimento != DateTime.MinValue ? (object)cliente.DataNascimento : DBNull.Value;
+                            cliente.DataNascimento.Date != DateTime.MinValue.Date ? (object)cliente.DataNascimento.Date : DBNull.Value;
                         oracleCommand.Parameters.Add("telefone", OracleDbType.Varchar2).Value = cliente.Telefone ?? (object)DBNull.Value;
                         oracleCommand.Parameters.Add("email", OracleDbType.Varchar2).Value = cliente.Email ?? (object)DBNull.Value;
                         oracleCommand.Parameters.Add("idCliente", OracleDbType.Int32).Value = cliente.IdCliente;
@@ -347,9 +348,33 @@ namespace CRUD_cliente_IACO.Repositorios
                 
         }
 
-        public List<Cliente> BuscarClientesPorNome(string nome)
+        public List<Cliente> BuscarClientesPorFiltro(ClienteFiltro filtro)
         {
             var lista = new List<Cliente>();
+            string baseQuery = "SELECT * FROM Clientes c";
+            var filtros = new List<string>();
+
+            if (!string.IsNullOrEmpty(filtro.PrimeiroNome))
+                filtros.Add($"LOWER(c.PRIMEIRO_NOME) LIKE '%{filtro.PrimeiroNome}%'");
+
+            if (!string.IsNullOrEmpty(filtro.Sobrenome))
+                filtros.Add($"LOWER(c.SOBRENOME) LIKE '%{filtro.Sobrenome}%'");
+
+            if (!string.IsNullOrEmpty(filtro.GeneroId))
+                filtros.Add($"c.GENERO = {filtro.GeneroId}");
+
+            if (filtro.DataNascimento != DateTime.MinValue)
+            {
+                string dataFormatada = filtro.DataNascimento.ToString("dd/MM/yyyy");
+                filtros.Add($"TRUNC(c.DATA_NASCIMENTO) = TO_DATE('{dataFormatada}', 'DD/MM/YYYY')");
+            }
+
+
+            string query = filtros.Count > 0
+                ? $"{baseQuery} WHERE {string.Join(" AND ", filtros.ToArray())}"
+                : baseQuery;
+
+            Console.WriteLine($"A query construida foi esta: {query}");
 
             try
             {
@@ -359,16 +384,7 @@ namespace CRUD_cliente_IACO.Repositorios
 
                 using (var oracleCommand = _connection.CreateCommand())
                 {
-                    oracleCommand.CommandText = @"
-                        SELECT * 
-                        FROM Clientes c 
-                        WHERE 
-                            LOWER(c.PRIMEIRO_NOME) LIKE :nome";
-
-
-                    oracleCommand.Parameters.Add(new OracleParameter("nome", OracleDbType.Varchar2)).Value = "%" + nome.ToLowerInvariant() + "%";
-
-
+                    oracleCommand.CommandText = query;
 
                     try
                     {
@@ -376,24 +392,20 @@ namespace CRUD_cliente_IACO.Repositorios
                         {
                             while (reader.Read())
                             {
-                                Console.WriteLine((GenerosEnum)Convert.ToInt32(reader["GENERO"]));
 
                                 lista.Add(new Cliente
-                                {
-                                    IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
-                                    PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
-                                    Sobrenome = reader["SOBRENOME"].ToString(),
-                                    Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.Outros,
-                                    CPF = reader["CPF"].ToString(),
-                                    Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
-                                    Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]) : DateTime.MinValue,
+                                    {
+                                        IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                                        PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                                        Sobrenome = reader["SOBRENOME"].ToString(),
+                                        Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.Outros,
+                                        CPF = reader["CPF"].ToString(),
+                                        Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                                        Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                                        DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date : DateTime.MinValue.Date,
 
-                                });
-
-
-
-                                    
+                                    }
+                                );  
 
                             }
                         }
