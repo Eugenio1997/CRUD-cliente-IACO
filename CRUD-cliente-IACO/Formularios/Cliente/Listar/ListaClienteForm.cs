@@ -21,6 +21,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
     {
         private readonly IClienteRepository _clienteRepository;
         bool generoSelecionado = false;
+        int IdadeMinima = 18;
         List<Modelos.Cliente> listaClientes;
         public ListaClienteForm(
             IClienteRepository clienteRepository)
@@ -35,6 +36,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             Load += ListaClienteForm_Load;
             BtnBuscarClientes.Click += Btn_BuscarClientes_Click;
             BtnLimparFiltros.Click += Btn_LimparFiltros_Click;
+            DataNascimentoFiltro.ValueChanged += DataNascimentoFiltro_ValueChanged;
         }
 
         private void ListaClienteForm_Load(object sender, EventArgs e)
@@ -179,22 +181,28 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
 
             //Recuperando o Genero
-            GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
-            int generoIdSelecionado = (int)generoEnum;
+            //GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
+            //int generoIdSelecionado = (int)generoEnum;
 
 
-            
 
+            //MessageBox.Show("generoIdSelecionado: " + generoIdSelecionado + " generoEnum: " + generoEnum);
             //Recuperando o Primeiro Nome
             string primeiroNome = PrimeiroNomeFiltro.Text.Trim().ToLower();
+
+            var DataNascimento = DataNascimentoFiltro.Value.Date;
 
             //Recuperando o Sobrenome
             string sobrenome = SobrenomeFiltro.Text.Trim().ToLower();
 
-            MessageBox.Show($"O Primeiro Nome é {primeiroNome}\n" +
-                            $"O Sobrenome é {sobrenome}\n" +
-                            $"O genero é {generoIdSelecionado}\n" +
-                            $"A Data de Nascimento é {DataNascimentoFiltro.Value.Date}");
+            if (string.IsNullOrEmpty(primeiroNome) &&
+                string.IsNullOrEmpty(sobrenome) &&
+                //string.IsNullOrEmpty(generoIdSelecionado.ToString()) &&
+                string.IsNullOrEmpty(DataNascimentoFiltro.Value.Date.ToString())
+                )
+            {
+                return;
+            }
             
            
 
@@ -202,7 +210,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
                 PrimeiroNome = primeiroNome,
                 Sobrenome = sobrenome,
-                GeneroId = Convert.ToString(generoIdSelecionado),
+                //GeneroId = Convert.ToString(generoIdSelecionado),
                 DataNascimento = DataNascimentoFiltro.Value.Date
 
             } ;
@@ -240,6 +248,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         {
             ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
             if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
+        }
+
+        private void DataNascimentoFiltro_ValueChanged(object sender, EventArgs e)
+        {
+            if (DataNascimentoFiltro.Value.Year < DateTime.Now.Year - IdadeMinima)
+            {
+                //2009 - (selectioned by user)  |  2025 -  18 = 2007 (ano minimo atualmente)
+                MessageBox.Show("Data não permitida porque não há clientes menores de idade !", "Data inválida", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                DataNascimentoFiltro.Value = new DateTime().AddYears(-IdadeMinima);
+            }
         }
     }
 }
