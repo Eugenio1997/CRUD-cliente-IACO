@@ -363,10 +363,11 @@ namespace CRUD_cliente_IACO.Repositorios
             if (!string.IsNullOrEmpty(filtro.GeneroId))
                 filtros.Add($"c.GENERO = {filtro.GeneroId}");
 
-            if (filtro.DataNascimento != DateTime.MinValue)
+            if (filtro.DataNascimento != new DateTime(1900, 1, 1))
             {
                 string dataFormatada = filtro.DataNascimento.ToString("dd/MM/yyyy");
-                filtros.Add($"TRUNC(c.DATA_NASCIMENTO) = TO_DATE('{dataFormatada}', 'DD/MM/YYYY')");
+                filtros.Add($"c.DATA_NASCIMENTO = TO_DATE('{dataFormatada}', 'DD/MM/YYYY')");
+                //filtros.Add($"c.DATA_NASCIMENTO = TRUNC(TO_DATE('{dataFormatada}', 'DD/MM/YYYY'))");
             }
 
 

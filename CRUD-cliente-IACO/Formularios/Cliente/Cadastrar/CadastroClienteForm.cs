@@ -15,7 +15,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 {
     public partial class CadastroClienteForm : Form, ICadastroClienteForm
     {
-        private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
+        //private string primeiroNomeRegex = @"^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{3,50}$";
         //private string CPFRegex = @"^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$";
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";

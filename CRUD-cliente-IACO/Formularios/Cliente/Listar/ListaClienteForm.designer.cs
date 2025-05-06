@@ -102,7 +102,6 @@
             this.GeneroFiltro.Name = "GeneroFiltro";
             this.GeneroFiltro.Size = new System.Drawing.Size(146, 21);
             this.GeneroFiltro.TabIndex = 6;
-            this.GeneroFiltro.SelectedIndexChanged += new System.EventHandler(this.GeneroFiltro_SelectedIndexChanged);
             // 
             // Filtros
             // 
@@ -182,7 +181,6 @@
             this.DataNascimentoFiltro.Name = "DataNascimentoFiltro";
             this.DataNascimentoFiltro.Size = new System.Drawing.Size(267, 20);
             this.DataNascimentoFiltro.TabIndex = 8;
-            this.DataNascimentoFiltro.ValueChanged += new System.EventHandler(this.DataNascimentoFiltro_ValueChanged);
             // 
             // FiltroGeneroLabel
             // 

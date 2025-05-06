@@ -21,7 +21,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
     {
         private readonly IClienteRepository _clienteRepository;
         bool generoSelecionado = false;
-        int IdadeMinima = 18;
+        int generoIdSelecionado;
+        int idadeMinima = 18;
+        DateTime dataAtual = DateTime.Now;
+        string generoFiltroPlaceholder = "Selecione o gênero";
         List<Modelos.Cliente> listaClientes;
         public ListaClienteForm(
             IClienteRepository clienteRepository)
@@ -36,20 +39,18 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             Load += ListaClienteForm_Load;
             BtnBuscarClientes.Click += Btn_BuscarClientes_Click;
             BtnLimparFiltros.Click += Btn_LimparFiltros_Click;
-            DataNascimentoFiltro.ValueChanged += DataNascimentoFiltro_ValueChanged;
         }
 
         private void ListaClienteForm_Load(object sender, EventArgs e)
         {
             PreencherComboBoxGeneros();
-            //GeneroFiltro.SelectedIndexChanged += GeneroFiltro_SelectedIndexChanged;
         }
 
         public void PreencherComboBoxGeneros()
         {
             if (generoSelecionado == false) //se o genero nao tiver sido selecionado
             {          
-                GeneroFiltro.Items.Add("Selecione o gênero");
+                GeneroFiltro.Items.Add(generoFiltroPlaceholder);
                 GeneroFiltro.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
                 GeneroFiltro.SelectedIndex = 0;
             }
@@ -145,72 +146,63 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         }
 
-        /*
-        private void primeiroNomeFiltro_TextChanged(object sender, EventArgs e)
-        {
-
-            string textoBusca = primeiroNomeFiltro.Text.ToLower();
-            listaClientes = _clienteRepository.BuscarClientesPorNome(textoBusca);
-
-            dataGridViewClientes.DataSource = listaClientes;
-            dataGridViewClientes.Refresh();
-        }
-        */
-
-        /*
-        private void GeneroFiltro_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
-
-
-           
-            if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
-            GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
-            int valorSelecionado = (int)generoEnum;
-            var listaClientes = _clienteRepository.BuscarClientesPorGenero(valorSelecionado.ToString());
-            dataGridViewClientes.DataSource = listaClientes;
-           
-            
-        }
-        */
-
         private void Btn_BuscarClientes_Click(object sender, EventArgs e)
         {
-            //ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
+            var AnoNascimentoMinimo = dataAtual.Year - idadeMinima;
 
+            var GeneroSelecionadoNome = GeneroFiltro.SelectedItem.ToString();
 
-            //Recuperando o Genero
-            //GenerosEnum generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroFiltro.SelectedItem.ToString());
-            //int generoIdSelecionado = (int)generoEnum;
-
-
-
-            //MessageBox.Show("generoIdSelecionado: " + generoIdSelecionado + " generoEnum: " + generoEnum);
-            //Recuperando o Primeiro Nome
+            //So atualizo o campo genero se o usuario selecionar um opcao valida: Homem, Mulher ou Outros
+            if (GeneroSelecionadoNome != generoFiltroPlaceholder)
+            {
+                var generoEnum = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), GeneroSelecionadoNome);
+                generoIdSelecionado = (int)generoEnum;
+            }
+            
+            //Recuperando os campos
             string primeiroNome = PrimeiroNomeFiltro.Text.Trim().ToLower();
-
+            string sobrenome = SobrenomeFiltro.Text.Trim().ToLower();
             var DataNascimento = DataNascimentoFiltro.Value.Date;
 
-            //Recuperando o Sobrenome
-            string sobrenome = SobrenomeFiltro.Text.Trim().ToLower();
-
+            //Se todos os campos estiverem em branco (no caso de DateTime é a data atual e genero é o placeholder)
             if (string.IsNullOrEmpty(primeiroNome) &&
-                string.IsNullOrEmpty(sobrenome) &&
-                //string.IsNullOrEmpty(generoIdSelecionado.ToString()) &&
-                string.IsNullOrEmpty(DataNascimentoFiltro.Value.Date.ToString())
-                )
+               string.IsNullOrEmpty(sobrenome) &&
+               GeneroSelecionadoNome == generoFiltroPlaceholder &&
+               DataNascimento.Date == dataAtual.Date
+               )
             {
                 return;
             }
-            
+
+            //verifica se a data de nascimento é de um cliente de >= 18 anos
            
+
+            if (
+                (!string.IsNullOrEmpty(primeiroNome) && DataNascimento.Date == dataAtual.Date) ||
+                (!string.IsNullOrEmpty(sobrenome) && DataNascimento.Date == dataAtual.Date) ||
+                (GeneroSelecionadoNome != generoFiltroPlaceholder && DataNascimento.Date == dataAtual.Date))
+            {
+                //DataNascimentoFiltro.Value = DateTime.MinValue;
+                DataNascimentoFiltro.Value = new DateTime(1900, 1, 1); // or any valid default
+
+
+            }
+            else if (DataNascimentoFiltro.Value.Year > AnoNascimentoMinimo)
+            {
+                //2009 - (selectioned by user)  |  2025 -  18 = 2007 (ano minimo atualmente)
+                MessageBox.Show("Não é possível selecionar esta data.\n\nO cliente precisa ser maior de idade.", "Data inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataNascimentoFiltro.Value = dataAtual.Date;
+                DataNascimentoFiltro.Focus();
+                return;
+            }
+
+
 
             ClienteFiltro filtro = new ClienteFiltro {
 
                 PrimeiroNome = primeiroNome,
                 Sobrenome = sobrenome,
-                //GeneroId = Convert.ToString(generoIdSelecionado),
+                GeneroId = Convert.ToString(generoIdSelecionado) == "0" ? "" : Convert.ToString(generoIdSelecionado),
                 DataNascimento = DataNascimentoFiltro.Value.Date
 
             } ;
@@ -224,40 +216,28 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         {
             PrimeiroNomeFiltro.Clear();
             SobrenomeFiltro.Clear();
-            DataNascimentoFiltro.Value = DateTime.Now;
+            DataNascimentoFiltro.Value = dataAtual;
 
             //limpando o filtro de genero
-            if (GeneroFiltro.SelectedItem.ToString() != "Selecione o gênero")
+            if (GeneroFiltro.SelectedItem.ToString() != generoFiltroPlaceholder)
             {
                 GeneroFiltro.Items.Clear();
 
-                GeneroFiltro.Items.Add("Selecione o gênero");
+                GeneroFiltro.Items.Add(generoFiltroPlaceholder);
                 GeneroFiltro.Items.AddRange(Enum.GetNames(typeof(GenerosEnum)));
                 GeneroFiltro.SelectedIndex = 0;
             }
 
+            listaClientes = _clienteRepository.ConsultarClientes();
+            dataGridViewClientes.DataSource = listaClientes;
+            dataGridViewClientes.Refresh();
+            /*
             if (dataGridViewClientes.Rows.Count == 0)
             {
-                listaClientes = _clienteRepository.ConsultarClientes();
-                dataGridViewClientes.DataSource = listaClientes;
-                dataGridViewClientes.Refresh();
+                
             }
+            */
         }
 
-        private void GeneroFiltro_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ValidadorDeCliente.ValidarGenero_SelectedIndexChanged(GeneroFiltro);
-            if (GeneroFiltro.SelectedItem.ToString() == "Selecione o gênero") return;
-        }
-
-        private void DataNascimentoFiltro_ValueChanged(object sender, EventArgs e)
-        {
-            if (DataNascimentoFiltro.Value.Year < DateTime.Now.Year - IdadeMinima)
-            {
-                //2009 - (selectioned by user)  |  2025 -  18 = 2007 (ano minimo atualmente)
-                MessageBox.Show("Data não permitida porque não há clientes menores de idade !", "Data inválida", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                DataNascimentoFiltro.Value = new DateTime().AddYears(-IdadeMinima);
-            }
-        }
     }
 }
