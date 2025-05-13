@@ -14,6 +14,8 @@ using CRUD_cliente_IACO.Enums;
 using CRUD_cliente_IACO.Validacoes;
 using CRUD_cliente_IACO.Extensions;
 using CRUD_cliente_IACO.Filtros.Cliente;
+using CRUD_cliente_IACO.Modelos.DTOs;
+using CRUD_cliente_IACO.Util;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
@@ -23,9 +25,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         bool generoSelecionado = false;
         int generoIdSelecionado;
         int idadeMinima = 18;
+
+        //pagination
+        private const int registrosPorPagina = 5;
+        private int totalPaginas = 0;
+        private string tabela = "CLIENTES";
+
+        DateTime dataNascimentoFiltroBackup;
         DateTime dataAtual = DateTime.Now;
         string generoFiltroPlaceholder = "Selecione o gênero";
-        List<Modelos.Cliente> listaClientes;
+        List<Modelos.Cliente> listaClientesFiltrados;
         public ListaClienteForm(
             IClienteRepository clienteRepository)
         {
@@ -43,6 +52,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         private void ListaClienteForm_Load(object sender, EventArgs e)
         {
+            paginaAtualIndice = 1;
             PreencherComboBoxGeneros();
         }
 
@@ -64,13 +74,17 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             {
                 dataGridViewClientes.AutoGenerateColumns = true;
 
-                List<Modelos.Cliente> listaClientes = _clienteRepository.ConsultarClientes();
                 if (listaClientes != null && listaClientes.Count > 0)
+
+                listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+
+                if (listaClientesPaginado.Registros != null && listaClientesPaginado.Registros.Count > 0)
                 {
 
-                    dataGridViewClientes.DataSource = listaClientes; // <- primeiro define o conteúdo
 
-                   
+
+                    lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
+
                     // Adiciona colunas de botão, se ainda não foram adicionadas
                     if (!dataGridViewClientes.Columns.Contains("Editar"))
                     {
@@ -130,7 +144,15 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     editarForm.ShowDialog();
 
                     // Atualiza a lista após edição
-                    dataGridViewClientes.DataSource = _clienteRepository.ConsultarClientes();
+                    listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+
+
+                    dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+
+
+                    lblTotalRegistroValor.Text = listaClientesPaginado.TotalRegistros.ToString();
+                    lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
+                    
 
                 }
                 else if (nomeColuna == "Excluir")
@@ -139,7 +161,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     if (confirmar == DialogResult.Yes)
                     {
                         _clienteRepository.ExcluirCliente(clienteSelecionado.IdCliente);
-                        dataGridViewClientes.DataSource = _clienteRepository.ConsultarClientes();
+
+
+
                     }
                 }
             }
@@ -151,6 +175,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             var AnoNascimentoMinimo = dataAtual.Year - idadeMinima;
 
             var GeneroSelecionadoNome = GeneroFiltro.SelectedItem.ToString();
+
+            Console.WriteLine($"{DataNascimentoFiltro} ");
 
             //So atualizo o campo genero se o usuario selecionar um opcao valida: Homem, Mulher ou Outros
             if (GeneroSelecionadoNome != generoFiltroPlaceholder)
@@ -183,6 +209,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 (GeneroSelecionadoNome != generoFiltroPlaceholder && DataNascimento.Date == dataAtual.Date))
             {
                 //DataNascimentoFiltro.Value = DateTime.MinValue;
+                dataNascimentoFiltroBackup = DataNascimentoFiltro.Value.Date;
                 DataNascimentoFiltro.Value = new DateTime(1900, 1, 1); // or any valid default
 
 
@@ -207,9 +234,27 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
             } ;
 
-            listaClientes = _clienteRepository.BuscarClientesPorFiltro(filtro, lblTotalPaginas, lblTotalRegistros);
-            dataGridViewClientes.DataSource = listaClientes;
+
+            listaClientesFiltrados = _clienteRepository.BuscarClientesPorFiltro(filtro);
+            dataGridViewClientes.DataSource = listaClientesFiltrados;
+            DataNascimentoFiltro.Value = filtro.DataNascimento;
+
             dataGridViewClientes.Refresh();
+
+
+            if (listaClientesFiltrados == null || !listaClientesFiltrados.Any())
+            {
+                MessageBox.Show(
+                   "Não encontramos resultados para sua busca. Verifique os dados informados e tente novamente.",
+                   "Busca sem resultados",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information
+               );
+            }
+
+
+            DataNascimentoFiltro.Value = dataNascimentoFiltroBackup.Date;
+
         }
 
         private void Btn_LimparFiltros_Click(object sender, EventArgs e)
@@ -228,20 +273,22 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 GeneroFiltro.SelectedIndex = 0;
             }
 
-            listaClientes = _clienteRepository.ConsultarClientes();
-            dataGridViewClientes.DataSource = listaClientes;
+            // Atualiza a lista após edição
+            listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+
+            dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+
+
+            lblTotalRegistroValor.Text = listaClientesPaginado.TotalRegistros.ToString();
+            lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
+
             dataGridViewClientes.Refresh();
-            /*
-            if (dataGridViewClientes.Rows.Count == 0)
-            {
-                
-            }
-            */
+           
         }
 
-        private void btnUltimo_Click(object sender, EventArgs e)
+        private void btnProxima_Click(object sender, EventArgs e)
         {
-
+           //f()
         }
     }
 }

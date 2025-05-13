@@ -20,7 +20,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
         //private string telefoneRegex = @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$";
         //private string emailRegex = @"^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$";
         bool generoSelecionado = false;
-        
+        int idadeMinima = 18;
+        DateTime dataAtual = DateTime.Now;
+        Modelos.Cliente cliente;
+
         private IClienteRepository _clienteRepository;
         private ListaClienteForm _listaClienteForm;
         public ClienteDTO clienteDTO;
@@ -55,7 +58,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
             Sobrenome.KeyPress += Sobrenome_KeyPress;
             Genero.SelectedIndexChanged += Genero_SelectedIndexChanged;
             //this.FormClosed += Formulario_FormClosed;
-            Load += CadastroClienteForm_Load; ;
+            Load += CadastroClienteForm_Load;
+            Console.WriteLine($"{cliente}");
         }
 
         private void CadastroClienteForm_Load(object sender, EventArgs e)
@@ -228,6 +232,19 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
 
         public void Btn_Cadastrar_Click(object sender, EventArgs e)
         {
+
+            var AnoNascimentoMinimo = dataAtual.Year - idadeMinima;
+
+            if (DataDeNascimento.Value.Year > AnoNascimentoMinimo)
+            {
+                //2009 - (selectioned by user)  |  2025 -  18 = 2007 (ano minimo atualmente)
+                MessageBox.Show("Não é possível selecionar esta data.\n\nO cliente precisa ser maior de idade.", "Data inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataDeNascimento.Value = dataAtual.Date;
+                DataDeNascimento.Focus();
+                return;
+            }
+
+
             // Preenche o Cliente com os dados do formulário
             var cliente = new Modelos.Cliente
             {
@@ -240,10 +257,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 Genero = (GenerosEnum)Enum.Parse(typeof(GenerosEnum), Genero.SelectedItem.ToString())
             };
 
-
-            Console.WriteLine(cliente.ToString());
-
-            if (_clienteRepository.VerificarClienteExistePorCPF(cliente.CPF))
+            if (_clienteRepository.VerificarClienteExistePorCPF(CPF.Text))
             {
                 MessageBox.Show(
                     "Já existe um cliente cadastrado com este CPF.\nTente novamente.",
@@ -260,6 +274,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Cadastrar
                 MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
+
+
+
+            Console.WriteLine(cliente.ToString());
 
 
         }

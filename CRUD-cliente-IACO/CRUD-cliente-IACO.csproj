@@ -106,6 +106,7 @@
     <Compile Include="CustomEventArgs\ClienteEventArgs.cs" />
     <Compile Include="DatabaseSeeder.cs" />
     <Compile Include="Enums\FormTypeEnum.cs" />
+    <Compile Include="Enums\OrdernarPorEnum.cs" />
     <Compile Include="Extensions\GenerosEnumsExtensions.cs" />
     <Compile Include="Factories\FormFactory.cs" />
     <Compile Include="Factories\ToolTipFactory.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Services\EstadoService.cs" />
     <Compile Include="Services\Interfaces\ICEPService.cs" />
     <Compile Include="Services\Interfaces\IEstadoService.cs" />
+    <Compile Include="Util\Paginador.cs" />
     <Compile Include="Validacoes\ValidadorDeClienteDadosPessoais.cs" />
     <EmbeddedResource Include="Formularios\Cliente\Cadastrar\CadastroClienteForm.resx">
       <DependentUpon>CadastroClienteForm.cs</DependentUpon>

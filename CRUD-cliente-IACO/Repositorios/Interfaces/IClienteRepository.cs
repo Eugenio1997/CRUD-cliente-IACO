@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using CRUD_cliente_IACO.Modelos;
 using CRUD_cliente_IACO.Filtros.Cliente;
+using CRUD_cliente_IACO.Util;
 
 namespace CRUD_cliente_IACO.Repositorios.Interfaces
 {
     public interface IClienteRepository
     {
         void InserirCliente(Cliente cliente);
-        
-        List<Cliente> ConsultarClientes();
+        PaginacaoResultado<Cliente> ConsultarClientes(
+            int paginaAtualIndice, int registrosPorPagina,
+            string ordenacao, string tabela
+           );
         void ExcluirCliente(int id);
         void AtualizarCliente(Cliente cliente);
         List<Cliente> BuscarClientesPorFiltro(ClienteFiltro filtro);

@@ -9,16 +9,15 @@ using System.Linq;
 using System.Windows.Forms;
 using CRUD_cliente_IACO.Extensions;
 using CRUD_cliente_IACO.Filtros.Cliente;
+using CRUD_cliente_IACO.Modelos.DTOs;
+using CRUD_cliente_IACO.Util;
 
 namespace CRUD_cliente_IACO.Repositorios
 {
     public class ClienteRepository : IClienteRepository
     {
         private readonly OracleConnection _connection;
-        private const int registrosPorPagina = 10;
-        private int paginaAtualIndice = 1;
-        private int totalPaginas = 0;
-        private int totalRegistros = 0;
+  
 
         public ClienteRepository(OracleConnection connection)
         {
@@ -96,79 +95,61 @@ namespace CRUD_cliente_IACO.Repositorios
         }
 
 
-       
+
         // READ - Consultar todos os clientes
-        public List<Cliente> ConsultarClientes()
+        public PaginacaoResultado<Cliente> ConsultarClientes(
+            int paginaAtualIndice, int registrosPorPagina, 
+            string ordenacao, string tabela)
         {
+
+
+            var resultado = new PaginacaoResultado<Cliente>();
 
             try
             {
-                var clientes = new List<Cliente>();
-
                 if (_connection.State != ConnectionState.Open)
                     _connection.Open();
 
-
-                using (var oracleCommand = _connection.CreateCommand())
-                {
-
-                    try
+                
+                resultado = Paginador.ExecutarPaginacao<Cliente>(
+                    tabelaOuView: tabela,
+                    ordenacao: ordenacao,
+                    paginaAtual: paginaAtualIndice,
+                    registrosPorPagina: registrosPorPagina,
+                    mapeador: (reader) => 
+                    new Cliente
                     {
-                        oracleCommand.CommandText = @"
-                        SELECT 
-                            c.ID_CLIENTE,
-                            c.PRIMEIRO_NOME,
-                            c.SOBRENOME,
-                            c.GENERO,
-                            c.CPF,
-                            c.DATA_NASCIMENTO,
-                            c.TELEFONE,
-                            c.EMAIL
-                        FROM CLIENTES c
-                        ORDER BY c.PRIMEIRO_NOME, c.SOBRENOME";
+                        IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                        PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                        Sobrenome = reader["SOBRENOME"].ToString(),
+                        Genero = reader["GENERO"] != DBNull.Value
+                            ? (GenerosEnum)Convert.ToInt32(reader["GENERO"])
+                            : GenerosEnum.Outros,
+                        CPF = reader["CPF"].ToString(),
+                        Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                        Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                        DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value
+                            ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date
+                            : DateTime.MinValue.Date
+                    },
+                    conexao: _connection
+                );
 
-                        using (var reader = oracleCommand.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var cliente = new Cliente
-                                {
-                                    IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
-                                    PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
-                                    Sobrenome = reader["SOBRENOME"].ToString(),
-                                    Genero = reader["GENERO"] != DBNull.Value ? (GenerosEnum)Convert.ToInt32(reader["GENERO"]) : GenerosEnum.Outros,
-                                    CPF = reader["CPF"].ToString(),
-                                    Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
-                                    Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                                    DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date : DateTime.MinValue.Date,
-
-                                };
-
-                                clientes.Add(cliente); // Adicionar o cliente à lista dentro do loop
-                            }
-                        }
-                    }
-                    catch (OracleException ex)
-                    {
-                        Console.WriteLine("Erro ao ler clientes");
-                        Console.WriteLine(ex.Message);
-                    }
-
-                }
-
-                return clientes;
+            }
+            catch (OracleException ex)
+            {
+                Console.WriteLine("Erro ao consultar clientes: " + ex.Message);
             }
             finally
             {
-                if(_connection.State != ConnectionState.Closed)
-                {
+                if (_connection.State != ConnectionState.Closed)
                     _connection.Close();
-                }
             }
-                
+
+            return resultado;
         }
 
-        
+
         // READ - Consultar cliente por ID
         public Cliente ConsultarClientePorId(int IdCliente)
         {
