@@ -15,7 +15,10 @@ namespace CRUD_cliente_IACO.Repositorios
     public class ClienteRepository : IClienteRepository
     {
         private readonly OracleConnection _connection;
-
+        private const int registrosPorPagina = 10;
+        private int paginaAtualIndice = 1;
+        private int totalPaginas = 0;
+        private int totalRegistros = 0;
 
         public ClienteRepository(OracleConnection connection)
         {
@@ -104,6 +107,7 @@ namespace CRUD_cliente_IACO.Repositorios
 
                 if (_connection.State != ConnectionState.Open)
                     _connection.Open();
+
 
                 using (var oracleCommand = _connection.CreateCommand())
                 {
@@ -382,11 +386,13 @@ namespace CRUD_cliente_IACO.Repositorios
                 
                 if (_connection.State != ConnectionState.Open)
                     _connection.Open();
+    
 
                 using (var oracleCommand = _connection.CreateCommand())
                 {
                     oracleCommand.CommandText = query;
 
+                   
                     try
                     {
                         using (var reader = oracleCommand.ExecuteReader())

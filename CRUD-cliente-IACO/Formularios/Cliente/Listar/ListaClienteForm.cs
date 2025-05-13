@@ -196,7 +196,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 return;
             }
 
-
+       
 
             ClienteFiltro filtro = new ClienteFiltro {
 
@@ -207,7 +207,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
             } ;
 
-            listaClientes = _clienteRepository.BuscarClientesPorFiltro(filtro);
+            listaClientes = _clienteRepository.BuscarClientesPorFiltro(filtro, lblTotalPaginas, lblTotalRegistros);
             dataGridViewClientes.DataSource = listaClientes;
             dataGridViewClientes.Refresh();
         }
@@ -239,5 +239,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             */
         }
 
+        private void btnUltimo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
