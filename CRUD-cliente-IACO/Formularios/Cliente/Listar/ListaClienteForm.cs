@@ -28,13 +28,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         //pagination
         private const int registrosPorPagina = 5;
+        private int paginaAtualIndice = 1;
         private int totalPaginas = 0;
+        private int totalRegistros = 0;
         private string tabela = "CLIENTES";
 
         DateTime dataNascimentoFiltroBackup;
         DateTime dataAtual = DateTime.Now;
         string generoFiltroPlaceholder = "Selecione o gênero";
         List<Modelos.Cliente> listaClientesFiltrados;
+        PaginacaoResultado<Modelos.Cliente> listaClientesPaginado;
         public ListaClienteForm(
             IClienteRepository clienteRepository)
         {
@@ -53,6 +56,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         private void ListaClienteForm_Load(object sender, EventArgs e)
         {
             paginaAtualIndice = 1;
+            lblPaginaAtual.Text = paginaAtualIndice.ToString();
             PreencherComboBoxGeneros();
         }
 
@@ -74,15 +78,16 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             {
                 dataGridViewClientes.AutoGenerateColumns = true;
 
-                if (listaClientes != null && listaClientes.Count > 0)
 
                 listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
 
                 if (listaClientesPaginado.Registros != null && listaClientesPaginado.Registros.Count > 0)
                 {
 
+                    dataGridViewClientes.DataSource = listaClientesPaginado.Registros; // <- primeiro define o conteúdo
 
 
+                    lblTotalRegistroValor.Text = listaClientesPaginado.TotalRegistros.ToString();
                     lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
 
                     // Adiciona colunas de botão, se ainda não foram adicionadas
@@ -162,6 +167,14 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                     {
                         _clienteRepository.ExcluirCliente(clienteSelecionado.IdCliente);
 
+                        // Atualiza a lista após edição
+                        listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+
+                        dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+
+
+                        lblTotalRegistros.Text = listaClientesPaginado.TotalRegistros.ToString();
+                        lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
 
 
                     }
