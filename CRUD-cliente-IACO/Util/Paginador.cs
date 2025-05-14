@@ -14,6 +14,7 @@ namespace CRUD_cliente_IACO.Util
         public List<T> Registros { get; set; }
         public int TotalRegistros { get; set; }
         public int TotalPaginas { get; set; }
+
     }
 
     public static class Paginador

@@ -117,21 +117,21 @@ namespace CRUD_cliente_IACO.Repositorios
                     paginaAtual: paginaAtualIndice,
                     registrosPorPagina: registrosPorPagina,
                     mapeador: (reader) => 
-                    new Cliente
-                    {
-                        IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
-                        PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
-                        Sobrenome = reader["SOBRENOME"].ToString(),
-                        Genero = reader["GENERO"] != DBNull.Value
-                            ? (GenerosEnum)Convert.ToInt32(reader["GENERO"])
-                            : GenerosEnum.Outros,
-                        CPF = reader["CPF"].ToString(),
-                        Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
-                        Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
-                        DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value
-                            ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date
-                            : DateTime.MinValue.Date
-                    },
+                        new Cliente
+                        {
+                            IdCliente = Convert.ToInt32(reader["ID_CLIENTE"]),
+                            PrimeiroNome = reader["PRIMEIRO_NOME"].ToString(),
+                            Sobrenome = reader["SOBRENOME"].ToString(),
+                            Genero = reader["GENERO"] != DBNull.Value
+                                ? (GenerosEnum)Convert.ToInt32(reader["GENERO"])
+                                : GenerosEnum.Outros,
+                            CPF = reader["CPF"].ToString(),
+                            Email = reader["EMAIL"] != DBNull.Value ? reader["EMAIL"].ToString() : null,
+                            Telefone = reader["TELEFONE"] != DBNull.Value ? reader["TELEFONE"].ToString() : null,
+                            DataNascimento = reader["DATA_NASCIMENTO"] != DBNull.Value
+                                ? Convert.ToDateTime(reader["DATA_NASCIMENTO"]).Date
+                                : DateTime.MinValue.Date
+                        },
                     conexao: _connection
                 );
 

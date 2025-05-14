@@ -81,7 +81,7 @@
             this.dataGridViewClientes.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewClientes.Name = "dataGridViewClientes";
             this.dataGridViewClientes.RowTemplate.Height = 24;
-            this.dataGridViewClientes.Size = new System.Drawing.Size(566, 139);
+            this.dataGridViewClientes.Size = new System.Drawing.Size(566, 220);
             this.dataGridViewClientes.TabIndex = 11;
             this.dataGridViewClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewClientes_CellClick);
             // 
@@ -204,17 +204,18 @@
             // btnUltima
             // 
             this.btnUltima.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnUltima.Location = new System.Drawing.Point(508, 429);
+            this.btnUltima.Location = new System.Drawing.Point(508, 511);
             this.btnUltima.Name = "btnUltima";
             this.btnUltima.Size = new System.Drawing.Size(75, 28);
             this.btnUltima.TabIndex = 12;
             this.btnUltima.Text = "Última";
             this.btnUltima.UseVisualStyleBackColor = true;
+            this.btnUltima.Click += new System.EventHandler(this.btnUltima_Click);
             // 
             // btnProxima
             // 
             this.btnProxima.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnProxima.Location = new System.Drawing.Point(428, 429);
+            this.btnProxima.Location = new System.Drawing.Point(428, 511);
             this.btnProxima.Margin = new System.Windows.Forms.Padding(2);
             this.btnProxima.Name = "btnProxima";
             this.btnProxima.Size = new System.Drawing.Size(75, 28);
@@ -226,30 +227,32 @@
             // btnVoltar
             // 
             this.btnVoltar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnVoltar.Location = new System.Drawing.Point(349, 429);
+            this.btnVoltar.Location = new System.Drawing.Point(349, 511);
             this.btnVoltar.Margin = new System.Windows.Forms.Padding(2);
             this.btnVoltar.Name = "btnVoltar";
             this.btnVoltar.Size = new System.Drawing.Size(75, 28);
             this.btnVoltar.TabIndex = 14;
             this.btnVoltar.Text = "Voltar";
             this.btnVoltar.UseVisualStyleBackColor = true;
+            this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
             // 
             // btnPrimeira
             // 
             this.btnPrimeira.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnPrimeira.Location = new System.Drawing.Point(269, 429);
+            this.btnPrimeira.Location = new System.Drawing.Point(269, 511);
             this.btnPrimeira.Margin = new System.Windows.Forms.Padding(2);
             this.btnPrimeira.Name = "btnPrimeira";
             this.btnPrimeira.Size = new System.Drawing.Size(75, 28);
             this.btnPrimeira.TabIndex = 15;
             this.btnPrimeira.Text = "Primeira";
             this.btnPrimeira.UseVisualStyleBackColor = true;
+            this.btnPrimeira.Click += new System.EventHandler(this.btnPrimeira_Click);
             // 
             // lblTotalRegistros
             // 
             this.lblTotalRegistros.AutoSize = true;
             this.lblTotalRegistros.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblTotalRegistros.Location = new System.Drawing.Point(20, 245);
+            this.lblTotalRegistros.Location = new System.Drawing.Point(14, 245);
             this.lblTotalRegistros.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalRegistros.Name = "lblTotalRegistros";
             this.lblTotalRegistros.Size = new System.Drawing.Size(130, 16);
@@ -260,7 +263,7 @@
             // 
             this.lblTotalRegistroValor.AutoSize = true;
             this.lblTotalRegistroValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblTotalRegistroValor.Location = new System.Drawing.Point(154, 245);
+            this.lblTotalRegistroValor.Location = new System.Drawing.Point(148, 245);
             this.lblTotalRegistroValor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalRegistroValor.Name = "lblTotalRegistroValor";
             this.lblTotalRegistroValor.Size = new System.Drawing.Size(16, 16);
@@ -271,7 +274,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(452, 245);
+            this.label3.Location = new System.Drawing.Point(467, 245);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 16);
@@ -282,7 +285,7 @@
             // 
             this.lblPaginaAtual.AutoSize = true;
             this.lblPaginaAtual.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblPaginaAtual.Location = new System.Drawing.Point(506, 245);
+            this.lblPaginaAtual.Location = new System.Drawing.Point(521, 245);
             this.lblPaginaAtual.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPaginaAtual.Name = "lblPaginaAtual";
             this.lblPaginaAtual.Size = new System.Drawing.Size(16, 16);
@@ -293,7 +296,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(524, 245);
+            this.label5.Location = new System.Drawing.Point(539, 245);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(26, 16);
@@ -304,7 +307,7 @@
             // 
             this.lblTotalPaginas.AutoSize = true;
             this.lblTotalPaginas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblTotalPaginas.Location = new System.Drawing.Point(550, 245);
+            this.lblTotalPaginas.Location = new System.Drawing.Point(565, 245);
             this.lblTotalPaginas.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalPaginas.Name = "lblTotalPaginas";
             this.lblTotalPaginas.Size = new System.Drawing.Size(16, 16);
@@ -315,7 +318,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 466);
+            this.ClientSize = new System.Drawing.Size(608, 561);
             this.Controls.Add(this.lblTotalPaginas);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblPaginaAtual);

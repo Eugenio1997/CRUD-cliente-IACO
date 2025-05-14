@@ -11,8 +11,6 @@ using System.Drawing;
 using CRUD_cliente_IACO.Formularios.Cliente.Editar;
 using CRUD_cliente_IACO.Formularios.Cliente.Cadastrar;
 using CRUD_cliente_IACO.Enums;
-using CRUD_cliente_IACO.Validacoes;
-using CRUD_cliente_IACO.Extensions;
 using CRUD_cliente_IACO.Filtros.Cliente;
 using CRUD_cliente_IACO.Modelos.DTOs;
 using CRUD_cliente_IACO.Util;
@@ -25,9 +23,10 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
         bool generoSelecionado = false;
         int generoIdSelecionado;
         int idadeMinima = 18;
+        int indiceMinimo = 2; 
 
         //pagination
-        private const int registrosPorPagina = 5;
+        private const int registrosPorPagina = 10;
         private int paginaAtualIndice = 1;
         private int totalPaginas = 0;
         private int totalRegistros = 0;
@@ -173,8 +172,9 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                         dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
 
 
-                        lblTotalRegistros.Text = listaClientesPaginado.TotalRegistros.ToString();
+                        lblTotalRegistroValor.Text = listaClientesPaginado.TotalRegistros.ToString();
                         lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
+                      //lblPaginaAtual.Text = paginaAtualIndice.ToString();
 
 
                     }
@@ -275,6 +275,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             PrimeiroNomeFiltro.Clear();
             SobrenomeFiltro.Clear();
             DataNascimentoFiltro.Value = dataAtual;
+            paginaAtualIndice = 1;
 
             //limpando o filtro de genero
             if (GeneroFiltro.SelectedItem.ToString() != generoFiltroPlaceholder)
@@ -294,6 +295,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
             lblTotalRegistroValor.Text = listaClientesPaginado.TotalRegistros.ToString();
             lblTotalPaginas.Text = listaClientesPaginado.TotalPaginas.ToString();
+            lblPaginaAtual.Text = paginaAtualIndice.ToString();
 
             dataGridViewClientes.Refresh();
            
@@ -301,7 +303,51 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         private void btnProxima_Click(object sender, EventArgs e)
         {
-           //f()
+            if (paginaAtualIndice < listaClientesPaginado.TotalPaginas)
+            {
+                paginaAtualIndice++;
+                lblPaginaAtual.Text = paginaAtualIndice.ToString();
+
+                listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+                dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+
+            }
+        }
+
+        private void btnVoltar_Click(object sender, EventArgs e)
+        {
+            if (paginaAtualIndice >= indiceMinimo)
+            {
+                paginaAtualIndice--;
+                lblPaginaAtual.Text = paginaAtualIndice.ToString();
+
+                listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+                dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+            }
+        }
+
+        private void btnPrimeira_Click(object sender, EventArgs e)
+        {
+
+            if (paginaAtualIndice == 1) return;
+
+            paginaAtualIndice = 1;
+            lblPaginaAtual.Text = paginaAtualIndice.ToString();
+
+            listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+            dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
+        }
+
+        private void btnUltima_Click(object sender, EventArgs e)
+        {
+
+            if (paginaAtualIndice == listaClientesPaginado.TotalPaginas) return;
+                
+            paginaAtualIndice = listaClientesPaginado.TotalPaginas;
+            lblPaginaAtual.Text = paginaAtualIndice.ToString();
+
+            listaClientesPaginado = _clienteRepository.ConsultarClientes(listaClientesPaginado.TotalPaginas, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+            dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
         }
     }
 }
