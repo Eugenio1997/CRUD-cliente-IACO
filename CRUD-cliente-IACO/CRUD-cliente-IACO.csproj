@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtributosCustomizados\DisplayNameAttribute.cs" />
     <Compile Include="CustomEventArgs\ClienteEventArgs.cs" />
     <Compile Include="DatabaseSeeder.cs" />
     <Compile Include="Enums\FormTypeEnum.cs" />

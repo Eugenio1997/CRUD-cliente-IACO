@@ -14,6 +14,7 @@ using CRUD_cliente_IACO.Enums;
 using CRUD_cliente_IACO.Filtros.Cliente;
 using CRUD_cliente_IACO.Modelos.DTOs;
 using CRUD_cliente_IACO.Util;
+using CRUD_cliente_IACO.AtributosCustomizados;
 
 namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 {
@@ -78,7 +79,14 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 dataGridViewClientes.AutoGenerateColumns = true;
 
 
-                listaClientesPaginado = _clienteRepository.ConsultarClientes(paginaAtualIndice, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
+                listaClientesPaginado = _clienteRepository
+                    .ConsultarClientes(
+                        paginaAtualIndice, 
+                        registrosPorPagina,
+                        Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME),
+                        tabela
+                   );
+
 
                 if (listaClientesPaginado.Registros != null && listaClientesPaginado.Registros.Count > 0)
                 {
@@ -126,6 +134,34 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
                 MessageBox.Show($"Erro: {ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //MessageBox.Show("Erro ao carregar dados: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+
+                //Sobrescrevendo os nomes de colunas do DataGridView
+                AplicarCabecalhosComNomesExibicao<Modelos.Cliente>(dataGridViewClientes);
+                dataGridViewClientes.Columns["PrimeiroNome"].Width = 150;
+                dataGridViewClientes.Columns["DataNascimento"].Width = 200;
+
+                dataGridViewClientes.Columns["Editar"].HeaderText = " ";
+                dataGridViewClientes.Columns["Excluir"].HeaderText = " ";
+
+                dataGridViewClientes.Columns["Excluir"].Width = 50;
+                dataGridViewClientes.Columns["Editar"].Width = 50;
+
+                foreach (DataGridViewColumn col in dataGridViewClientes.Columns)
+                {
+                    
+                    col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                }
+
+                dataGridViewClientes.Columns["DataNascimento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridViewClientes.EnableHeadersVisualStyles = false;
+                dataGridViewClientes.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSteelBlue;
+                dataGridViewClientes.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+
+            }
 
         }
 
@@ -134,6 +170,12 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
             if (e.ColumnIndex < 0)
                 return;
+
+            if (e.ColumnIndex >= 2)
+            {
+                //Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME)
+                string ordenarPor = dataGridViewClientes.Columns[e.ColumnIndex].Name;
+            }
 
             if (e.RowIndex >= 0)
             {
@@ -182,6 +224,23 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             }
 
         }
+
+        private void AplicarCabecalhosComNomesExibicao<T>(DataGridView grid)
+        {
+            var props = typeof(T).GetProperties();
+
+            foreach (DataGridViewColumn col in grid.Columns)
+            {
+                var prop = props.FirstOrDefault(p => p.Name == col.DataPropertyName);
+                if (prop != null)
+                {
+                    var attr = Attribute.GetCustomAttribute(prop, typeof(DisplayNameAttribute)) as DisplayNameAttribute;
+                    if (attr != null)
+                        col.HeaderText = attr.Nome;
+                }
+            }
+        }
+
 
         private void Btn_BuscarClientes_Click(object sender, EventArgs e)
         {
@@ -349,5 +408,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             listaClientesPaginado = _clienteRepository.ConsultarClientes(listaClientesPaginado.TotalPaginas, registrosPorPagina, Enum.GetName(typeof(OrdenarPorEnum), OrdenarPorEnum.PRIMEIRO_NOME), tabela);
             dataGridViewClientes.DataSource = listaClientesPaginado.Registros;
         }
+
+
     }
 }
