@@ -138,7 +138,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
             {
 
                 //Sobrescrevendo os nomes de colunas do DataGridView
-                AplicarCabecalhosComNomesExibicao<Modelos.Cliente>(dataGridViewClientes);
+                AplicarCabecalhosComDisplayNameAttribute<Modelos.Cliente>(dataGridViewClientes);
                 dataGridViewClientes.Columns["PrimeiroNome"].Width = 150;
                 dataGridViewClientes.Columns["DataNascimento"].Width = 200;
 
@@ -225,7 +225,7 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
         }
 
-        private void AplicarCabecalhosComNomesExibicao<T>(DataGridView grid)
+        private void AplicarCabecalhosComDisplayNameAttribute<T>(DataGridView grid)
         {
             var props = typeof(T).GetProperties();
 
@@ -301,7 +301,8 @@ namespace CRUD_cliente_IACO.Formularios.Cliente.Listar
 
                 PrimeiroNome = primeiroNome,
                 Sobrenome = sobrenome,
-                GeneroId = Convert.ToString(generoIdSelecionado) == "0" ? "" : Convert.ToString(generoIdSelecionado),
+                //GeneroId = Convert.ToString(generoIdSelecionado) == "0" ? "" : Convert.ToString(generoIdSelecionado),
+                GeneroId = Convert.ToString(generoIdSelecionado) ,
                 DataNascimento = DataNascimentoFiltro.Value.Date
 
             } ;
