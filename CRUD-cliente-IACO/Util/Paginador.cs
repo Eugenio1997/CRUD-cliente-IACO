@@ -30,10 +30,6 @@ namespace CRUD_cliente_IACO.Util
             var resultado = new PaginacaoResultado<T>();
             var registros = new List<T>();
 
-            Console.WriteLine(tabelaOuView + "\n" + ordenacao + "\n" + paginaAtual + "\n" + registrosPorPagina);
-            int inicio = (paginaAtual - 1) * registrosPorPagina;
-            int fim = paginaAtual * registrosPorPagina;
-
             // Query para total de registros
             string queryTotal = $"SELECT COUNT(*) FROM {tabelaOuView}";
 
@@ -44,23 +40,23 @@ namespace CRUD_cliente_IACO.Util
                 resultado.TotalPaginas = (int)Math.Ceiling((double)resultado.TotalRegistros / registrosPorPagina);
             }
 
-            // Query de paginação (modelo Oracle com ROWNUM)
-            string queryPaginada = $@"
-                SELECT * FROM (     
-                    SELECT c.*, ROWNUM rnum
-                    FROM (
-                        SELECT * FROM {tabelaOuView} ORDER BY {ordenacao}
-                    ) c
-                    WHERE ROWNUM <= :fim
-                )
-                WHERE rnum > :inicio";
+            int offset = (paginaAtual - 1) * registrosPorPagina;
+
+            string queryPaginada = $@" 
+                SELECT *
+                FROM {tabelaOuView}
+                ORDER BY {ordenacao} ASC
+                OFFSET :offset ROWS
+                FETCH NEXT :registrosPorPagina ROWS ONLY
+            ";
 
             using (var cmd = conexao.CreateCommand())
             {
                 cmd.CommandText = queryPaginada;
 
-                cmd.Parameters.Add(new OracleParameter("fim", fim));
-                cmd.Parameters.Add(new OracleParameter("inicio", inicio));
+                cmd.Parameters.Add(new OracleParameter("offset", offset));
+                cmd.Parameters.Add(new OracleParameter("registrosPorPagina", registrosPorPagina));
+
 
                 using (var reader = cmd.ExecuteReader())
                 {
