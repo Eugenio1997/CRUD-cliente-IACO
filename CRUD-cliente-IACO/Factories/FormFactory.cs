@@ -11,7 +11,6 @@ namespace CRUD_cliente_IACO.Factories
     public static class FormFactory
     {
         private static CadastroClienteForm _cadastroClienteForm;
-        private static CadastroEnderecoClienteForm _cadastroEnderecoClienteForm;
         private static ListaClienteForm _listaClienteForm;
         private static MenuPrincipal _menuPrincipalForm;
         private static EditarClienteForm _editarClienteForm;
