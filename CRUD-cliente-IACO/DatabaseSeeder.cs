@@ -12,9 +12,6 @@ namespace CRUD_cliente_IACO
         public static void Seed(OracleConnection conn)
         {
 
-            conn.Open();
-
-
             string verificacaoClienteQuery = $"SELECT COUNT(*) FROM Clientes";
 
             using (OracleCommand verificacaoClientesCmd = new OracleCommand(verificacaoClienteQuery, conn))
